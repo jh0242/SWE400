@@ -5,5 +5,5 @@ package domain_model;
  */
 public class Activity
 {
-
+	int i = 0;
 }
