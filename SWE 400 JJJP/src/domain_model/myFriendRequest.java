@@ -19,7 +19,8 @@ public class myFriendRequest {
 	}
 	
 	void updateFriendsList(){
-		
+	
+		System.out.print("Hello world");
 	}
 	
 }
