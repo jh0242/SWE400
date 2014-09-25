@@ -1,5 +1,7 @@
 package domain_model;
 
+import java.util.Vector;
+
 /**
  * Handles friend requests for a user, decides if that friendship 
  * is accepted (stored in Friend database table and removed from the
@@ -12,6 +14,9 @@ package domain_model;
  */
 
 public class MyFriendRequest {
+	
+	private Vector<Person> friends;
+	private int userID; // the userID 
 
 	// allows the user to send a friend request to another user
 	void sendFriendRequest(){
