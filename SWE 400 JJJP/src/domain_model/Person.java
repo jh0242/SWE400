@@ -57,6 +57,8 @@ public class Person
 	 */
 	public Vector<Person> getFriends()
 	{
+		// This is where loading should occur.
+		// TODO: actually make it load from somewhere.
 		if (friends == null) {
 			friends = new Vector<>();
 		}
