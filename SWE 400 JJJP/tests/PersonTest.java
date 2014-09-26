@@ -52,5 +52,21 @@ public class PersonTest
 		assertFalse(p1.addFriend(p2));
 		assertFalse(p1.addFriend(p1));
 	}
+	
+	/**
+	 * Test friend confirmation.
+	 * TODO: test will change when we have people being loaded
+	 * from the database.
+	 */
+	@Test
+	public void testConfirmFriendRequest() {
+		Person p1 = new Person(0);
+		Person p2 = new Person(1);
+		p1.getFriendRequests();
+		p1.friendRequests.add(1);
+		assertTrue(p1.friendRequests.contains(1));
+		p1.confirmFriendRequest(1);
+		assertFalse(p1.friendRequests.contains(1));
+	}
 
 }
