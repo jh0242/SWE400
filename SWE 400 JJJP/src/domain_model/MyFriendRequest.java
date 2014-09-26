@@ -15,42 +15,68 @@ import java.util.Vector;
 
 public class MyFriendRequest {
 	
-	private Vector<Person> friends;
-	private int userID; // the userID 
-
-	// allows the user to send a friend request to another user
-	void sendFriendRequest(){
+	private int userID;
+	
+	/**
+	 * Allows the user to send a friend request to another user
+	 * @param idUserA
+	 * @param idUserB
+	 */
+	void sendFriendRequest(int otherUsersID){
+			otherUsersID = userID;
+	}
+		
+	/**
+	 * Allows the user to confirm a friend request from another user
+	 * @param idUserA
+	 * @param idUserB
+	 */
+	void confirmFriendRequest(int idUserA, int idUserB){
+			idUserA = userID;
+	}
+		
+	/**
+	 * Allows the user to deny a friend request from another user
+	 * @param idUserA
+	 * @param idUserB
+	 */
+	void denyFriendRequest(int idUserA, int idUserB){
+			idUserA = userID;
+	}
+		
+	/** 
+	 * Returns a list of friend requests from a particular user
+	 * @param userID
+	 */
+	void getFriendRequests(int userID){
+			this.userID = userID;
 			
 	}
 		
-	// allows the user to confirm a friend request from another user
-	void confirmFriendRequest(){
-			
+	/**
+	 * Returns a list of friends from a particular user
+	 * @param userID
+	 */
+	void getFriendsList(int userID){
+			this.userID = userID;
 	}
 		
-	// allows the user to deny a friend request from another user
-	void denyFriendRequest(){
-			
-	}
-		
-	// returns a list of friend requests from a particular user
-	void getFriendRequests(){
-			
-	}
-		
-	// returns a list of friends from a particular user
-	void getFriendsList(){
-			
-	}
-		
-	// deletes a friend from the friends list of a particular user
-	void deleteFriend(){
-			
+	/**
+	 * Deletes a friend from the friends list of a particular user
+	 * @param idUserA
+	 * @param idUserB
+	 */
+	void deleteFriend(int idUserA, int idUserB){
+			idUserA = userID;		// the user
 	}
 	
-	// updates a user's list of friends
-	void updateFriendsList(){
-		
+	/**
+	 * Updates a user's list of friends
+	 * @param userID
+	 * @return 
+	 */
+	void updateFriendsList(int userID){
+			this.userID = userID;
 	}
 	
 }
