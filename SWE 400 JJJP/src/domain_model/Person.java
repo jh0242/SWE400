@@ -8,11 +8,29 @@ import java.util.Vector;
  */
 public class Person
 {
+	int id;			 // Unique identifier.
 	String name;	 // Non-unique full user name.
 	String password; // Passwords aren't protected. We're Sony now.
 	// This field is lazy-loaded and a null value indicates that it hasn't been loaded.
 	private Vector<Person> friends;
 
+	
+	/**
+	 * Person constructor.
+	 * @param id Unique identifying ID number. We don't want two people with the same ID, ever.
+	 */
+	public Person(int id) {
+		this.id = id;
+	}
+	
+	/**
+	 * Getter for id.
+	 * @return ID number.
+	 */
+	public int getID() {
+		return this.id;
+	}
+	
 	/**
 	 * Getter / name field.
 	 * @return String name
@@ -63,5 +81,20 @@ public class Person
 			friends = new Vector<>();
 		}
 		return friends;
+	}
+	
+	/**
+	 * Add a new friends to the friendslist in this person.
+	 * @param f A person instance. Will fail if it's this person.
+	 * @return true on success, false on failure. Will fail if the friend is already in this list.
+	 */
+	public boolean addFriend(Person f) {
+		boolean status = false;
+		if (friends == null) getFriends(); // Lazy load if it hasn't been lazyloaded yet.
+		if (!friends.contains(f) && this != f) {
+			friends.add(f);
+			status = true;
+		}
+		return status;
 	}
 }

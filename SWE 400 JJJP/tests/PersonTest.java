@@ -20,11 +20,12 @@ public class PersonTest
 	@Test
 	public void testGettersSetters()
 	{
-		Person p = new Person();
+		Person p = new Person(42);
 		p.setName("Fred");
 		assertEquals("Fred", p.getName());
 		p.setPassword("hunter2");
 		assertEquals("hunter2", p.getPassword());
+		assertEquals(42, p.getID());
 	}
 	
 	/**
@@ -32,10 +33,24 @@ public class PersonTest
 	 */
 	@Test
 	public void testGetFriends() {
-		Person p = new Person();
+		Person p = new Person(0);
 		Vector<Person> f = p.getFriends();
 		assertNotNull(f);
 		assertEquals(f.size(), 0);
+	}
+	
+	/**
+	 * Test adding friends.
+	 * Special functionality: should fail if this friend already exists,
+	 * should fail if this friend is yourself.
+	 */
+	@Test
+	public void testAddFriend() {
+		Person p1 = new Person(0);
+		Person p2 = new Person(1);
+		assertTrue(p1.addFriend(p2));
+		assertFalse(p1.addFriend(p2));
+		assertFalse(p1.addFriend(p1));
 	}
 
 }
