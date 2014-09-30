@@ -87,7 +87,7 @@ public class Person
 	}
 	
 	/**
-	 * Add a new friends to the friendslist in this person.
+	 * Add a new friend to the friendslist in this person.
 	 * @param f A person instance. Will fail if it's this person.
 	 * @return true on success, false on failure. Will fail if the friend is already in this list.
 	 */
@@ -101,8 +101,27 @@ public class Person
 		return status;
 	}
 	
+	/**
+	 * Removes a friend from the friendslist in this person.
+	 * @param f A person instance. Will fail if it's this person.
+	 * @return true on success, false on failure. Will fail if the friend is not on this list.
+	 */
+	public boolean deleteFriend(Person f) {
+		boolean status = false;
+		if (friends == null) getFriends(); // Lazy load if it hasn't been lazyloaded yet.
+		if (friends.contains(f) && this != f) {
+			friends.remove(f);
+			status = true;
+		}
+		return status;
+	}
+	
 	/** Friend Request Code **/
 	
+	/**
+	 * This returns the list of friendRequests from this userID
+	 * @return
+	 */
 	public Vector<Integer> getFriendRequests() {
 		// TODO this ought to be a database load operation
 		if (friendRequests == null) {
@@ -112,6 +131,7 @@ public class Person
 	}
 	
 	/**
+	 * This adds this userID to the otherUserID's pending friend request table 
 	 * TODO
 	 * @param otherUserID
 	 * @return
@@ -121,15 +141,39 @@ public class Person
 	}
 	
 	/**
+	 * This add's the otherUserID to this userID's friends' list and removes 
+	 * this association from the pending friend request table
 	 * @param otherUserID
 	 * @return
 	 */
-	public boolean confirmFriendRequest(Integer otherUserID) {
+	public boolean confirmFriendRequest(Person f, Integer otherUserID) {
+		boolean status = false;
+		if(friendRequests == null) getFriendRequests(); // Lazy load if it hasn't been lazyloaded yet.
 		if (friendRequests.contains(otherUserID)) {
+			
+			addFriend(f);
 			friendRequests.remove(otherUserID);
+			status = true;
 			
 			//addFriend(person f) Need to get person from database.
 		}
-		return false;
+		return status;
 	}
+	
+	/**
+	 * Removes a friend request from the otherUserID with this userID, this removes 
+	 * this association from the pending friend request table	  
+	 * @param otherUserID
+	 * @return
+	 */
+	public boolean denyFriendRequest(Integer otherUserID){
+		boolean status = false;
+		if (friendRequests == null) getFriendRequests(); // Lazy load if it hasn't been lazyloaded yet.
+		if (friendRequests.contains(otherUserID)) {
+			friendRequests.remove(otherUserID);
+			status = true;
+		}
+		return status;
+	}
+	
 }
