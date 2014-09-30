@@ -6,6 +6,7 @@ import java.util.Vector;
  * @author Patrick Joseph Flanagan
  *
  * @param <T> What sort of object the UOW is dealing with.
+ * TODO Needs a little janitorial work.
  */
 public class UnitOfWork<T>
 {
@@ -14,13 +15,6 @@ public class UnitOfWork<T>
 	private Vector<T> dirtyRegister = new Vector<>();
 	private Vector<T> cleanRegister = new Vector<>();
 	private Vector<T> removeRegister = new Vector<>();
-	
-	/**
-	 * Constructor!
-	 */
-	public UnitOfWork() {
-
-	}
 	
 	/**
 	 * Checks to see if a given object is already registered somewhere.
