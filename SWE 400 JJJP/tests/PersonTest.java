@@ -5,6 +5,7 @@ import java.util.Vector;
 import org.junit.Test;
 
 import domain_model.Person;
+import domain_model.PersonShell;
 
 
 /**
@@ -22,7 +23,7 @@ public class PersonTest
 	{
 		Person p = new Person(42);
 		p.setName("Fred");
-		assertEquals("Fred", p.getName());
+		assertEquals("Fred", p.getFullname());
 		p.setPassword("hunter2");
 		assertEquals("hunter2", p.getPassword());
 		assertEquals(42, p.getID());
@@ -34,7 +35,7 @@ public class PersonTest
 	@Test
 	public void testGetFriends() {
 		Person p = new Person(0);
-		Vector<Person> f = p.getFriends();
+		Vector<PersonShell> f = p.getFriends();
 		assertNotNull(f);
 		assertEquals(f.size(), 0);
 	}
@@ -75,19 +76,7 @@ public class PersonTest
 	 */
 	@Test
 	public void testConfirmFriendRequest() {
-		Person p1 = new Person(0);
-		Person p2 = new Person(1);
-		p1.getFriendRequests();
-		p1.friendRequests.add(1);
-		assertTrue(p1.friendRequests.contains(1));
-		p1.confirmFriendRequest(p2, 1);
-		assertFalse(p1.friendRequests.contains(1));
-		
-		p2.getFriendRequests();
-		p2.friendRequests.add(0);
-		assertTrue(p2.friendRequests.contains(0));
-		p2.confirmFriendRequest(p1, 0);
-		assertFalse(p1.friendRequests.contains(0));
+		fail();
 	}
 	
 	/**
@@ -97,20 +86,7 @@ public class PersonTest
 	 */
 	@Test
 	public void testDenyFriendRequest() {
-		Person p1 = new Person(0);
-		Person p2 = new Person(1);
-		p1.getFriendRequests();
-		p1.friendRequests.add(1);
-		assertTrue(p1.friendRequests.contains(1));
-		p1.denyFriendRequest(1);
-		assertFalse(p1.friendRequests.contains(1));
-		
-		p2.getFriendRequests();
-		p2.friendRequests.add(0);
-		assertTrue(p2.friendRequests.contains(0));
-		p2.denyFriendRequest(0);
-		assertFalse(p2.friendRequests.contains(0));
-		
+		fail();
 	}
 
 }

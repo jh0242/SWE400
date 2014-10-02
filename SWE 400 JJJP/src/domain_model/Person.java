@@ -7,15 +7,15 @@ import java.util.Vector;
  * @author John Terry
  *
  */
-public class Person
+public class Person implements PersonShell
 {
 	int id;			 // Unique identifier.
-	String name;	 // Non-unique full user name.
+	String name;	 // Non-unique full name. e.g.: John Doe
+	String username; // Unique username e.g.: xXxJavaLordxXx
 	String password; // Passwords aren't protected. We're Sony now.
 	// This field is lazy-loaded and a null value indicates that it hasn't been loaded.
-	private Vector<Person> friends;
-	public Vector<Integer> friendRequests; // Just User's ID
-
+	public Vector<PersonShell> friends;
+	public Vector<PersonShell> friendRequests; 
 	
 	/**
 	 * Person constructor.
@@ -37,9 +37,18 @@ public class Person
 	 * Getter / name field.
 	 * @return String name
 	 */
-	public String getName()
+	@Override
+	public String getFullname()
 	{
 		return name;
+	}
+	
+	/**
+	 * @return String username, assumed to be unique.
+	 */
+	@Override
+	public String getUsername() {
+		return username;
 	}
 
 	/**
@@ -76,7 +85,7 @@ public class Person
 	 * TODO Should load from the database!
 	 * @return Vector of Persons, never null, but possibly empty ( :( )
 	 */
-	public Vector<Person> getFriends()
+	public Vector<PersonShell> getFriends()
 	{
 		// This is where loading should occur.
 		// TODO: actually make it load from somewhere.
@@ -120,12 +129,13 @@ public class Person
 	
 	/**
 	 * This returns the list of friendRequests from this userID
-	 * @return
+	 * @return friendRequests vector full of PersonShells
 	 */
-	public Vector<Integer> getFriendRequests() {
+	public Vector<PersonShell> getFriendRequests() {
 		// TODO this ought to be a database load operation
+		// Until then, it just makes an empty Vector.
 		if (friendRequests == null) {
-			friendRequests = new Vector<Integer>();
+			friendRequests = new Vector<>();
 		}
 		return friendRequests;
 	}
@@ -133,47 +143,31 @@ public class Person
 	/**
 	 * This adds this userID to the otherUserID's pending friend request table 
 	 * TODO
-	 * @param otherUserID
-	 * @return
+	 * @param uname The other person's unique username.
+	 * @return True on success, false on failure.
 	 */
-	public boolean sendFriendRequest(Integer otherUserID) {
+	public boolean sendFriendRequest(String uname) {
 		return false;
 	}
 	
 	/**
 	 * This add's the otherUserID to this userID's friends' list and removes 
 	 * this association from the pending friend request table
-	 * @param otherUserID
+	 * @param uname
 	 * @return
 	 */
-	public boolean confirmFriendRequest(Person f, Integer otherUserID) {
-		boolean status = false;
-		if(friendRequests == null) getFriendRequests(); // Lazy load if it hasn't been lazyloaded yet.
-		if (friendRequests.contains(otherUserID)) {
-			
-			addFriend(f);
-			friendRequests.remove(otherUserID);
-			status = true;
-			
-			//addFriend(person f) Need to get person from database.
-		}
-		return status;
+	public boolean confirmFriendRequest(String uname) {
+		return false;
 	}
 	
 	/**
 	 * Removes a friend request from the otherUserID with this userID, this removes 
 	 * this association from the pending friend request table	  
-	 * @param otherUserID
+	 * @param uname
 	 * @return
 	 */
-	public boolean denyFriendRequest(Integer otherUserID){
-		boolean status = false;
-		if (friendRequests == null) getFriendRequests(); // Lazy load if it hasn't been lazyloaded yet.
-		if (friendRequests.contains(otherUserID)) {
-			friendRequests.remove(otherUserID);
-			status = true;
-		}
-		return status;
+	public boolean denyFriendRequest(String uname){
+		return false;
 	}
 	
 }
