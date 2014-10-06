@@ -4,6 +4,7 @@ import java.util.Vector;
 
 import org.junit.Test;
 
+import domain_model.Friend;
 import domain_model.Person;
 import domain_model.PersonShell;
 
@@ -76,7 +77,12 @@ public class PersonTest
 	 */
 	@Test
 	public void testConfirmFriendRequest() {
-		fail();
+		Person p1 = new Person(0);
+		Friend guy = new Friend("JavaLord", "Test Man");
+		p1.receiveFriendRequest("JavaLord");
+		assertTrue(p1.hasFriendRequest("JavaLord"));
+		p1.confirmFriendRequest("JavaLord");
+		assertFalse(p1.hasFriendRequest("JavaLord"));
 	}
 	
 	/**
@@ -86,7 +92,11 @@ public class PersonTest
 	 */
 	@Test
 	public void testDenyFriendRequest() {
-		fail();
+		Person p1 = new Person(0);
+		p1.receiveFriendRequest("JavaLord");
+		assertTrue(p1.hasFriendRequest("JavaLord"));
+		assertTrue(p1.denyFriendRequest("JavaLord"));
+		assertFalse(p1.denyFriendRequest("JavaLord"));
 	}
 
 }
