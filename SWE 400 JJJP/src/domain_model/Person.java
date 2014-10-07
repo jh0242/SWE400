@@ -2,6 +2,8 @@ package domain_model;
 
 import java.util.Vector;
 
+import java.util.Iterator;
+
 /**
  * @author Patrick Joseph Flanagan
  * @author John Terry
@@ -13,9 +15,16 @@ public class Person implements PersonShell
 	String name;	 // Non-unique full name. e.g.: John Doe
 	String username; // Unique username e.g.: xXxJavaLordxXx
 	String password; // Passwords aren't protected. We're Sony now.
-	// This field is lazy-loaded and a null value indicates that it hasn't been loaded.
-	public Vector<PersonShell> friends;
-	public Vector<PersonShell> friendRequests; 
+	
+	/**
+	 * Lazy-loaded field. Be sure to use getFriends()
+	 */
+	private Vector<PersonShell> friends;
+
+	/**
+	 * Lazy-loaded field. Be sure to use getFriendRequests()
+	 */
+	private Vector<PersonShell> friendRequests;
 	
 	/**
 	 * Person constructor.
@@ -100,11 +109,10 @@ public class Person implements PersonShell
 	 * @param f A person instance. Will fail if it's this person.
 	 * @return true on success, false on failure. Will fail if the friend is already in this list.
 	 */
-	public boolean addFriend(Person f) {
+	public boolean addFriend(PersonShell f) {
 		boolean status = false;
-		if (friends == null) getFriends(); // Lazy load if it hasn't been lazyloaded yet.
-		if (!friends.contains(f) && this != f) {
-			friends.add(f);
+		if (!getFriends().contains(f) && this != f) {
+			getFriends().add(f);
 			status = true;
 		}
 		return status;
@@ -115,7 +123,7 @@ public class Person implements PersonShell
 	 * @param f A person instance. Will fail if it's this person.
 	 * @return true on success, false on failure. Will fail if the friend is not on this list.
 	 */
-	public boolean deleteFriend(Person f) {
+	public boolean deleteFriend(PersonShell f) {
 		boolean status = false;
 		if (friends == null) getFriends(); // Lazy load if it hasn't been lazyloaded yet.
 		if (friends.contains(f) && this != f) {
@@ -151,23 +159,81 @@ public class Person implements PersonShell
 	}
 	
 	/**
+	 * Receive a friend request from another user.
+	 * @param uname Username of the person who sent the request to us.
+	 */
+	public void receiveFriendRequest(String uname) {
+		Friend f = new Friend(uname);
+		getFriendRequests().add(f);
+	}
+	
+	/**
+	 * @param uname Given username to search friend requests for
+	 * @return True if this username is in the friend requests
+	 */
+	public boolean hasFriendRequest(String uname) {
+		Iterator<PersonShell> it = friendRequests.iterator();
+		boolean success = false;
+		while (it.hasNext() && !success) {
+			PersonShell f = it.next();
+			if (f.getUsername().equals(uname)) {
+				success = true;
+			}
+		}
+		return success;
+	}
+	
+	/**
 	 * This add's the otherUserID to this userID's friends' list and removes 
 	 * this association from the pending friend request table
-	 * @param uname
-	 * @return
+	 * @param uname Unique username
+	 * @return True if confirmation successful
 	 */
 	public boolean confirmFriendRequest(String uname) {
-		return false;
+		Iterator<PersonShell> it = friendRequests.iterator();
+		boolean success = false;
+		while (it.hasNext() && !success) {
+			PersonShell f = it.next();
+			if (f.getUsername().equals(uname)) {
+				// Match!
+				it.remove();
+				success = true;
+			}	
+		}
+		if (success) {
+			Friend f = new Friend(uname);
+			getFriends().add(f);
+		}
+		return success;
+	}
+	
+	/**
+	 * Remove a friend request by username.
+	 * @param uname Unique username.
+	 * @return True if success, false otherwise.
+	 */
+	public boolean removeFriendRequest(String uname) {
+		Iterator<PersonShell> it = friendRequests.iterator();
+		boolean success = false;
+		while (it.hasNext() && !success) {
+			PersonShell f = it.next();
+			if (f.getUsername().equals(uname)) {
+				// Match!
+				it.remove();
+				success = true;
+			}	
+		}
+		return success;
 	}
 	
 	/**
 	 * Removes a friend request from the otherUserID with this userID, this removes 
 	 * this association from the pending friend request table	  
-	 * @param uname
-	 * @return
+	 * @param uname Unique username, should exist in friendRequests
+	 * @return True if a friend request was found and denied; false otherwise.
 	 */
 	public boolean denyFriendRequest(String uname){
-		return false;
+		return removeFriendRequest(uname);
 	}
 	
 }
