@@ -12,6 +12,7 @@ public class PersonGateway
 	
 	private Connection conn = null;
 	
+	//May not need this if we can make sql automatically generate these.
 	private int getNextUniqueID()
 	{
 		//returns the next unique id, an integer, for the PERSON table.
@@ -46,5 +47,40 @@ public class PersonGateway
 		stmt.executeUpdate();
 		
 		return true;
+	}
+	
+	/**
+	 * 
+	 * @param userID
+	 * @return
+	 * @throws SQLException
+	 */
+	public boolean remove(int userID) throws SQLException
+	{
+		String checkValidUserID = new String("SELECT * FROM PERSON where user_id = '" + userID + "';");
+		PreparedStatement stmt = conn.prepareStatement(checkValidUserID);
+		ResultSet rs = stmt.executeQuery(checkValidUserID);
+		if (!rs.next())
+			return false; //The userID is not in the database, thus the specified
+						  //user does not exist.
+		
+		//rs.next will get the next row in the result set
+		//type in rs.getString, rs.getInt, etc. to see the methods for retrieving information
+		//from specific columns
+		String removeUser = new String("DELETE FROM PERSON where user_id = '" + userID + "';");
+		stmt = conn.prepareStatement(removeUser);
+		stmt.executeUpdate();
+		
+		return true;
+	}
+	
+	public boolean findByID(int userID)
+	{
+		return false;
+	}
+	
+	public boolean findByUserName(String userName)
+	{
+		return false;
 	}
 }
