@@ -49,6 +49,7 @@ public class PersonGateway
 		return true;
 	}
 	
+	//May not need this method since there is not a command for a user to delete their account.
 	/**
 	 * 
 	 * @param userID
@@ -68,6 +69,25 @@ public class PersonGateway
 		//type in rs.getString, rs.getInt, etc. to see the methods for retrieving information
 		//from specific columns
 		String removeUser = new String("DELETE FROM PERSON where user_id = '" + userID + "';");
+		stmt = conn.prepareStatement(removeUser);
+		stmt.executeUpdate();
+		
+		return true;
+	}
+	
+	public boolean updateDisplayName(int userID, String newDisplayName) throws SQLException
+	{
+		String checkValidUserID = new String("SELECT * FROM PERSON where user_id = '" + userID + "';");
+		PreparedStatement stmt = conn.prepareStatement(checkValidUserID);
+		ResultSet rs = stmt.executeQuery(checkValidUserID);
+		if (!rs.next())
+			return false; //The userID is not in the database, thus the specified
+						  //user does not exist.
+		
+		//rs.next will get the next row in the result set
+		//type in rs.getString, rs.getInt, etc. to see the methods for retrieving information
+		//from specific columns
+		String removeUser = new String("UPDATE PERSON where user_id = '" + userID + "';");
 		stmt = conn.prepareStatement(removeUser);
 		stmt.executeUpdate();
 		
