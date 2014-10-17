@@ -11,6 +11,7 @@ import java.util.Iterator;
 public class Person extends DomainObject implements PersonShell
 {
 	String name;	 // Non-unique full name. e.g.: John Doe
+	String displayname; // Pretty non-unique display name.
 	String username; // Unique username e.g.: xXxJavaLordxXx
 	String password; // Passwords aren't protected. We're Sony now.
 	
@@ -30,6 +31,20 @@ public class Person extends DomainObject implements PersonShell
 	 */
 	public Person(int id) {
 		this.id = id;
+	}
+	
+	/**
+	 * A more verbose constructor where you can specify username, displayname, and password immediately.
+	 * @param id Unique ID
+	 * @param username Unique username, no spaces
+	 * @param displayname Non-unique displayname
+	 * @param password sekrit password
+	 */
+	public Person(int id, String username, String password, String displayname) {
+		this.id = id;
+		this.username = username;
+		this.displayname = displayname;
+		this.password = password;
 	}
 	
 	/**
@@ -224,6 +239,15 @@ public class Person extends DomainObject implements PersonShell
 	 */
 	public boolean denyFriendRequest(String uname){
 		return removeFriendRequest(uname);
+	}
+	
+	/**
+	 * Return string of their username + password + displayname.
+	 */
+	@Override
+	public String toString()
+	{
+		return username + ":" + password + ":" + displayname;
 	}
 	
 }

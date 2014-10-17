@@ -52,6 +52,6 @@ public class UnitOfWorkTest
 		assertTrue(UOW.registerRemoved(t4));
 		
 		// Erroneous add. This should fail.
-		assertFalse(UOW.registerDirty(t1));
+		assertFalse(UOW.registerClean(t2));
 	}
 }

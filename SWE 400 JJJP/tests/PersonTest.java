@@ -97,5 +97,15 @@ public class PersonTest
 		assertTrue(p1.denyFriendRequest("JavaLord"));
 		assertFalse(p1.denyFriendRequest("JavaLord"));
 	}
+	
+	/**
+	 * Test the formatting of the toString
+	 */
+	@Test
+	public void testToString() {
+		Person p1 = new Person(1, "JavaLord", "hunter2", "The Lord of Java");
+		String s = p1.toString();
+		assertTrue(s.equals("JavaLord:hunter2:The Lord of Java"));
+	}
 
 }
