@@ -1,7 +1,6 @@
 package domain_model;
 
-import java.util.Vector;
-
+import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
@@ -18,12 +17,12 @@ public class Person extends DomainObject implements PersonShell
 	/**
 	 * Lazy-loaded field. Be sure to use getFriends()
 	 */
-	private Vector<PersonShell> friends;
+	private ArrayList<PersonShell> friends;
 
 	/**
 	 * Lazy-loaded field. Be sure to use getFriendRequests()
 	 */
-	private Vector<PersonShell> friendRequests;
+	private ArrayList<PersonShell> friendRequests;
 	
 	/**
 	 * Person constructor.
@@ -79,18 +78,18 @@ public class Person extends DomainObject implements PersonShell
 	}
 
 	/**
-	 * Get the friends vector.
+	 * Get the friends ArrayList.
 	 * Never returns null. Should create it if it's null.
 	 * Is used to lazyload things.
 	 * TODO Should load from the database!
-	 * @return Vector of Persons, never null, but possibly empty ( :( )
+	 * @return ArrayList of Persons, never null, but possibly empty ( :( )
 	 */
-	public Vector<PersonShell> getFriends()
+	public ArrayList<PersonShell> getFriends()
 	{
 		// This is where loading should occur.
 		// TODO: actually make it load from somewhere.
 		if (friends == null) {
-			friends = new Vector<>();
+			friends = new ArrayList<>();
 		}
 		return friends;
 	}
@@ -128,13 +127,13 @@ public class Person extends DomainObject implements PersonShell
 	
 	/**
 	 * This returns the list of friendRequests from this userID
-	 * @return friendRequests vector full of PersonShells
+	 * @return friendRequests ArrayList full of PersonShells
 	 */
-	public Vector<PersonShell> getFriendRequests() {
+	public ArrayList<PersonShell> getFriendRequests() {
 		// TODO this ought to be a database load operation
-		// Until then, it just makes an empty Vector.
+		// Until then, it just makes an empty ArrayList.
 		if (friendRequests == null) {
-			friendRequests = new Vector<>();
+			friendRequests = new ArrayList<>();
 		}
 		return friendRequests;
 	}

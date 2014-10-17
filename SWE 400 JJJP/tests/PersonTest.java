@@ -1,6 +1,6 @@
 import static org.junit.Assert.*;
 
-import java.util.Vector;
+import java.util.ArrayList;
 
 import org.junit.Test;
 
@@ -36,7 +36,7 @@ public class PersonTest
 	@Test
 	public void testGetFriends() {
 		Person p = new Person(0);
-		Vector<PersonShell> f = p.getFriends();
+		ArrayList<PersonShell> f = p.getFriends();
 		assertNotNull(f);
 		assertEquals(f.size(), 0);
 	}
@@ -78,7 +78,6 @@ public class PersonTest
 	@Test
 	public void testConfirmFriendRequest() {
 		Person p1 = new Person(0);
-		Friend guy = new Friend("JavaLord", "Test Man");
 		p1.receiveFriendRequest("JavaLord");
 		assertTrue(p1.hasFriendRequest("JavaLord"));
 		p1.confirmFriendRequest("JavaLord");
