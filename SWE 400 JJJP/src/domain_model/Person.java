@@ -11,7 +11,6 @@ import java.util.Iterator;
  */
 public class Person extends DomainObject implements PersonShell
 {
-	int id;			 // Unique identifier.
 	String name;	 // Non-unique full name. e.g.: John Doe
 	String username; // Unique username e.g.: xXxJavaLordxXx
 	String password; // Passwords aren't protected. We're Sony now.
@@ -28,18 +27,10 @@ public class Person extends DomainObject implements PersonShell
 	
 	/**
 	 * Person constructor.
-	 * @param id Unique identifying ID number. We don't want two people with the same ID, ever.
+	 * @param id Unique identifying ID number. This needs to be unique across _all_ DomainObjects across _all_ sessions.
 	 */
 	public Person(int id) {
 		this.id = id;
-	}
-	
-	/**
-	 * Getter for id.
-	 * @return ID number.
-	 */
-	public int getID() {
-		return this.id;
 	}
 	
 	/**

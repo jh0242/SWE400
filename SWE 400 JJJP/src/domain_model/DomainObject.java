@@ -8,5 +8,11 @@ package domain_model;
  */
 public class DomainObject
 {
-
+	protected int id; // A unique ID. This should be unique among all DomainObjects across all sessions.
+	/**
+	 * @return The DomainObject's private ID.
+	 */
+	public int getID() {
+		return id;
+	}
 }

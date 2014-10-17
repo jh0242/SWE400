@@ -17,7 +17,7 @@ public class UnitOfWorkTest
 	 */
 	@Test
 	public void testCreation() {
-		UnitOfWork<Integer> UOW = new UnitOfWork<>();
+		UnitOfWork UOW = new UnitOfWork();
 		
 		assertNotNull(UOW);
 	}
@@ -28,25 +28,8 @@ public class UnitOfWorkTest
 	 */
 	@Test
 	public void testAddBlocking() {
-		UnitOfWork<Integer> UOW = new UnitOfWork<>();
-		Integer a = 1;
-		Integer b = 2;
-		Integer c = 3;
-		Integer d = 4;
+		UnitOfWork UOW = new UnitOfWork();
 		
-		UOW.registerNew(a);
-		UOW.registerDirty(b);
-		UOW.registerClean(c);
-		UOW.registerRemoved(d);
-		
-		assertTrue(UOW.alreadyRegistered(a));
-		assertTrue(UOW.alreadyRegistered(b));
-		assertTrue(UOW.alreadyRegistered(c));
-		assertTrue(UOW.alreadyRegistered(d));
-		
-		assertFalse(UOW.registerNew(b));
-		assertFalse(UOW.registerDirty(a));
-		assertFalse(UOW.registerClean(d));
-		assertFalse(UOW.registerRemoved(c));
+		fail();
 	}
 }
