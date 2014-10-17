@@ -1,4 +1,4 @@
-package command_model;
+package domainLogic;
 /**
  * Holds enough information about a user to have them in a friend list
  * @author merlin

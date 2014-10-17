@@ -1,15 +1,15 @@
-package command_model;
+package domainLogic;
 import java.util.ArrayList;
 
 /**
- * Cause the list of friend requests from other user to this user to be fetched
+ * Cause the list of pending friend requests from this user to other users to be fetched
  * from the domain model (may or may not cause reading from the DB depending on
  * the state of the domain model)
  * 
  * @author merlin
  *
  */
-public class PendingIncomingFriendList implements Command
+public class CommandToGetPendingOutgoingFriendList implements Command
 {
 
 	private int userID;
@@ -20,7 +20,7 @@ public class PendingIncomingFriendList implements Command
 	 * @param userID
 	 *            unique
 	 */
-	public PendingIncomingFriendList(int userID)
+	public CommandToGetPendingOutgoingFriendList(int userID)
 	{
 		this.userID = userID;
 	}

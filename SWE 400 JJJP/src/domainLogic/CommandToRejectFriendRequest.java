@@ -1,10 +1,10 @@
-package command_model;
+package domainLogic;
 /**
- * Accept a friend request from one user to another
+ * Reject a friend request from one user to another
  * @author merlin
  *
  */
-public class AcceptFriendRequest implements Command
+public class CommandToRejectFriendRequest implements Command
 {
 
 	private int userIDOfRequestee;
@@ -16,7 +16,7 @@ public class AcceptFriendRequest implements Command
 	 * @param userIDOfRequestee the User ID of the user accepting the request
 	 * @param userNameOfRequester the User Name of the user who initiated the friend request
 	 */
-	public AcceptFriendRequest(int userIDOfRequestee, String userNameOfRequester)
+	public CommandToRejectFriendRequest(int userIDOfRequestee, String userNameOfRequester)
 	{
 		this.userIDOfRequestee = userIDOfRequestee;
 		this.userNameOfRequester = userNameOfRequester;

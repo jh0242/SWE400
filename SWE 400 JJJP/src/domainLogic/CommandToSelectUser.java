@@ -1,8 +1,9 @@
-package command_model;
+package domainLogic;
+
 /**
  * Retrieve a specified user from the database into the domain model
  */
-public class SelectUserCommand implements Command
+public class CommandToSelectUser implements Command
 {
 	private String userName;
 	private String password;
@@ -13,7 +14,7 @@ public class SelectUserCommand implements Command
 	 * @param password
 	 *            the password from the user's credentials
 	 */
-	public SelectUserCommand(String userName, String password)
+	public CommandToSelectUser(String userName, String password)
 	{
 		this.userName = userName;
 		this.password = password;
@@ -32,6 +33,16 @@ public class SelectUserCommand implements Command
 	}
 
 	/**
+	 * Get the password that was given as part of the user's credentials
+	 * 
+	 * @return the password
+	 */
+	public String getPassword()
+	{
+		return password;
+	}
+
+	/**
 	 * This should return the appropriate Person object from the domain model.
 	 * Null if the credentials of the user were invalid
 	 * 
@@ -42,6 +53,16 @@ public class SelectUserCommand implements Command
 	{
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	/**
+	 * Get the user name that was given as part of the user's credentials
+	 * 
+	 * @return the user name
+	 */
+	public String getUserName()
+	{
+		return userName;
 	}
 
 }

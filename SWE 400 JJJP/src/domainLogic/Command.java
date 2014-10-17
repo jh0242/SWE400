@@ -1,4 +1,4 @@
-package command_model;
+package domainLogic;
 /**
  * Behaviors required of all commands
  * 

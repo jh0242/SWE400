@@ -1,10 +1,10 @@
-package command_model;
+package domainLogic;
 /**
  * Cancels a friend request between two users
  * @author merlin
  *
  */
-public class UnFriendRequest implements Command
+public class CommandToUnFriend implements Command
 {
 
 	private int userIDOfRequester;
@@ -16,7 +16,7 @@ public class UnFriendRequest implements Command
 	 * @param userIDOfRequester the User ID of the user cancel the relationship
 	 * @param userNameOfRequestee the User Name of the user being unfriended
 	 */
-	public UnFriendRequest(int userIDOfRequester, String userNameOfRequestee)
+	public CommandToUnFriend(int userIDOfRequester, String userNameOfRequestee)
 	{
 		this.userIDOfRequester = userIDOfRequester;
 		this.userNameOfRequestee = userNameOfRequestee;
