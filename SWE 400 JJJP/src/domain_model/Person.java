@@ -9,7 +9,7 @@ import java.util.Iterator;
  * @author John Terry
  *
  */
-public class Person implements PersonShell
+public class Person extends DomainObject implements PersonShell
 {
 	int id;			 // Unique identifier.
 	String name;	 // Non-unique full name. e.g.: John Doe

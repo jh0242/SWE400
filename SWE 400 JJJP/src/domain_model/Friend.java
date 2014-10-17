@@ -7,7 +7,7 @@ package domain_model;
  * to interact with them.
  *
  */
-public class Friend implements PersonShell
+public class Friend extends DomainObject implements PersonShell
 {
 	String username;
 	String fullname;

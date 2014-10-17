@@ -1,27 +1,30 @@
 package domain_model;
 
-import java.util.Vector;
+import java.util.ArrayList;
 
 /**
  * @author Patrick Joseph Flanagan
  *
- * @param <T> What sort of object the UOW is dealing with.
- * TODO Needs a little janitorial work.
+ * Tracks changes that have happened and allows us to commit them
+ * all as one sudden database hit rather than lots of tiny
+ * little database hits.
+ * 
+ * TODO: Implement commit method once we have a data mapper.
  */
-public class UnitOfWork<T>
+public class UnitOfWork
 {
 	
-	private Vector<T> newRegister = new Vector<>();
-	private Vector<T> dirtyRegister = new Vector<>();
-	private Vector<T> cleanRegister = new Vector<>();
-	private Vector<T> removeRegister = new Vector<>();
+	private ArrayList<DomainObject> newRegister = new ArrayList<>();
+	private ArrayList<DomainObject> dirtyRegister = new ArrayList<>();
+	private ArrayList<DomainObject> cleanRegister = new ArrayList<>();
+	private ArrayList<DomainObject> removeRegister = new ArrayList<>();
 	
 	/**
 	 * Checks to see if a given object is already registered somewhere.
 	 * @param something An object this UOW covers
 	 * @return True if already registered, false if not.
 	 */
-	public boolean alreadyRegistered(T something) {
+	public boolean alreadyRegistered(DomainObject something) {
 		boolean registered = false;
 		if (newRegister.contains(something)) registered = true;
 		if (dirtyRegister.contains(something)) registered = true;
@@ -34,7 +37,7 @@ public class UnitOfWork<T>
 	 * @param something Something to register.
 	 * @return True if successful, false if given something is already registered.
 	 */
-	public boolean registerNew(T something) {
+	public boolean registerNew(DomainObject something) {
 		boolean success = false;
 		if (!alreadyRegistered(something)) {
 			 newRegister.add(something);
@@ -50,7 +53,7 @@ public class UnitOfWork<T>
 	 * @param something Something to register.
 	 * @return True if successful, false if given something is already registered.
 	 */
-	public boolean registerDirty(T something) {
+	public boolean registerDirty(DomainObject something) {
 		boolean success = false;
 		if (!alreadyRegistered(something)) {
 			 dirtyRegister.add(something);
@@ -66,7 +69,7 @@ public class UnitOfWork<T>
 	 * @param something Something to register.
 	 * @return True if successful, false if given something is already registered.
 	 */
-	public boolean registerClean(T something) {
+	public boolean registerClean(DomainObject something) {
 		boolean success = false;
 		if (!alreadyRegistered(something)) {
 			 cleanRegister.add(something);
@@ -82,7 +85,7 @@ public class UnitOfWork<T>
 	 * @param something Something to register.
 	 * @return True if successful, false if given something is already registered.
 	 */
-	public boolean registerRemoved(T something) {
+	public boolean registerRemoved(DomainObject something) {
 		boolean success = false;
 		if (!alreadyRegistered(something)) {
 			 removeRegister.add(something);
