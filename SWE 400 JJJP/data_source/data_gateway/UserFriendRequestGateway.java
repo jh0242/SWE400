@@ -1,6 +1,5 @@
 package data_gateway;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,34 +15,34 @@ import java.sql.SQLException;
 
 public class UserFriendRequestGateway {
 	
-	int myUserID;
-	int otherUserID;
-	String userName;
-	
-	String returnData = new String("SELECT * FROM Friend_Request WHERE UserA='" + myUserID + "';");
-	String insertData = new String("INSERT INTO Friend_Request WHERE UserB='" + otherUserID + "';");
-	
-	private Connection conn = null;
-	
 	/**
-	 * Pulls all friend requests from a particular userID
+	 * Pulls all outgoing friend requests for a particular user based on their userID
 	 * @throws SQLException 
 	 */
-	public boolean findUserFriendRequests(int user) throws SQLException{
-		String findSQL = new String("SELECT * FROM Friend_Request WHERE UserA='" + user + "';");
-		PreparedStatement stmt = conn.prepareStatement(findSQL);
-		ResultSet rs = stmt.executeQuery(findSQL);
-
-		if (!rs.next())
-			return false; //the userID is not in the table
-		
-		//use scanner to keep on getting the next one
-		
-		stmt = conn.prepareStatement(returnData);
-		
-		stmt.executeUpdate();
-		return true;
-		
+	public boolean findOutgoingFriendRequests(int user) throws SQLException{
+		if (isValidUserID(user))
+		{
+			String findData = new String("SELECT * FROM Friend_Request WHERE UserA='" + user + "';");
+			PreparedStatement stmt = DataBase.getInstance().getConnection().prepareStatement(findData);
+			stmt.executeUpdate();
+			return true;
+		}
+		return false;	
+	}
+	
+	/**
+	 * Pulls all incoming friend requests for a particular user based on their userID
+	 * @throws SQLException 
+	 */
+	public boolean findIncomingFriendRequests(int user) throws SQLException{
+		if (isValidUserID(user))
+		{
+			String findData = new String("SELECT * FROM Friend_Request WHERE UserB='" + user + "';");
+			PreparedStatement stmt = DataBase.getInstance().getConnection().prepareStatement(findData);
+			stmt.executeUpdate();
+			return true;
+		}
+		return false;	
 	}
 	
 	/**
@@ -51,14 +50,14 @@ public class UserFriendRequestGateway {
 	 * either sends or receives a friend request 
 	 * @throws SQLException 
 	 */
-	public boolean insertFriendRequest(int userA, String userB) throws SQLException
+	public boolean insertFriendRequest(int userA, int userB) throws SQLException
 	{
-		if (isValidUserName(userB))
+		if (isValidUserID(userB))
 		{
 			String insertData = new String("INSERT INTO Friend_Request(userID, userID) VALUES (?,?)");
 			PreparedStatement stmt = DataBase.getInstance().getConnection().prepareStatement(insertData);
 			stmt.setInt(1, userA);
-			stmt.setString(2, userB);
+			stmt.setInt(2, userB);
 			stmt.executeUpdate();
 			return true;
 		}
@@ -83,24 +82,6 @@ public class UserFriendRequestGateway {
 	}
 	
 	/**
-	 * Determines if a particular user name is valid by checking if a particular user name is
-	 * located in the PERSON table in the database
-	 * @param userName
-	 * @return
-	 * @throws SQLException
-	 */
-	private boolean isValidUserName(String userName) throws SQLException
-	{
-		String checkUserName = new String("SELECT * FROM PERSON where User Name = '" + userName + "';");
-		PreparedStatement stmt = DataBase.getInstance().getConnection().prepareStatement(checkUserName);
-		ResultSet rs = stmt.executeQuery(checkUserName);
-		if (!rs.next())
-			return false; // the username is not located in the table
-		return true;
-		
-	}
-	
-	/**
 	 * Determines if a particular user ID is valid by checking if a particular user ID is 
 	 * located in the PERSON table in the database
 	 * @param userID
@@ -115,6 +96,5 @@ public class UserFriendRequestGateway {
 		if (!rs.next())
 			return false; // the userID is not located in the table
 		return true;
-		
 	}
 }
