@@ -1,91 +1,59 @@
 package data_gateway;
-//Author: Joshua McMillen
-import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
 
+//Friend Gateway
 public class FriendGateway 
 {
-	private Connection conn = null;
-	private String insertData = new String("INSERT INTO FRIENDS (UserID_A,UserID_B) VALUES (?,?)");
-	
-	// Creates an instance of a friendship.
-	public boolean createFriendship(int userID_A, int userID_B) throws SQLException
+	// Executes the insertion of a row in FRIENDS with the corresponding userIDs
+	public boolean insertFriend(int userIDa, int userIDb) throws SQLException
 	{
-		if ( checkUserExists(userID_A) && checkUserExists(userID_B) ) {
-			String checkFriendship = new String("SELECT * FROM FRIENDS WHERE USERID_A ="+userID_A+"AND "
-					+ "USERID_B = "+userID_B+";");
-			PreparedStatement stmt = conn.prepareStatement(checkFriendship);
-			ResultSet rs = stmt.executeQuery(checkFriendship);
-			
-			// Check if Friendship Already Exists
-			// If So, Kill
-			if (rs.next()){
-				return false;
-			}
-			
-			// Execute Insertion of New Friendship
-			stmt = conn.prepareStatement(insertData);
-			stmt.setInt(1, userID_A);
-			stmt.setInt(2, userID_B);
-			stmt.executeUpdate();	
-			
+		if (!areFriends(userIDa,userIDb))
+		{
+			String insertFriends = new String("INSERT INTO FRIENDS (UserIDa,UserIDb) VALUES (?,?)");
+			PreparedStatement stmt = DataBase.getInstance().getConnection().prepareStatement(insertFriends);
+			stmt.setInt(1, userIDa);
+			stmt.setInt(2, userIDb);
+			stmt.executeUpdate();
 			return true;
-		} return false;
-	}
-	
-	public boolean remove ( int userID_A , int userID_B ) throws SQLException
-	{
-		String checkFriendship = new String("SELECT * FROM FRIENDS WHERE USERID_A ="+userID_A+"AND "
-				+ "USERID_B = "+userID_B+";");
-		PreparedStatement stmt = conn.prepareStatement(checkFriendship);
-		ResultSet rs = stmt.executeQuery(checkFriendship);
-		
-		// Check if userID's exist in Friendship to remove
-		// If Not, Kill
-		if (!rs.next())
-		{
-			return false;
 		}
-		
-		String removeFriendship = new String ( "DELETE FROM FRIENDS WHERE USERID_A ="+userID_A+"AND "
-				+ "USERID_B = "+userID_B+";" );
-		stmt = conn.prepareStatement(removeFriendship);
-		stmt.executeUpdate();
-		
-		return true;
+		return false;
 	}
-	//Returns All Users
-	public Object findAllFriends(int userID) throws SQLException
+
+	// Executes the removal of a FRIENDS row where both COLUMNS contain either of the
+	// corresponding userIDs
+	public boolean removeFriendship(int userIDa, int userIDb) throws SQLException
 	{
-		if(checkUserExists(userID))
+		if (areFriends(userIDa,userIDb))
 		{
-			String getAllFriendships = new String("SELECT * FROM FRIENDS WHERE USERID_A ="+userID+"OR "
-					+ "USERID_B = "+userID+";");
-			PreparedStatement stmt = conn.prepareStatement(getAllFriendships);
-			Object obj = stmt.executeUpdate();
-			
-			return obj;
-		}return null;
+			String removeFriends = new String("DELETE FROM FRIENDS WHERE "
+					+ "( UserIDa = '" + userIDa + " AND UserIDb = '" + userIDb + "') OR "
+					+ "( UserIDa = '" + userIDb + " AND UserIDb = '" + userIDa + "');");
+			PreparedStatement stmt = DataBase.getInstance().getConnection().prepareStatement(removeFriends);
+			stmt.executeUpdate();
+			return true;
+		}
+		return false;
 	}
-	//gets all of the friends for a particular user based on the userID.
-	public void findAllRequests(int userID)
+
+	//Returns Object of Friends related to userID
+	public Object getFriends(int userID) throws SQLException
 	{
-		
+		String getFriends = new String("SELECT * FROM FRIENDS WHERE "
+				+ "( UserIDa = '" + userID + " OR UserIDb = '" + userID + "');");
+		PreparedStatement stmt = DataBase.getInstance().getConnection().prepareStatement(getFriends);
+		Object results = stmt.executeQuery();
+		return results;
 	}
 	
-	// Check that UserID is valid
-	private boolean checkUserExists(int userID) throws SQLException{
-		String checkFriendship = new String("SELECT * FROM PERSON WHERE USERID ="+userID+";");
-		PreparedStatement stmt = conn.prepareStatement(checkFriendship);
-		ResultSet rs = stmt.executeQuery(checkFriendship);
-		
-		// Check if User Exists
-		// If Not, Kill
-		if (!rs.next()){
-			return false;
-		} return true;
+	//Checks if there is a friendship between two users in database
+	public boolean areFriends(int userIDa,int userIDb) throws SQLException
+	{
+		String checkAreFriends = new String("SELECT * FROM FRIENDS WHERE "
+				+ "( UserIDa = '" + userIDa + " AND UserIDb = '" + userIDb + "') OR "
+				+ "( UserIDa = '" + userIDb + " AND UserIDb = '" + userIDa + "');");
+		PreparedStatement stmt = DataBase.getInstance().getConnection().prepareStatement(checkAreFriends);
+		boolean result = stmt.execute();
+		return result;
 	}
 }
