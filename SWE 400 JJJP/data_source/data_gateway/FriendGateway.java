@@ -11,7 +11,7 @@ public class FriendGateway
 		if (!areFriends(userIDa,userIDb))
 		{
 			String insertFriends = new String("INSERT INTO FRIENDS (UserIDa,UserIDb) VALUES (?,?)");
-			PreparedStatement stmt = DataBase.getInstance().getConnection().prepareStatement(insertFriends);
+			PreparedStatement stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(insertFriends);
 			stmt.setInt(1, userIDa);
 			stmt.setInt(2, userIDb);
 			stmt.executeUpdate();
@@ -29,7 +29,7 @@ public class FriendGateway
 			String removeFriends = new String("DELETE FROM FRIENDS WHERE "
 					+ "( UserIDa = '" + userIDa + " AND UserIDb = '" + userIDb + "') OR "
 					+ "( UserIDa = '" + userIDb + " AND UserIDb = '" + userIDa + "');");
-			PreparedStatement stmt = DataBase.getInstance().getConnection().prepareStatement(removeFriends);
+			PreparedStatement stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(removeFriends);
 			stmt.executeUpdate();
 			return true;
 		}
@@ -41,7 +41,7 @@ public class FriendGateway
 	{
 		String getFriends = new String("SELECT * FROM FRIENDS WHERE "
 				+ "( UserIDa = '" + userID + " OR UserIDb = '" + userID + "');");
-		PreparedStatement stmt = DataBase.getInstance().getConnection().prepareStatement(getFriends);
+		PreparedStatement stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(getFriends);
 		Object results = stmt.executeQuery();
 		return results;
 	}
@@ -52,7 +52,7 @@ public class FriendGateway
 		String checkAreFriends = new String("SELECT * FROM FRIENDS WHERE "
 				+ "( UserIDa = '" + userIDa + " AND UserIDb = '" + userIDb + "') OR "
 				+ "( UserIDa = '" + userIDb + " AND UserIDb = '" + userIDa + "');");
-		PreparedStatement stmt = DataBase.getInstance().getConnection().prepareStatement(checkAreFriends);
+		PreparedStatement stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(checkAreFriends);
 		boolean result = stmt.execute();
 		return result;
 	}

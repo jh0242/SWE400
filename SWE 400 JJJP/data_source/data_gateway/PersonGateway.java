@@ -35,7 +35,7 @@ public class PersonGateway
 		if (isValidUserName(userName))
 		{
 			String insertData = new String("INSERT INTO PERSON (User Name,Password,Display Name) VALUES (?,?,?)");
-			PreparedStatement stmt = DataBase.getInstance().getConnection().prepareStatement(insertData);
+			PreparedStatement stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(insertData);
 			stmt.setString(1, userName);
 			stmt.setString(2, password);
 			stmt.setString(3, displayName);
@@ -60,7 +60,7 @@ public class PersonGateway
 		if (isValidUserID(userID))
 		{
 			String removeUser = new String("DELETE FROM PERSON where user_id = '" + userID + "';");
-			PreparedStatement stmt = DataBase.getInstance().getConnection().prepareStatement(removeUser);
+			PreparedStatement stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(removeUser);
 			stmt.executeUpdate();
 			return true;
 		}
@@ -81,7 +81,7 @@ public class PersonGateway
 		if (isValidUserID(userID))
 		{
 			String removeUser = new String("UPDATE PERSON where user_id = '" + userID + "';");
-			PreparedStatement stmt = DataBase.getInstance().getConnection().prepareStatement(removeUser);
+			PreparedStatement stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(removeUser);
 			stmt.executeUpdate();
 			return true;
 		}
@@ -91,7 +91,7 @@ public class PersonGateway
 	private boolean isValidUserID(int userID) throws SQLException
 	{
 		String checkValidUserID = new String("SELECT * FROM PERSON where user_id = '" + userID + "';");
-		PreparedStatement stmt = DataBase.getInstance().getConnection().prepareStatement(checkValidUserID);
+		PreparedStatement stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(checkValidUserID);
 		ResultSet rs = stmt.executeQuery(checkValidUserID);
 		if (!rs.next())
 			return false; // The userID is not in the database, thus the
@@ -102,7 +102,7 @@ public class PersonGateway
 	private boolean isValidUserName(String userName) throws SQLException
 	{
 		String checkUniqueUserName = new String("SELECT * FROM PERSON where User Name = '" + userName + "';");
-		PreparedStatement stmt = DataBase.getInstance().getConnection().prepareStatement(checkUniqueUserName);
+		PreparedStatement stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(checkUniqueUserName);
 		ResultSet rs = stmt.executeQuery(checkUniqueUserName);
 		if (!rs.next())
 			return false; // the userName is not taken in the table.

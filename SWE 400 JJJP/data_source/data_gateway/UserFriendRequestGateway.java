@@ -23,7 +23,7 @@ public class UserFriendRequestGateway {
 		if (isValidUserID(user))
 		{
 			String findData = new String("SELECT * FROM Friend_Request WHERE UserA='" + user + "';");
-			PreparedStatement stmt = DataBase.getInstance().getConnection().prepareStatement(findData);
+			PreparedStatement stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(findData);
 			stmt.executeUpdate();
 			return true;
 		}
@@ -38,7 +38,7 @@ public class UserFriendRequestGateway {
 		if (isValidUserID(user))
 		{
 			String findData = new String("SELECT * FROM Friend_Request WHERE UserB='" + user + "';");
-			PreparedStatement stmt = DataBase.getInstance().getConnection().prepareStatement(findData);
+			PreparedStatement stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(findData);
 			stmt.executeUpdate();
 			return true;
 		}
@@ -55,7 +55,7 @@ public class UserFriendRequestGateway {
 		if (isValidUserID(userB))
 		{
 			String insertData = new String("INSERT INTO Friend_Request(userID, userID) VALUES (?,?)");
-			PreparedStatement stmt = DataBase.getInstance().getConnection().prepareStatement(insertData);
+			PreparedStatement stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(insertData);
 			stmt.setInt(1, userA);
 			stmt.setInt(2, userB);
 			stmt.executeUpdate();
@@ -74,7 +74,7 @@ public class UserFriendRequestGateway {
 		if (isValidUserID(user))
 		{
 			String removeData = new String("DELETE FROM Friend_Request where user_id = '" + user + "';");
-			PreparedStatement stmt = DataBase.getInstance().getConnection().prepareStatement(removeData);
+			PreparedStatement stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(removeData);
 			stmt.executeUpdate();
 			return true;
 		}
@@ -91,7 +91,7 @@ public class UserFriendRequestGateway {
 	private boolean isValidUserID(int userID) throws SQLException
 	{
 		String checkUserID = new String("SELECT * FROM PERSON where user_id = '" + userID + "';");
-		PreparedStatement stmt = DataBase.getInstance().getConnection().prepareStatement(checkUserID);
+		PreparedStatement stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(checkUserID);
 		ResultSet rs = stmt.executeQuery(checkUserID);
 		if (!rs.next())
 			return false; // the userID is not located in the table

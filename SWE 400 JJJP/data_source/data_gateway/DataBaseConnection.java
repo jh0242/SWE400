@@ -5,19 +5,19 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import javax.sql.DataSource;
 
-public class DataBase 
+public class DataBaseConnection 
 {
-	private static DataBase db = null;
+	private static DataBaseConnection db = null;
 
-	public static final String LOCATION = "jdbc:mysql://db.cs.ship.edu:3306/csc371-18";
-	public static final String LOGIN_NAME = "jh0242";
-	public static final String PASSWORD = "when616mudd645";
+	public static final String LOCATION = "jdbc:mysql://lsagroup3.cbzhjl6tpflt.us-east-1.rds.amazonaws.com";
+	public static final String LOGIN_NAME = "lsagroup3";
+	public static final String PASSWORD = "lsagroup3";
 
 	private DataSource dataSource = null;
 
 	private Connection conn = null;
 	
-	private DataBase()
+	private DataBaseConnection()
 	{
 		try
 		{
@@ -36,10 +36,10 @@ public class DataBase
 		}
 	}
 	
-	public static DataBase getInstance()
+	public static DataBaseConnection getInstance()
 	{
 		if (db == null)
-			db = new DataBase();
+			db = new DataBaseConnection();
 		return db;
 	}
 
