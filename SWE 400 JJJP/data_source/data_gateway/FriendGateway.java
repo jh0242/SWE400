@@ -1,16 +1,24 @@
-//Author: Joshua McMillen
 package data_gateway;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import domain_model.Friend;
+//import domain_model.Friend;
 
-//Friend Gateway
+/**
+ * @author Joshua McMillen
+ *
+ */
 public class FriendGateway 
 {
-	// Executes the insertion of a row in FRIENDS with the corresponding userIDs
+	/**
+	 * Executes the insertion of a row in FRIENDS with the corresponding userIDs
+	 * @param userIDa
+	 * @param userIDb
+	 * @return
+	 * @throws SQLException
+	 */
 	public static boolean insertFriend(String userIDa, String userIDb) throws SQLException
 	{
 		if (!areFriends(userIDa,userIDb))
@@ -25,8 +33,13 @@ public class FriendGateway
 		return false;
 	}
 
-	// Executes the removal of a FRIENDS row where both COLUMNS contain either of the
-	// corresponding userIDs
+	/**
+	 * Executes the removal of a FRIENDS row where both COLUMNS contain either of the corresponding userIDs
+	 * @param userIDa
+	 * @param userIDb
+	 * @return
+	 * @throws SQLException
+	 */
 	public static boolean removeFriendship(String userIDa, String userIDb) throws SQLException
 	{
 		if (areFriends(userIDa,userIDb))
@@ -41,7 +54,12 @@ public class FriendGateway
 		return false;
 	}
 
-	//Returns Object of Friends related to userID
+	/**
+	 * Returns Object of Friends related to userID
+	 * @param userID
+	 * @return
+	 * @throws SQLException
+	 */
 	public static ArrayList<String> getFriends(String userID) throws SQLException
 	{
 		String getFriends = new String("SELECT * FROM FRIENDS WHERE "
@@ -62,7 +80,13 @@ public class FriendGateway
 		return friends;
 	}
 	
-	//Checks if there is a friendship between two users in database
+	/**
+	 * Checks if there is a friendship between two users in database
+	 * @param userIDa
+	 * @param userIDb
+	 * @return
+	 * @throws SQLException
+	 */
 	public static boolean areFriends(String userIDa,String userIDb) throws SQLException
 	{
 		String checkAreFriends = new String("SELECT * FROM FRIENDS WHERE "

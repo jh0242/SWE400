@@ -17,6 +17,8 @@ public class UserFriendRequestGateway {
 	
 	/**
 	 * Pulls all outgoing friend requests for a particular user based on their userID
+	 * @param user 
+	 * @return 
 	 * @throws SQLException 
 	 */
 	public boolean findOutgoingFriendRequests(int user) throws SQLException{
@@ -32,6 +34,8 @@ public class UserFriendRequestGateway {
 	
 	/**
 	 * Pulls all incoming friend requests for a particular user based on their userID
+	 * @param user 
+	 * @return 
 	 * @throws SQLException 
 	 */
 	public boolean findIncomingFriendRequests(int user) throws SQLException{
@@ -48,6 +52,9 @@ public class UserFriendRequestGateway {
 	/**
 	 * Inserts a friend request to the table when the user 
 	 * either sends or receives a friend request 
+	 * @param userA 
+	 * @param userB 
+	 * @return 
 	 * @throws SQLException 
 	 */
 	public boolean insertFriendRequest(int userA, int userB) throws SQLException
@@ -67,6 +74,8 @@ public class UserFriendRequestGateway {
 	/**
 	 * Removes friend request from the table when
 	 * either the friendship is accepted or rejected
+	 * @param user 
+	 * @return 
 	 * @throws SQLException 
 	 */
 	public boolean removeFriendRequest(int user) throws SQLException

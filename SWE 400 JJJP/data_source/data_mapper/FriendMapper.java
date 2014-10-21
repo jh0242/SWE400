@@ -1,16 +1,23 @@
-//Author: Joshua McMillen
 package data_mapper;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 import data_gateway.FriendGateway;
+/**
+ * @author Joshua McMillen
+ *
+ */
 public class FriendMapper
 {
 	ArrayList<String> friends;
 	boolean completeList = false;
 	
-	//Get complete List of User's Friends
+	/**
+	 * Get complete List of User's Friends
+	 * @param userID
+	 * @return
+	 */
 	public String getAllFriends(int userID)
 	{		
 		if(!completeList){
@@ -23,7 +30,11 @@ public class FriendMapper
 		}return giveList();
 	}
 	
-	//Removes Friend from both database and domain	
+	/**
+	 * Removes Friend from both database and domain	
+	 * @param userID
+	 * @param friend
+	 */
 	public void removeFriend(int userID, String friend)
 	{
 		try{
@@ -36,7 +47,11 @@ public class FriendMapper
 		}
 	}
 	
-	//Check if Friend has been loaded already
+	/**
+	 * Check if Friend has been loaded already
+	 * @param userID
+	 * @return
+	 */
 	public boolean checkMap(String userID)
 	{
 		if(friends.contains(userID)){

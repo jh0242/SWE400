@@ -5,6 +5,11 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import javax.sql.DataSource;
 
+/**
+ * @author ?
+ * TODO Who wrote this!?
+ *
+ */
 public class DataBaseConnection 
 {
 	private static DataBaseConnection db = null;
