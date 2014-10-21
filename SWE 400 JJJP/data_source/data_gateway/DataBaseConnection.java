@@ -5,16 +5,11 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import javax.sql.DataSource;
 
-/**
- * @author ?
- * TODO Who wrote this!?
- *
- */
 public class DataBaseConnection 
 {
 	private static DataBaseConnection db = null;
 
-	public static final String LOCATION = "jdbc:mysql://lsagroup3.cbzhjl6tpflt.us-east-1.rds.amazonaws.com";
+	public static final String LOCATION = "jdbc:mysql://lsagroup3.cbzhjl6tpflt.us-east-1.rds.amazonaws.com/fitness3";
 	public static final String LOGIN_NAME = "lsagroup3";
 	public static final String PASSWORD = "lsagroup3";
 

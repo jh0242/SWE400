@@ -1,10 +1,14 @@
 import static org.junit.Assert.*;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.concurrent.BrokenBarrierException;
+import java.util.concurrent.CyclicBarrier;
 
 import org.junit.Test;
 
 import data_gateway.DataBaseConnection;
+import data_gateway.PersonGateway;
 
 /**
  * 
@@ -16,9 +20,75 @@ public class DataBaseConnectionTest
 	@Test
 	public void testInitializeConnection() throws SQLException 
 	{
-		DataBaseConnection connection = DataBaseConnection.getInstance();
-		assertFalse(connection.getConnection().isClosed());
-		connection.closeConnection();
+		assertFalse(DataBaseConnection.getInstance().getConnection().isClosed());
+		DataBaseConnection.getInstance().closeConnection();
 	}
+	
+//	@Test
+//	public void testGateway() throws SQLException
+//	{
+//		PersonGateway gate = new PersonGateway();
+//		assertTrue(gate.insert("newest", "123", "newdisplay"));
+//	}
 
+	@Test
+	public void testUniqueUserIDs() throws InterruptedException, BrokenBarrierException
+	{
+		new MockThread().run();
+	}
+	
+	private class MockThread extends Thread
+	{
+		final CyclicBarrier gate = new CyclicBarrier(10);
+		
+		public void run()
+		{
+			ArrayList<Thread> list = new ArrayList<Thread>();
+			
+			for (int i = 0; i < 10; i++)
+			{
+				Thread thread = new Thread(){
+						public void run()
+						{
+							try
+							{
+								gate.await();
+								PersonGateway.insert((Math.random() * 100000) + "", "123", "display");
+							} catch (SQLException e)
+							{
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							} catch (InterruptedException e)
+							{
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							} catch (BrokenBarrierException e)
+							{
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}};
+				list.add(thread);
+			}
+			
+			for (int i = 0; i < list.size(); i++)
+			{
+				list.get(i).run();
+			}
+			
+			try
+			{
+				gate.await();
+			} catch (InterruptedException e)
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (BrokenBarrierException e)
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+	
 }

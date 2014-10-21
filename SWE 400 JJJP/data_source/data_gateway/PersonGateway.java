@@ -30,11 +30,11 @@ public class PersonGateway
 	 * @return boolean, true if the insert succeeded or false if the insert did not succeed.
 	 * @throws SQLException
 	 */
-	public boolean insert(String userName, String password, String displayName) throws SQLException
+	public static boolean insert(String userName, String password, String displayName) throws SQLException
 	{
 		if (isValidUserName(userName))
 		{
-			String insertData = new String("INSERT INTO PERSON (User Name,Password,Display Name) VALUES (?,?,?)");
+			String insertData = new String("INSERT INTO USER (UserName,Password,DisplayName) VALUES (?,?,?)");
 			PreparedStatement stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(insertData);
 			stmt.setString(1, userName);
 			stmt.setString(2, password);
@@ -99,13 +99,13 @@ public class PersonGateway
 		return true;
 	}
 
-	private boolean isValidUserName(String userName) throws SQLException
+	private static boolean isValidUserName(String userName) throws SQLException
 	{
-		String checkUniqueUserName = new String("SELECT * FROM PERSON where User Name = '" + userName + "';");
+		String checkUniqueUserName = new String("SELECT * FROM USER where UserName = '" + userName + "';");
 		PreparedStatement stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(checkUniqueUserName);
 		ResultSet rs = stmt.executeQuery(checkUniqueUserName);
 		if (!rs.next())
-			return false; // the userName is not taken in the table.
-		return true;
+			return true; // the userName is not taken in the table.
+		return false;
 	}
 }
