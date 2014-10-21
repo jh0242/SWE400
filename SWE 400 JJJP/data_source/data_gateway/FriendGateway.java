@@ -1,19 +1,23 @@
 package data_gateway;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+
+import domain_model.Friend;
 
 //Friend Gateway
 public class FriendGateway 
 {
 	// Executes the insertion of a row in FRIENDS with the corresponding userIDs
-	public boolean insertFriend(int userIDa, int userIDb) throws SQLException
+	public static boolean insertFriend(String userIDa, String userIDb) throws SQLException
 	{
 		if (!areFriends(userIDa,userIDb))
 		{
 			String insertFriends = new String("INSERT INTO FRIENDS (UserIDa,UserIDb) VALUES (?,?)");
 			PreparedStatement stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(insertFriends);
-			stmt.setInt(1, userIDa);
-			stmt.setInt(2, userIDb);
+			stmt.setString(1, userIDa);
+			stmt.setString(2, userIDb);
 			stmt.executeUpdate();
 			return true;
 		}
@@ -22,7 +26,7 @@ public class FriendGateway
 
 	// Executes the removal of a FRIENDS row where both COLUMNS contain either of the
 	// corresponding userIDs
-	public boolean removeFriendship(int userIDa, int userIDb) throws SQLException
+	public static boolean removeFriendship(String userIDa, String userIDb) throws SQLException
 	{
 		if (areFriends(userIDa,userIDb))
 		{
@@ -37,17 +41,28 @@ public class FriendGateway
 	}
 
 	//Returns Object of Friends related to userID
-	public Object getFriends(int userID) throws SQLException
+	public static ArrayList<String> getFriends(String userID) throws SQLException
 	{
 		String getFriends = new String("SELECT * FROM FRIENDS WHERE "
 				+ "( UserIDa = '" + userID + " OR UserIDb = '" + userID + "');");
 		PreparedStatement stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(getFriends);
-		Object results = stmt.executeQuery();
-		return results;
+		ResultSet results = stmt.executeQuery();
+		ArrayList<String> friends =	null;
+		while(results.next())
+		{
+			if(results.getString(1)!=userID)
+			{
+				friends.add(results.getString(1));
+			}else
+			{
+				friends.add(results.getString(2));
+			}
+		}
+		return friends;
 	}
 	
 	//Checks if there is a friendship between two users in database
-	public boolean areFriends(int userIDa,int userIDb) throws SQLException
+	public static boolean areFriends(String userIDa,String userIDb) throws SQLException
 	{
 		String checkAreFriends = new String("SELECT * FROM FRIENDS WHERE "
 				+ "( UserIDa = '" + userIDa + " AND UserIDb = '" + userIDb + "') OR "
