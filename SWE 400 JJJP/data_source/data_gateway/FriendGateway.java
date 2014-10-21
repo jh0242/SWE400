@@ -1,3 +1,4 @@
+//Author: Joshua McMillen
 package data_gateway;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

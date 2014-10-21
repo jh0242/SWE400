@@ -1,3 +1,4 @@
+//Author: Joshua McMillen
 package data_mapper;
 
 import java.sql.SQLException;
