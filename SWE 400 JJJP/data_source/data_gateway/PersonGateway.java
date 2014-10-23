@@ -88,7 +88,7 @@ public class PersonGateway
 		return false;
 	}
 
-	private boolean isValidUserID(int userID) throws SQLException
+	private static boolean isValidUserID(int userID) throws SQLException
 	{
 		String checkValidUserID = new String("SELECT * FROM PERSON where user_id = '" + userID + "';");
 		PreparedStatement stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(checkValidUserID);

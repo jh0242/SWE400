@@ -24,7 +24,7 @@ public class UserFriendRequestGateway {
 	public boolean findOutgoingFriendRequests(int user) throws SQLException{
 		if (isValidUserID(user))
 		{
-			String findData = new String("SELECT * FROM Friend_Request WHERE UserA='" + user + "';");
+			String findData = new String("SELECT * FROM PENDINGFRIENDREQUESTS WHERE UserIDA='" + user + "';");
 			PreparedStatement stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(findData);
 			stmt.executeUpdate();
 			return true;
@@ -41,7 +41,7 @@ public class UserFriendRequestGateway {
 	public boolean findIncomingFriendRequests(int user) throws SQLException{
 		if (isValidUserID(user))
 		{
-			String findData = new String("SELECT * FROM Friend_Request WHERE UserB='" + user + "';");
+			String findData = new String("SELECT * FROM PENDINGFRIENDREQUESTS WHERE UserIDB='" + user + "';");
 			PreparedStatement stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(findData);
 			stmt.executeUpdate();
 			return true;
@@ -61,7 +61,7 @@ public class UserFriendRequestGateway {
 	{
 		if (isValidUserID(userB))
 		{
-			String insertData = new String("INSERT INTO Friend_Request(userID, userID) VALUES (?,?)");
+			String insertData = new String("INSERT INTO PENDINGFRIENDREQUESTS(UserIDA, UserIDB) VALUES (?,?)");
 			PreparedStatement stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(insertData);
 			stmt.setInt(1, userA);
 			stmt.setInt(2, userB);
@@ -82,7 +82,7 @@ public class UserFriendRequestGateway {
 	{
 		if (isValidUserID(user))
 		{
-			String removeData = new String("DELETE FROM Friend_Request where user_id = '" + user + "';");
+			String removeData = new String("DELETE FROM PENDINGFRIENDREQUESTS where UserIDB = '" + user + "';");
 			PreparedStatement stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(removeData);
 			stmt.executeUpdate();
 			return true;
@@ -99,7 +99,7 @@ public class UserFriendRequestGateway {
 	 */
 	private boolean isValidUserID(int userID) throws SQLException
 	{
-		String checkUserID = new String("SELECT * FROM PERSON where user_id = '" + userID + "';");
+		String checkUserID = new String("SELECT * FROM PERSON where UserID = '" + userID + "';");
 		PreparedStatement stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(checkUserID);
 		ResultSet rs = stmt.executeQuery(checkUserID);
 		if (!rs.next())
