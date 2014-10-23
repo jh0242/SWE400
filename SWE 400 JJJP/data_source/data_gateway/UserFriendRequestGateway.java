@@ -5,8 +5,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- *  This class is a gateway that isolates all of the 
- *  SQL commands to access the FriendRequest database 
+ *  This class is a gateway that isolates all of the SQL commands 
+ *  to access the FriendRequest Table in the database 
  *  
  *  John Terry
  *	SWE 400, LSA Group JJJP
