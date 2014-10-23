@@ -10,10 +10,9 @@ import java.util.Iterator;
  */
 public class Person extends DomainObject implements PersonShell
 {
-	String name;	 // Non-unique full name. e.g.: John Doe
-	String displayname; // Pretty non-unique display name.
-	String username; // Unique username e.g.: xXxJavaLordxXx
-	String password; // Passwords aren't protected. We're Sony now.
+	String displayName; // Pretty non-unique display name.
+	String userName;    // Unique username e.g.: xXxJavaLordxXx
+	String password;    // Passwords aren't protected. We're Sony now.
 	
 	/**
 	 * Lazy-loaded field. Be sure to use getFriends()
@@ -42,8 +41,8 @@ public class Person extends DomainObject implements PersonShell
 	 */
 	public Person(int id, String username, String password, String displayname) {
 		this.id = id;
-		this.username = username;
-		this.displayname = displayname;
+		this.userName = username;
+		this.displayName = displayname;
 		this.password = password;
 	}
 	
@@ -54,7 +53,7 @@ public class Person extends DomainObject implements PersonShell
 	@Override
 	public String getFullname()
 	{
-		return name;
+		return displayName;
 	}
 	
 	/**
@@ -62,7 +61,7 @@ public class Person extends DomainObject implements PersonShell
 	 */
 	@Override
 	public String getUsername() {
-		return username;
+		return userName;
 	}
 
 	/**
@@ -71,7 +70,7 @@ public class Person extends DomainObject implements PersonShell
 	 */
 	public void setName(String name)
 	{
-		this.name = name;
+		this.displayName = name;
 	}
 
 	/**
@@ -247,7 +246,7 @@ public class Person extends DomainObject implements PersonShell
 	@Override
 	public String toString()
 	{
-		return username + ":" + password + ":" + displayname;
+		return userName + ":" + password + ":" + displayName;
 	}
 	
 }

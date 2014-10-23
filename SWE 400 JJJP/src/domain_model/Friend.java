@@ -9,15 +9,15 @@ package domain_model;
  */
 public class Friend extends DomainObject implements PersonShell
 {
-	String username;
-	String fullname;
+	String userName;
+	String displayName;
 	
 	/**
 	 * Simple constructor.
 	 * @param uname Unique username.
 	 */
 	public Friend(String uname) {
-		this.username = uname;
+		this.userName = uname;
 	}
 	
 	/**
@@ -26,8 +26,8 @@ public class Friend extends DomainObject implements PersonShell
 	 * @param fname Full name
 	 */
 	public Friend(String uname, String fname) {
-		this.username = uname;
-		this.fullname = fname;
+		this.userName = uname;
+		this.displayName = fname;
 	}
 
 	/** (non-Javadoc)
@@ -37,7 +37,7 @@ public class Friend extends DomainObject implements PersonShell
 	public String getFullname()
 	{
 		// TODO Auto-generated method stub
-		return this.fullname;
+		return this.displayName;
 	}
 
 	/** (non-Javadoc)
@@ -47,7 +47,7 @@ public class Friend extends DomainObject implements PersonShell
 	public String getUsername()
 	{
 		// TODO Auto-generated method stub
-		return this.username;
+		return this.userName;
 	}
 
 }
