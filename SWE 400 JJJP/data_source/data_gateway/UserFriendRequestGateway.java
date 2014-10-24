@@ -57,9 +57,9 @@ public class UserFriendRequestGateway {
 	 * @return 
 	 * @throws SQLException 
 	 */
-	public boolean insertFriendRequest(int userA, int userB) throws SQLException
+	public static boolean insertFriendRequest(int userA, int userB) throws SQLException
 	{
-		if (isValidUserID(userB))
+		if (isValidUserID(userB) & isValidFriendRequestID(userA, userB))
 		{
 			String insertData = new String("INSERT INTO PENDINGFRIENDREQUESTS(UserIDA, UserIDB) VALUES (?,?)");
 			PreparedStatement stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(insertData);
@@ -78,7 +78,7 @@ public class UserFriendRequestGateway {
 	 * @return 
 	 * @throws SQLException 
 	 */
-	public boolean removeFriendRequest(int user) throws SQLException
+	public static boolean removeFriendRequest(int user) throws SQLException
 	{
 		if (isValidUserID(user))
 		{
@@ -97,13 +97,28 @@ public class UserFriendRequestGateway {
 	 * @return
 	 * @throws SQLException
 	 */
-	private boolean isValidUserID(int userID) throws SQLException
+	private static boolean isValidUserID(int userID) throws SQLException
 	{
-		String checkUserID = new String("SELECT * FROM PERSON where UserID = '" + userID + "';");
+		String checkUserID = new String("SELECT * FROM USER where UserID = '" + userID + "';");
 		PreparedStatement stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(checkUserID);
 		ResultSet rs = stmt.executeQuery(checkUserID);
 		if (!rs.next())
 			return false; // the userID is not located in the table
+		return true;
+	}
+	
+	/**
+	 * @param userID
+	 * @return
+	 * @throws SQLException
+	 */
+	private static boolean isValidFriendRequestID(int userIDA, int userIDB) throws SQLException
+	{
+		String checkUserIDA = new String("SELECT * FROM PENDINGFRIENDREQUESTS where UserIDA = '" + userIDA + "' and UserIDB = '" + userIDB + "';");
+		PreparedStatement stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(checkUserIDA);
+		ResultSet rs = stmt.executeQuery(checkUserIDA);
+		if (rs.next())
+			return false; // the userIDA is not located in the table
 		return true;
 	}
 }
