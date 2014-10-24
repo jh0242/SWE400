@@ -11,13 +11,6 @@ import java.sql.SQLException;
  */
 public class PersonGateway
 {
-	// May not need this if we can make sql automatically generate these.
-	private int getNextUniqueID()
-	{
-		// returns the next unique id, an integer, for the PERSON table.
-		return 0;
-	}
-
 	/**
 	 * Checks that the userName isn't already in use in the database, since
 	 * userName is unique. If it is not in use, we add the new User to the
@@ -45,8 +38,6 @@ public class PersonGateway
 		return false;
 	}
 
-	// May not need this method since there is not a command for a user to
-	// delete their account.
 	/**
 	 * Checks that the userID is in the database.  If the userID is in the database, that row is
 	 * deleted from the database and return true.  If the userID is not in the database, return
@@ -55,11 +46,23 @@ public class PersonGateway
 	 * @return boolean, whether or not the 
 	 * @throws SQLException
 	 */
-	public boolean remove(int userID) throws SQLException
+	public static boolean removeByUserID(int userID) throws SQLException
 	{
 		if (isValidUserID(userID))
 		{
-			String removeUser = new String("DELETE FROM PERSON where user_id = '" + userID + "';");
+			String removeUser = new String("DELETE FROM PERSON where UserID = '" + userID + "';");
+			PreparedStatement stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(removeUser);
+			stmt.executeUpdate();
+			return true;
+		}
+		return false;
+	}
+	
+	public static boolean removeByUserName(String userName) throws SQLException
+	{
+		if (isValidUserName(userName))
+		{
+			String removeUser = new String("DELETE FROM PERSON where UserName = '" + userName + "';");
 			PreparedStatement stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(removeUser);
 			stmt.executeUpdate();
 			return true;

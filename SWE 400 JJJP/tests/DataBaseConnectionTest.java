@@ -24,18 +24,20 @@ public class DataBaseConnectionTest
 		DataBaseConnection.getInstance().closeConnection();
 	}
 	
-//	@Test
-//	public void testGateway() throws SQLException
-//	{
-//		PersonGateway gate = new PersonGateway();
-//		assertTrue(gate.insert("newest", "123", "newdisplay"));
-//	}
-
 	@Test
-	public void testUniqueUserIDs() throws InterruptedException, BrokenBarrierException
+	public void testGateway() throws SQLException
 	{
-		new MockThread().run();
+		PersonGateway gate = new PersonGateway();
+		assertTrue(gate.insert("userA", "123", "newdisplay"));
+		assertTrue(gate.insert("userB", "123", "newdisplay"));
+//		assertTrue(gate.remove(gate.))
 	}
+
+//	@Test
+//	public void testUniqueUserIDs() throws InterruptedException, BrokenBarrierException
+//	{
+//		new MockThread().run();
+//	}
 	
 	private class MockThread extends Thread
 	{
