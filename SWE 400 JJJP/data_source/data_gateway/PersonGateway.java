@@ -25,7 +25,7 @@ public class PersonGateway
 	 */
 	public static boolean insert(String userName, String password, String displayName) throws SQLException
 	{
-		if (isValidUserName(userName))
+		if (!userNameIsInTable(userName))
 		{
 			String insertData = new String("INSERT INTO USER (UserName,Password,DisplayName) VALUES (?,?,?)");
 			PreparedStatement stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(insertData);
@@ -48,7 +48,7 @@ public class PersonGateway
 	 */
 	public static boolean removeByUserID(int userID) throws SQLException
 	{
-		if (isValidUserID(userID))
+		if (userIDisInTable(userID))
 		{
 			String removeUser = new String("DELETE FROM PERSON where UserID = '" + userID + "';");
 			PreparedStatement stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(removeUser);
@@ -58,11 +58,19 @@ public class PersonGateway
 		return false;
 	}
 	
+	/**
+	 * Checks that the userName is in the table.  If the userName is in the table, that row
+	 * is removed from the table.  If the userName is not in the table, return false to alert
+	 * of an unsuccessful remove due to an invalid userName.
+	 * @param userName, the unique userName of the User to be removed.
+	 * @return boolean, whether or not the remove was successful.
+	 * @throws SQLException
+	 */
 	public static boolean removeByUserName(String userName) throws SQLException
 	{
-		if (isValidUserName(userName))
+		if (userNameIsInTable(userName))
 		{
-			String removeUser = new String("DELETE FROM PERSON where UserName = '" + userName + "';");
+			String removeUser = new String("DELETE FROM USER where UserName = '" + userName + "';");
 			PreparedStatement stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(removeUser);
 			stmt.executeUpdate();
 			return true;
@@ -79,11 +87,11 @@ public class PersonGateway
 	 * @return boolean, true if the update is successful, false if the update is unsuccessful
 	 * @throws SQLException
 	 */
-	public boolean updateDisplayName(int userID, String newDisplayName) throws SQLException
+	public static boolean updateDisplayName(int userID, String newDisplayName) throws SQLException
 	{
-		if (isValidUserID(userID))
+		if (userIDisInTable(userID))
 		{
-			String removeUser = new String("UPDATE PERSON where user_id = '" + userID + "';");
+			String removeUser = new String("UPDATE USER set DisplayName = '" + newDisplayName + "' where UserID = '" + userID + "';");
 			PreparedStatement stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(removeUser);
 			stmt.executeUpdate();
 			return true;
@@ -91,24 +99,39 @@ public class PersonGateway
 		return false;
 	}
 
-	private static boolean isValidUserID(int userID) throws SQLException
+	/**
+	 * Checks if the User is in the table by using the id of the User you are
+	 * working with.  If the User is in the table, return true.  If the User
+	 * is not in the table, return false.
+	 * @param userID, the ID of the user we are looking for.
+	 * @return true if the User is in the table, false if the User is not in the table.
+	 * @throws SQLException
+	 */
+	private static boolean userIDisInTable(int userID) throws SQLException
 	{
-		String checkValidUserID = new String("SELECT * FROM PERSON where user_id = '" + userID + "';");
+		String checkValidUserID = new String("SELECT * FROM USER where UserID = '" + userID + "';");
 		PreparedStatement stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(checkValidUserID);
 		ResultSet rs = stmt.executeQuery(checkValidUserID);
 		if (!rs.next())
-			return false; // The userID is not in the database, thus the
-							// specified user does not exist.
+			return false;
 		return true;
 	}
 
-	private static boolean isValidUserName(String userName) throws SQLException
+	/**
+	 * Checks if the User is in the table by using the userName of the User you are
+	 * working with.  If the User is in the table, return true.  If the User
+	 * is not in the table, return false.
+	 * @param userName, the userName of the User we are looking for.
+	 * @return true if the User is in the table, false if the User is not in the table.
+	 * @throws SQLException
+	 */
+	private static boolean userNameIsInTable(String userName) throws SQLException
 	{
 		String checkUniqueUserName = new String("SELECT * FROM USER where UserName = '" + userName + "';");
 		PreparedStatement stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(checkUniqueUserName);
 		ResultSet rs = stmt.executeQuery(checkUniqueUserName);
 		if (!rs.next())
-			return true; // the userName is not taken in the table.
-		return false;
+			return false;
+		return true;
 	}
 }
