@@ -19,14 +19,14 @@ public class FriendGateway
 	 * @return
 	 * @throws SQLException
 	 */
-	public static boolean insertFriend(String userIDa, String userIDb) throws SQLException
+	public static boolean insertFriend(int userIDa, int userIDb) throws SQLException
 	{
 		if (!areFriends(userIDa,userIDb))
 		{
-			String insertFriends = new String("INSERT INTO FRIENDS (UserIDa,UserIDb) VALUES (?,?)");
+			String insertFriends = new String("INSERT INTO FRIENDS (UserIDA,UserIDB) VALUES (?,?)");
 			PreparedStatement stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(insertFriends);
-			stmt.setString(1, userIDa);
-			stmt.setString(2, userIDb);
+			stmt.setInt(1, userIDa);
+			stmt.setInt(2, userIDb);
 			stmt.executeUpdate();
 			return true;
 		}
@@ -40,18 +40,27 @@ public class FriendGateway
 	 * @return
 	 * @throws SQLException
 	 */
-	public static boolean removeFriendship(String userIDa, String userIDb) throws SQLException
+	public static boolean removeFriendship(int userIDa, int userIDb) throws SQLException
 	{
 		if (areFriends(userIDa,userIDb))
 		{
 			String removeFriends = new String("DELETE FROM FRIENDS WHERE "
-					+ "( UserIDa = '" + userIDa + " AND UserIDb = '" + userIDb + "') OR "
-					+ "( UserIDa = '" + userIDb + " AND UserIDb = '" + userIDa + "');");
+					+ "( UserIDA = '" + userIDa + "' AND UserIDB = '" + userIDb + "') OR "
+					+ "( UserIDA = '" + userIDb + "' AND UserIDB = '" + userIDa + "');");
 			PreparedStatement stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(removeFriends);
 			stmt.executeUpdate();
 			return true;
 		}
 		return false;
+	}
+	
+	public static boolean removeAllFriendships(int userID) throws SQLException
+	{
+		String removeFriends = new String("DELETE FROM FRIENDS WHERE "
+				+ "( UserIDA = '" + userID + "' OR UserIDB = '" + userID + "');");
+		PreparedStatement stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(removeFriends);
+		stmt.executeUpdate();
+		return true;	
 	}
 
 	/**
@@ -60,21 +69,21 @@ public class FriendGateway
 	 * @return
 	 * @throws SQLException
 	 */
-	public static ArrayList<String> getFriends(String userID) throws SQLException
+	public static ArrayList<String> getFriends(int userID) throws SQLException
 	{
 		String getFriends = new String("SELECT * FROM FRIENDS WHERE "
-				+ "( UserIDa = '" + userID + " OR UserIDb = '" + userID + "');");
+				+ "( UserIDA = '" + userID + "' OR UserIDB = '" + userID + "');");
 		PreparedStatement stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(getFriends);
 		ResultSet results = stmt.executeQuery();
-		ArrayList<String> friends =	null;
+		ArrayList<String> friends =	new ArrayList<String>();
 		while(results.next())
 		{
-			if(results.getString(1)!=userID)
+			if(results.getInt(1)!= userID)
 			{
-				friends.add(results.getString(1));
+				friends.add(results.getInt(1)+"");
 			}else
 			{
-				friends.add(results.getString(2));
+				friends.add(results.getInt(2)+"");
 			}
 		}
 		return friends;
@@ -87,13 +96,19 @@ public class FriendGateway
 	 * @return
 	 * @throws SQLException
 	 */
-	public static boolean areFriends(String userIDa,String userIDb) throws SQLException
+	public static boolean areFriends(int userIDa,int userIDb) throws SQLException
 	{
-		String checkAreFriends = new String("SELECT * FROM FRIENDS WHERE "
-				+ "( UserIDa = '" + userIDa + " AND UserIDb = '" + userIDb + "') OR "
-				+ "( UserIDa = '" + userIDb + " AND UserIDb = '" + userIDa + "');");
+		String checkAreFriends = new String("SELECT UserIDA FROM FRIENDS WHERE "
+				+ "( UserIDA = '" + userIDa + "' AND UserIDB = '" + userIDb + "') OR "
+				+ "( UserIDA = '" + userIDb + "' AND UserIDB = '" + userIDa + "');");
 		PreparedStatement stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(checkAreFriends);
-		boolean result = stmt.execute();
-		return result;
+		ResultSet result = stmt.executeQuery();
+		if(!result.isBeforeFirst())
+		{
+			return false;
+		}else
+		{
+			return true;
+		}
 	}
 }

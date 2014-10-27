@@ -22,7 +22,7 @@ public class FriendMapper
 	{		
 		if(!completeList){
 			try{
-				friends = FriendGateway.getFriends(userID+"");
+				friends = FriendGateway.getFriends(userID);
 				completeList = true;
 			}catch (SQLException e){
 				System.out.println("Friends Could Not Be Reached");
@@ -35,12 +35,12 @@ public class FriendMapper
 	 * @param userID
 	 * @param friend
 	 */
-	public void removeFriend(int userID, String friend)
+	public void removeFriend(int userID, int friendID)
 	{
 		try{
-			FriendGateway.removeFriendship(userID+"", friend);
+			FriendGateway.removeFriendship(userID,friendID);
 			if(friends != null){
-				friends.remove(friend);
+				friends.remove(friendID);
 			}
 		} catch (SQLException e){
 			System.out.println("Could Not Remove Friend");
