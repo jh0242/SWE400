@@ -38,25 +38,25 @@ public class PersonGateway
 		return false;
 	}
 
-	/**
-	 * Checks that the userID is in the database.  If the userID is in the database, that row is
-	 * deleted from the database and return true.  If the userID is not in the database, return
-	 * false to alert of an unsuccessful remove due to an invalid userID.
-	 * @param userID, the id of the user making the request
-	 * @return boolean, whether or not the 
-	 * @throws SQLException
-	 */
-	public static boolean removeByUserID(int userID) throws SQLException
-	{
-		if (userIDisInTable(userID))
-		{
-			String removeUser = new String("DELETE FROM PERSON where UserID = '" + userID + "';");
-			PreparedStatement stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(removeUser);
-			stmt.executeUpdate();
-			return true;
-		}
-		return false;
-	}
+//	/**
+//	 * Checks that the userID is in the database.  If the userID is in the database, that row is
+//	 * deleted from the database and return true.  If the userID is not in the database, return
+//	 * false to alert of an unsuccessful remove due to an invalid userID.
+//	 * @param userID, the id of the user making the request
+//	 * @return boolean, whether or not the 
+//	 * @throws SQLException
+//	 */
+//	public static boolean removeByUserID(int userID) throws SQLException
+//	{
+//		if (userIDisInTable(userID))
+//		{
+//			String removeUser = new String("DELETE FROM PERSON where UserID = '" + userID + "';");
+//			PreparedStatement stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(removeUser);
+//			stmt.executeUpdate();
+//			return true;
+//		}
+//		return false;
+//	}
 	
 	/**
 	 * Checks that the userName is in the table.  If the userName is in the table, that row

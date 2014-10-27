@@ -13,8 +13,6 @@ public class DataBaseConnection
 	public static final String LOGIN_NAME = "lsagroup3";
 	public static final String PASSWORD = "lsagroup3";
 
-	private DataSource dataSource = null;
-
 	private Connection conn = null;
 	
 	private DataBaseConnection()
@@ -51,35 +49,9 @@ public class DataBaseConnection
 	 */
 	public Connection getConnection() throws SQLException
 	{
-		if (conn != null)
+		if (conn == null)
 		{
-			if (conn.isClosed())
-			{
-				if (dataSource != null)
-				{
-					conn = dataSource.getConnection();
-				} else if (LOGIN_NAME != null)
-				{
-					conn = DriverManager.getConnection(LOCATION, LOGIN_NAME,
-							PASSWORD);
-				} else
-				{
-					conn = DriverManager.getConnection(LOCATION);
-				}
-			}
-		} else
-		{
-			if (dataSource != null)
-			{
-				conn = dataSource.getConnection();
-			} else if (LOGIN_NAME != null)
-			{
-				conn = DriverManager.getConnection(LOCATION, LOGIN_NAME,
-						PASSWORD);
-			} else
-			{
-				conn = DriverManager.getConnection(LOCATION);
-			}
+			conn = DriverManager.getConnection(LOCATION, LOGIN_NAME, PASSWORD);
 		}
 		return conn;
 	}

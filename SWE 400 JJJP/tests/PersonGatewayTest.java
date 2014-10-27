@@ -68,13 +68,16 @@ public class PersonGatewayTest
 	
 	/**
 	 * Tests that inserting a user into the USER table using the insert
-	 * method in PersonGateway works as intended.
+	 * method in PersonGateway works as intended and that trying to insert
+	 * a user into the USER table with the same userName as another user
+	 * will not be inserted.
 	 * @throws SQLException
 	 */
 	@Test
 	public void testInsertUser() throws SQLException 
 	{
 		assertTrue(PersonGateway.insert(userName, "password", "displayName"));
+		assertFalse(PersonGateway.insert(userName, "password", "displayName"));
 	}
 	
 	/**
@@ -94,6 +97,8 @@ public class PersonGatewayTest
 	 * Then we test that the the updateDisplayName method in PersonGateway
 	 * will successfully update the display name of the test user in the table.
 	 * Then we test that the test user has the correct, updated display name.
+	 * Also tests that if the UserID is not in the table, the updateDisplayName
+	 * method will return false.
 	 * @throws SQLException
 	 */
 	@Test
@@ -103,5 +108,6 @@ public class PersonGatewayTest
 		assertEquals("displayName", getCurrentDisplayName());
 		assertTrue(PersonGateway.updateDisplayName(retrieveUserID(), "newDisplayName"));
 		assertEquals("newDisplayName", getCurrentDisplayName());
+		assertFalse(PersonGateway.updateDisplayName(999999999, "newDisplayName"));
 	}
 }
