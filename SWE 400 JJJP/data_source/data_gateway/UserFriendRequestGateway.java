@@ -21,12 +21,12 @@ public class UserFriendRequestGateway {
 	 * @return 
 	 * @throws SQLException 
 	 */
-	public boolean findOutgoingFriendRequests(int user) throws SQLException{
+	public static boolean findOutgoingFriendRequests(int user) throws SQLException{
 		if (isValidUserID(user))
 		{
 			String findData = new String("SELECT * FROM PENDINGFRIENDREQUESTS WHERE UserIDA='" + user + "';");
 			PreparedStatement stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(findData);
-			stmt.executeUpdate();
+			stmt.executeQuery();
 			return true;
 		}
 		return false;	
@@ -38,12 +38,12 @@ public class UserFriendRequestGateway {
 	 * @return 
 	 * @throws SQLException 
 	 */
-	public boolean findIncomingFriendRequests(int user) throws SQLException{
+	public static boolean findIncomingFriendRequests(int user) throws SQLException{
 		if (isValidUserID(user))
 		{
 			String findData = new String("SELECT * FROM PENDINGFRIENDREQUESTS WHERE UserIDB='" + user + "';");
 			PreparedStatement stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(findData);
-			stmt.executeUpdate();
+			stmt.executeQuery();
 			return true;
 		}
 		return false;	
@@ -59,7 +59,7 @@ public class UserFriendRequestGateway {
 	 */
 	public static boolean insertFriendRequest(int userA, int userB) throws SQLException
 	{
-		if (isValidUserID(userB) & isValidFriendRequestID(userA, userB))
+		if (isValidUserID(userB) & isValidFriendRequestIDInsert(userA, userB))
 		{
 			String insertData = new String("INSERT INTO PENDINGFRIENDREQUESTS(UserIDA, UserIDB) VALUES (?,?)");
 			PreparedStatement stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(insertData);
@@ -78,11 +78,13 @@ public class UserFriendRequestGateway {
 	 * @return 
 	 * @throws SQLException 
 	 */
-	public static boolean removeFriendRequest(int user) throws SQLException
+	public static boolean removeFriendRequest(int userA, int userB) throws SQLException
 	{
-		if (isValidUserID(user))
+		if (isValidUserID(userA) & isValidFriendRequestID(userA, userB))
 		{
-			String removeData = new String("DELETE FROM PENDINGFRIENDREQUESTS where UserIDB = '" + user + "';");
+			String removeData = new String("DELETE FROM PENDINGFRIENDREQUESTS WHERE "
+					+ "( UserIDA = '" + userA + "' AND UserIDB = '" + userB + "') OR "
+					+ "( UserIDA = '" + userB + "' AND UserIDB = '" + userA + "');");
 			PreparedStatement stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(removeData);
 			stmt.executeUpdate();
 			return true;
@@ -108,11 +110,12 @@ public class UserFriendRequestGateway {
 	}
 	
 	/**
+	 * Checks if the friendship of both users is listed in the PENDINGFRIENDREQUESTS table 
 	 * @param userID
 	 * @return
 	 * @throws SQLException
 	 */
-	private static boolean isValidFriendRequestID(int userIDA, int userIDB) throws SQLException
+	private static boolean isValidFriendRequestIDInsert(int userIDA, int userIDB) throws SQLException
 	{
 		String checkUserIDA = new String("SELECT * FROM PENDINGFRIENDREQUESTS where UserIDA = '" + userIDA + "' and UserIDB = '" + userIDB + "';");
 		PreparedStatement stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(checkUserIDA);
@@ -120,5 +123,22 @@ public class UserFriendRequestGateway {
 		if (rs.next())
 			return false; // the userIDA is not located in the table
 		return true;
+	}
+	
+	/**
+	 * Checks if the friendship of both users is listed in the PENDINGFRIENDREQUESTS table 
+	 * @param userID
+	 * @return
+	 * @throws SQLException
+	 */
+	private static boolean isValidFriendRequestID(int userIDA, int userIDB) throws SQLException
+	{
+		String checkFriendship = new String("SELECT * FROM PENDINGFRIENDREQUESTS where UserIDA = '" + userIDA + "' and UserIDB = '" + userIDB + "';");
+//		String checkFriendship = new String("SELECT * FROM PENDINGFRIENDREQUESTS WHERE "
+//				+ "( UserIDA = '" + userIDA + "' AND UserIDB = '" + userIDB + "') OR "
+//				+ "( UserIDA = '" + userIDB + "' AND UserIDB = '" + userIDA + "');");
+		PreparedStatement stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(checkFriendship);
+		boolean result = stmt.execute();
+		return result;
 	}
 }
