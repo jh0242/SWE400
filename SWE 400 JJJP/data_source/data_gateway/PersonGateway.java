@@ -17,10 +17,10 @@ public class PersonGateway
 	 * PERSON table in the database and return true. If it is in use, we return
 	 * false to alert the User that the userName is already in use.
 	 * 
-	 * @param userName, the requested user name for the new user.  Must be unique.
-	 * @param password, the requested password for the new user.
-	 * @param displayName, the requested display name for the new user.
-	 * @return boolean, true if the insert succeeded or false if the insert did not succeed.
+	 * @param userName the requested user name for the new user.  Must be unique.
+	 * @param password the requested password for the new user.
+	 * @param displayName the requested display name for the new user.
+	 * @return boolean true if the insert succeeded or false if the insert did not succeed.
 	 * @throws SQLException
 	 */
 	public static boolean insert(String userName, String password, String displayName) throws SQLException
@@ -36,6 +36,26 @@ public class PersonGateway
 			return true;
 		}
 		return false;
+	}
+	
+	/**
+	 * Retrieves the row from the database where UserName and Password match the
+	 * corresponding parameters.  If the UserName does not exist or the password
+	 * is incorrect for the corresponding userName, return null.
+	 * @param userName the userName of the user trying to log in.
+	 * @param password the password of the user trying to log in.
+	 * @return rs the row of the corresponding user or null if the userName does not exist
+	 * or the password is incorrect.
+	 * @throws SQLException
+	 */
+	public static ResultSet selectUser(String userName, String password) throws SQLException
+	{
+		String selectUser = new String("SELECT * FROM USER where UserName = '" + userName + "' AND Password = '" + password + "';");
+		PreparedStatement stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(selectUser);
+		ResultSet rs = stmt.executeQuery(selectUser);
+		if (!rs.next())
+			return null;
+		return rs;
 	}
 
 //	/**
@@ -62,8 +82,8 @@ public class PersonGateway
 	 * Checks that the userName is in the table.  If the userName is in the table, that row
 	 * is removed from the table.  If the userName is not in the table, return false to alert
 	 * of an unsuccessful remove due to an invalid userName.
-	 * @param userName, the unique userName of the User to be removed.
-	 * @return boolean, whether or not the remove was successful.
+	 * @param userName the unique userName of the User to be removed.
+	 * @return boolean whether or not the remove was successful.
 	 * @throws SQLException
 	 */
 	public static boolean removeByUserName(String userName) throws SQLException
@@ -82,9 +102,9 @@ public class PersonGateway
 	 * Checks that the userID is in the database.  If the userID is in the database, the displayName
 	 * in that row is updated to newDisplayName and return true.  If the userID is not in the database,
 	 * return false to alert of an unsuccessful update due to an invalid userID.
-	 * @param userID, the id of the user making the request
-	 * @param newDisplayName, the new display name requested by the user
-	 * @return boolean, true if the update is successful, false if the update is unsuccessful
+	 * @param userID the id of the user making the request
+	 * @param newDisplayName the new display name requested by the user
+	 * @return boolean true if the update is successful, false if the update is unsuccessful
 	 * @throws SQLException
 	 */
 	public static boolean updateDisplayName(int userID, String newDisplayName) throws SQLException
@@ -103,7 +123,7 @@ public class PersonGateway
 	 * Checks if the User is in the table by using the id of the User you are
 	 * working with.  If the User is in the table, return true.  If the User
 	 * is not in the table, return false.
-	 * @param userID, the ID of the user we are looking for.
+	 * @param userID the ID of the user we are looking for.
 	 * @return true if the User is in the table, false if the User is not in the table.
 	 * @throws SQLException
 	 */
@@ -121,7 +141,7 @@ public class PersonGateway
 	 * Checks if the User is in the table by using the userName of the User you are
 	 * working with.  If the User is in the table, return true.  If the User
 	 * is not in the table, return false.
-	 * @param userName, the userName of the User we are looking for.
+	 * @param userName the userName of the User we are looking for.
 	 * @return true if the User is in the table, false if the User is not in the table.
 	 * @throws SQLException
 	 */

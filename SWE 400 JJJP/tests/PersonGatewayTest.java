@@ -93,6 +93,21 @@ public class PersonGatewayTest
 	}
 	
 	/**
+	 * Tests that selectUser returns the correct ResultSet to be used by
+	 * PersonDataMapper.
+	 * @throws SQLException
+	 */
+	@Test
+	public void testSelectUser() throws SQLException
+	{
+		assertNull(PersonGateway.selectUser(userName, "password"));
+		PersonGateway.insert(userName, "password", "displayName");
+		ResultSet rs = PersonGateway.selectUser(userName, "password");
+		assertEquals(rs.getString(rs.findColumn("UserName")), userName);
+		assertEquals(rs.getString(rs.findColumn("Password")), "password");
+	}
+	
+	/**
 	 * Tests that after we create a user it has a specific display name.
 	 * Then we test that the the updateDisplayName method in PersonGateway
 	 * will successfully update the display name of the test user in the table.
