@@ -8,7 +8,7 @@ import java.util.Iterator;
  * @author John Terry
  *
  */
-public class Person extends DomainObject implements PersonShell
+public class Person extends DomainObject
 {
 	String displayName; // Pretty non-unique display name.
 	String userName;    // Unique username e.g.: xXxJavaLordxXx
@@ -17,15 +17,22 @@ public class Person extends DomainObject implements PersonShell
 	/**
 	 * Lazy-loaded field. Be sure to use getFriends()
 	 */
-	private ArrayList<PersonShell> friends;
+	private ArrayList<Friend> friends;
 
 	/**
 	 * Lazy-loaded field. Be sure to use getFriendRequests()
 	 */
-	private ArrayList<PersonShell> friendRequests;
+	private ArrayList<FriendRequest> friendRequests;
+	/**
+	 * Lady-loaded field. Be sure to use getFriendRequestsOutgoing()
+	 */
+	private ArrayList<FriendRequest> friendRequestsOutgoing;
 	
 	/**
 	 * Person constructor.
+	 * In a production sort of environment, you should really use the full constructor
+	 * with password, username, and displayname all included.
+	 * This is primarily to take the burden off testing.
 	 * @param id Unique identifying ID number. This needs to be unique across _all_ DomainObjects across _all_ sessions.
 	 */
 	public Person(int id) {
@@ -50,7 +57,6 @@ public class Person extends DomainObject implements PersonShell
 	 * Getter / name field.
 	 * @return String name
 	 */
-	@Override
 	public String getFullname()
 	{
 		return displayName;
@@ -59,16 +65,23 @@ public class Person extends DomainObject implements PersonShell
 	/**
 	 * @return String username, assumed to be unique.
 	 */
-	@Override
 	public String getUsername() {
 		return userName;
 	}
 
 	/**
+	 * Setter.
+	 * @param name Name to set userName field to.
+	 */
+	public void setUsername(String name) {
+		this.userName = name;
+	}
+	
+	/**
 	 * Setter / name field.
 	 * @param name This user's name. Not assumed to be unique.
 	 */
-	public void setName(String name)
+	public void setDisplayName(String name)
 	{
 		this.displayName = name;
 	}
@@ -98,12 +111,12 @@ public class Person extends DomainObject implements PersonShell
 	 * TODO Should load from the database!
 	 * @return ArrayList of Persons, never null, but possibly empty ( :( )
 	 */
-	public ArrayList<PersonShell> getFriends()
+	public ArrayList<Friend> getFriends()
 	{
 		// This is where loading should occur.
 		// TODO: actually make it load from somewhere.
 		if (friends == null) {
-			friends = new ArrayList<>();
+			friends = new ArrayList<Friend>();
 		}
 		return friends;
 	}
@@ -113,9 +126,9 @@ public class Person extends DomainObject implements PersonShell
 	 * @param f A person instance. Will fail if it's this person.
 	 * @return true on success, false on failure. Will fail if the friend is already in this list.
 	 */
-	public boolean addFriend(PersonShell f) {
+	public boolean addFriend(Friend f) {
 		boolean status = false;
-		if (!getFriends().contains(f) && this != f) {
+		if (!getFriends().contains(f)) {
 			getFriends().add(f);
 			status = true;
 		}
@@ -127,10 +140,10 @@ public class Person extends DomainObject implements PersonShell
 	 * @param f A person instance. Will fail if it's this person.
 	 * @return true on success, false on failure. Will fail if the friend is not on this list.
 	 */
-	public boolean deleteFriend(PersonShell f) {
+	public boolean deleteFriend(Friend f) {
 		boolean status = false;
 		if (friends == null) getFriends(); // Lazy load if it hasn't been lazyloaded yet.
-		if (friends.contains(f) && this != f) {
+		if (friends.contains(f)) {
 			friends.remove(f);
 			status = true;
 		}
@@ -141,15 +154,27 @@ public class Person extends DomainObject implements PersonShell
 	
 	/**
 	 * This returns the list of friendRequests from this userID
-	 * @return friendRequests ArrayList full of PersonShells
+	 * @return friendRequests
 	 */
-	public ArrayList<PersonShell> getFriendRequests() {
+	public ArrayList<FriendRequest> getFriendRequests() {
 		// TODO this ought to be a database load operation
 		// Until then, it just makes an empty ArrayList.
 		if (friendRequests == null) {
 			friendRequests = new ArrayList<>();
 		}
 		return friendRequests;
+	}
+	
+	/**
+	 * Returns the outgoing friend requests.
+	 * e.g.: the ones sent by this user to somebody else.
+	 * @return friendRequestsOutgoing
+	 */
+	public ArrayList<FriendRequest> getFriendRequestsOutgoing() {
+		if (friendRequestsOutgoing == null) {
+			friendRequestsOutgoing = new ArrayList<>();
+		}
+		return friendRequestsOutgoing;
 	}
 	
 	/**
@@ -167,7 +192,8 @@ public class Person extends DomainObject implements PersonShell
 	 * @param uname Username of the person who sent the request to us.
 	 */
 	public void receiveFriendRequest(String uname) {
-		Friend f = new Friend(uname);
+		// Sender: uname, whoever is given. Receiver: me! This object.
+		FriendRequest f = new FriendRequest(uname, this.userName);
 		getFriendRequests().add(f);
 	}
 	
@@ -176,11 +202,11 @@ public class Person extends DomainObject implements PersonShell
 	 * @return True if this username is in the friend requests
 	 */
 	public boolean hasFriendRequest(String uname) {
-		Iterator<PersonShell> it = friendRequests.iterator();
+		Iterator<FriendRequest> it = friendRequests.iterator();
 		boolean success = false;
 		while (it.hasNext() && !success) {
-			PersonShell f = it.next();
-			if (f.getUsername().equals(uname)) {
+			FriendRequest f = it.next();
+			if (f.getSender().equals(uname)) {
 				success = true;
 			}
 		}
@@ -194,11 +220,11 @@ public class Person extends DomainObject implements PersonShell
 	 * @return True if confirmation successful
 	 */
 	public boolean confirmFriendRequest(String uname) {
-		Iterator<PersonShell> it = friendRequests.iterator();
+		Iterator<FriendRequest> it = friendRequests.iterator();
 		boolean success = false;
 		while (it.hasNext() && !success) {
-			PersonShell f = it.next();
-			if (f.getUsername().equals(uname)) {
+			FriendRequest f = it.next();
+			if (f.getSender().equals(uname)) {
 				// Match!
 				it.remove();
 				success = true;
@@ -217,11 +243,11 @@ public class Person extends DomainObject implements PersonShell
 	 * @return True if success, false otherwise.
 	 */
 	public boolean removeFriendRequest(String uname) {
-		Iterator<PersonShell> it = friendRequests.iterator();
+		Iterator<FriendRequest> it = friendRequests.iterator();
 		boolean success = false;
 		while (it.hasNext() && !success) {
-			PersonShell f = it.next();
-			if (f.getUsername().equals(uname)) {
+			FriendRequest f = it.next();
+			if (f.getSender().equals(uname)) {
 				// Match!
 				it.remove();
 				success = true;

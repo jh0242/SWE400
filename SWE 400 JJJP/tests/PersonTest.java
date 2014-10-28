@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import org.junit.Test;
 
 import domain_model.Friend;
+import domain_model.FriendRequest;
 import domain_model.Person;
-import domain_model.PersonShell;
 
 
 /**
@@ -23,7 +23,7 @@ public class PersonTest
 	public void testGettersSetters()
 	{
 		Person p = new Person(42);
-		p.setName("Fred");
+		p.setDisplayName("Fred");
 		assertEquals("Fred", p.getFullname());
 		p.setPassword("hunter2");
 		assertEquals("hunter2", p.getPassword());
@@ -36,7 +36,7 @@ public class PersonTest
 	@Test
 	public void testGetFriends() {
 		Person p = new Person(0);
-		ArrayList<PersonShell> f = p.getFriends();
+		ArrayList<Friend> f = p.getFriends();
 		assertNotNull(f);
 		assertEquals(f.size(), 0);
 	}
@@ -49,10 +49,9 @@ public class PersonTest
 	@Test
 	public void testAddFriend() {
 		Person p1 = new Person(0);
-		Person p2 = new Person(1);
+		Friend p2 = new Friend("Dave");
 		assertTrue(p1.addFriend(p2));
 		assertFalse(p1.addFriend(p2));
-		assertFalse(p1.addFriend(p1));
 	}
 	
 	/**
@@ -63,11 +62,10 @@ public class PersonTest
 	@Test
 	public void testDeleteFriend() {
 		Person p1 = new Person(0);
-		Person p2 = new Person(1);
+		Friend p2 = new Friend("Dave");
 		assertTrue(p1.addFriend(p2));
 		assertTrue(p1.deleteFriend(p2));
 		assertFalse(p1.deleteFriend(p2));
-		assertFalse(p1.deleteFriend(p1));
 	}
 	
 	/**
@@ -106,6 +104,22 @@ public class PersonTest
 		Person p1 = new Person(1, "JavaLord", "hunter2", "The Lord of Java");
 		String s = p1.toString();
 		assertTrue(s.equals("JavaLord:hunter2:The Lord of Java"));
+	}
+	
+	/**
+	 * Tests the lazyloaded getters.
+	 * In absence of a database, it should at least never return null.
+	 */
+	@Test
+	public void testLazyGetters() {
+		Person p1 = new Person(0);
+		ArrayList<FriendRequest> x;
+		x = p1.getFriendRequests();
+		assertNotNull(x);
+		x = null;
+		x = p1.getFriendRequestsOutgoing();
+		assertNotNull(x);
+		
 	}
 
 }

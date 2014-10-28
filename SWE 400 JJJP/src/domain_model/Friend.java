@@ -7,7 +7,7 @@ package domain_model;
  * to interact with them.
  *
  */
-public class Friend extends DomainObject implements PersonShell
+public class Friend extends DomainObject
 {
 	String userName;
 	String displayName;
@@ -33,7 +33,6 @@ public class Friend extends DomainObject implements PersonShell
 	/** (non-Javadoc)
 	 * @see domain_model.PersonShell#getFullname()
 	 */
-	@Override
 	public String getFullname()
 	{
 		// TODO Auto-generated method stub
@@ -43,7 +42,6 @@ public class Friend extends DomainObject implements PersonShell
 	/** (non-Javadoc)
 	 * @see domain_model.PersonShell#getUsername()
 	 */
-	@Override
 	public String getUsername()
 	{
 		// TODO Auto-generated method stub
