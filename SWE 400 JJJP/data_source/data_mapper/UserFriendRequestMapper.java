@@ -4,6 +4,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import data_gateway.DataBaseConnection;
 import data_gateway.UserFriendRequestGateway;
@@ -17,6 +19,7 @@ import data_gateway.UserFriendRequestGateway;
 public class UserFriendRequestMapper {
 	
 	ArrayList<Integer> friendRequests;
+	//Map<Integer,Integer> friendRequestsMap = new HashMap<Integer, Integer>();
 	
 	/**
 	 * Inserts a FriendRequest into the database and the domain layer	
@@ -27,7 +30,8 @@ public class UserFriendRequestMapper {
 	 */
 	public boolean insertFriendRequest(int userID, int friendRequestID) throws SQLException{
 		UserFriendRequestGateway.insertFriendRequest(userID,friendRequestID);
-		friendRequests.add(friendRequestID);
+		//friendRequestsMap.add(friendRequestID);
+		//friendRequestsMap.add(friendRequestID);
 		if (friendRequests != null && isValidFriendRequestIDInsert(userID, friendRequestID)){
 			return true;
 		}
