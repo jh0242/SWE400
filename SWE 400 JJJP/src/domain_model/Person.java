@@ -13,7 +13,18 @@ public class Person extends DomainObject
 	String displayName; // Pretty non-unique display name.
 	String userName;    // Unique username e.g.: xXxJavaLordxXx
 	String password;    // Passwords aren't protected. We're Sony now.
+	boolean updated;
 	
+	public boolean isUpdated()
+	{
+		return updated;
+	}
+
+	public void setUpdated(boolean updated)
+	{
+		this.updated = updated;
+	}
+
 	/**
 	 * Lazy-loaded field. Be sure to use getFriends()
 	 */
@@ -37,6 +48,7 @@ public class Person extends DomainObject
 	 */
 	public Person(int id) {
 		this.id = id;
+		updated = false;
 	}
 	
 	/**
