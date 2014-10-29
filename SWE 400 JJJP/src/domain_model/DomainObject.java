@@ -15,4 +15,8 @@ public class DomainObject
 	public int getID() {
 		return id;
 	}
+	
+	public void setID(int id){
+		this.id = id;
+	}
 }

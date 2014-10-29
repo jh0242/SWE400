@@ -25,7 +25,7 @@ public class Friend extends DomainObject
 	 * @param uname Username
 	 * @param fname Full name
 	 */
-	public Friend(String uname, String fname) {
+	public Friend(String uname, int fname) {
 		this.userName = uname;
 		this.displayName = fname;
 	}

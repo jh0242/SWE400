@@ -1,33 +1,47 @@
 package data_mapper;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 import data_gateway.FriendGateway;
+import data_gateway.PersonGateway;
+import domain_model.Friend;
+import domain_model.Person;
 /**
  * @author Joshua McMillen
  *
  */
 public class FriendMapper
 {
-	ArrayList<String> friends;
-	boolean completeList = false;
-	
 	/**
 	 * Get complete List of User's Friends
 	 * @param userID
 	 * @return
 	 */
-	public String getAllFriends(int userID)
+	public static boolean getAllFriends(Person user)
 	{		
-		if(!completeList){
-			try{
-				friends = FriendGateway.getFriends(userID);
-				completeList = true;
-			}catch (SQLException e){
-				System.out.println("Friends Could Not Be Reached");
+		try{
+			ResultSet results = FriendGateway.getFriends(user.getID());
+			ArrayList<String> friends =	new ArrayList<String>();
+			while(results.next())
+			{
+				Friend friend = new Friend(null);
+				if(results.getInt(1)!= user.getID())
+				{						
+					friend.setID(results.getInt(1));
+					
+				}else
+				{
+					friends.add(results.getInt(2)+"");
+				}
+				user.addFriend(friend);
 			}
-		}return giveList();
+		}catch (SQLException e){
+			System.out.println("Friends Could Not Be Reached");
+			return false;
+		}
+		return true;
 	}
 	
 	/**
@@ -35,37 +49,36 @@ public class FriendMapper
 	 * @param userID
 	 * @param friend
 	 */
-	public void removeFriend(int userID, int friendID)
+	public boolean removeFriend(Person user, int friendID)
 	{
 		try{
-			FriendGateway.removeFriendship(userID,friendID);
-			if(friends != null){
-				friends.remove(friendID);
+			FriendGateway.removeFriendship(user.getID(),friendID);
+			if(!user.getFriends().isEmpty()){
+				for(int i=0;i<user.getFriends().size();i++)
+				{
+					if(user.getFriends().get(i).getID()==friendID)
+					{
+						user.getFriends().remove(i);
+					}
+				}
 			}
-		} catch (SQLException e){
-			System.out.println("Could Not Remove Friend");
-		}
-	}
-	
-	/**
-	 * Check if Friend has been loaded already
-	 * @param userID
-	 * @return
-	 */
-	public boolean checkMap(String userID)
-	{
-		if(friends.contains(userID)){
 			return true;
-		}return false;
+		} catch (SQLException e){
+			System.out.println("Could Not Remove Friend");			
+		}
+		return false;
 	}
 	
-	//Return friends as comma seperated list
-	private String giveList()
+	public static String getFriendName(int friendID,Person person) throws SQLException
 	{
-		String allFriends = "";
-		for(int i = 0; i < friends.size(); i++){
-			allFriends += friends.get(i) + ",";
+		for(int i=0;i<person.getFriends().size();i++)
+		{
+			if(person.getFriends().get(i).getID()==friendID)
+			{
+				return person.getFriends().get(i).getFullname();
+			}
 		}
-		return allFriends.substring(0,allFriends.length()-1);
+		ResultSet result = PersonGateway.getUserName(friendID);
+		return result.getString(1);
 	}
 }

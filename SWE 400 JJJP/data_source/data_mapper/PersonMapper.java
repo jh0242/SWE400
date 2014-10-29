@@ -31,6 +31,12 @@ public class PersonMapper
 		}
 	}
 	
+	public String getDisplayName(int userID) throws SQLException
+	{
+		ResultSet result = PersonGateway.getUserName(userID);
+		return result.getString(1);
+	}
+	
 	/**
 	 * @param userName
 	 * @param password
@@ -100,7 +106,7 @@ public class PersonMapper
 			} return true;
 		}else
 		{
-			if(PersonGateway.selectUser(userName, password)!=null)
+			if(PersonGateway.selectUser(userName, password)!= null)
 			{
 				Person loadedUser = loadUser(userName,password);
 				loadedUser.setDisplayName(display);

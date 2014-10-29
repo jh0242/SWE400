@@ -69,26 +69,15 @@ public class FriendGateway
 	 * @return
 	 * @throws SQLException
 	 */
-	public static ArrayList<String> getFriends(int userID) throws SQLException
+	public static ResultSet getFriends(int userID) throws SQLException
 	{
 		String getFriends = new String("SELECT * FROM FRIENDS WHERE "
 				+ "( UserIDA = '" + userID + "' OR UserIDB = '" + userID + "');");
 		PreparedStatement stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(getFriends);
-		ResultSet results = stmt.executeQuery();
-		ArrayList<String> friends =	new ArrayList<String>();
-		while(results.next())
-		{
-			if(results.getInt(1)!= userID)
-			{
-				friends.add(results.getInt(1)+"");
-			}else
-			{
-				friends.add(results.getInt(2)+"");
-			}
-		}
+		ResultSet friends = stmt.executeQuery();		
 		return friends;
 	}
-	
+		
 	/**
 	 * Checks if there is a friendship between two users in database
 	 * @param userIDa

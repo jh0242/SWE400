@@ -154,4 +154,12 @@ public class PersonGateway
 			return false;
 		return true;
 	}
+	
+	public static ResultSet getUserName(int userID) throws SQLException
+	{
+		String getUserName = new String("SELECT UserName FROM USER where UserID = '" + userID + "';");
+		PreparedStatement stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(getUserName);
+		ResultSet rs = stmt.executeQuery(getUserName);
+		return rs;
+	}
 }
