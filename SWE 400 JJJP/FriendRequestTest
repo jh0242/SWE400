@@ -1,0 +1,3 @@
+CommandToCreateUser fred pw1 happyFred; fred:pw1:happyFred
+CommandToSelectUser fred pw1;
+CommandToGetPendingOutgoingFriendList <userID>; henry

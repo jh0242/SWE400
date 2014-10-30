@@ -38,6 +38,16 @@ public class PersonGateway
 		return false;
 	}
 	
+	public static int getID(String userName, String password) throws SQLException
+	{
+		String selectUser = new String("SELECT * FROM USER where UserName = '" + userName + "' AND Password = '" + password + "';");
+		PreparedStatement stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(selectUser);
+		ResultSet rs = stmt.executeQuery(selectUser);
+		if (!rs.next())
+			return -1;
+		return rs.getInt(rs.findColumn("UserID"));
+	}
+	
 	/**
 	 * Retrieves the row from the database where UserName and Password match the
 	 * corresponding parameters.  If the UserName does not exist or the password

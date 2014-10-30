@@ -13,7 +13,7 @@ import domain_model.Person;
  */
 public class PersonMapper
 {
-	Map<String,Person> users = new HashMap<String,Person>();
+	static Map<String,Person> users = new HashMap<String,Person>();
 	
 	/**
 	 * @param userName
@@ -52,7 +52,7 @@ public class PersonMapper
 	 * @param userName
 	 * @return true if User is Loaded into HashMap
 	 */
-	private boolean checkUserLoaded(String userName){
+	private static boolean checkUserLoaded(String userName){
 		if(users.containsKey(userName))
 		{
 			return true;
@@ -125,5 +125,24 @@ public class PersonMapper
 			}
 		}
 		return true;
+	}
+
+	public static Person insert(String userName, String password, String displayName) throws SQLException
+	{
+		if (!checkUserLoaded(userName))
+		{
+			if (PersonGateway.insert(userName, password, displayName))
+			{
+				int id = PersonGateway.getID(userName, password);
+				PersonGateway.insert(userName, password, displayName);
+				Person person = new Person(id);
+				person.setUsername(userName);
+				person.setPassword(password);
+				person.setDisplayName(displayName);
+				users.put(userName, person);
+				return person;
+			}
+		}
+		return null;
 	}
 }

@@ -1,4 +1,7 @@
 package domainLogic;
+import java.sql.SQLException;
+
+import data_mapper.PersonMapper;
 import domain_model.Person;
 
 /**
@@ -9,7 +12,8 @@ import domain_model.Person;
  */
 public class CommandToCreateUser implements Command
 {
-
+	private Person person;
+	
 	private String userName;
 
 	private String password;
@@ -40,8 +44,14 @@ public class CommandToCreateUser implements Command
 	@Override
 	public void execute()
 	{
-		// TODO Auto-generated method stub
-
+		try 
+		{
+			person = PersonMapper.insert(userName, password, displayName);
+		} catch (SQLException e) 
+		{
+			System.out.println("Failure in CommandToCreateUser.");
+			e.printStackTrace();
+		}
 	}
 	
 	/**
@@ -69,10 +79,11 @@ public class CommandToCreateUser implements Command
 	 * @see Command#getResult()
 	 */
 	@Override
-	public Person getResult()
+	public String getResult()
 	{
-		// TODO Auto-generated method stub
-		return null;
+		if (person == null)
+			return null;
+		return userName + ":" + password + ":" + displayName;
 	}
 
 	/**
