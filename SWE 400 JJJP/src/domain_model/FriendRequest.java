@@ -4,11 +4,15 @@ package domain_model;
  * @author Patrick Flanagan
  *
  */
-public class FriendRequest
+public class FriendRequest extends DomainObject
 {
 	private String sender;
 	private String receiver;
 	
+	/**
+	 * @param s Sender
+	 * @param r Receiver
+	 */
 	public FriendRequest(String s, String r) {
 		sender = s;
 		receiver = r;
