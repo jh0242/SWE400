@@ -2,13 +2,11 @@ package data_gateway;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 //import domain_model.Friend;
 
 /**
  * @author Joshua McMillen
- *
  */
 public class FriendGateway 
 {
@@ -35,8 +33,8 @@ public class FriendGateway
 
 	/**
 	 * Executes the removal of a FRIENDS row where both COLUMNS contain either of the corresponding userIDs
-	 * @param userIDa
-	 * @param userIDb
+	 * @param userIDa userId of requesting User
+	 * @param userIDb userID of friend User
 	 * @return
 	 * @throws SQLException
 	 */
@@ -54,6 +52,12 @@ public class FriendGateway
 		return false;
 	}
 	
+	/**
+	 * Executes the removal of All Friendships for a user
+	 * @param userID
+	 * @return True upon completion of removal of Friendships
+	 * @throws SQLException
+	 */
 	public static boolean removeAllFriendships(int userID) throws SQLException
 	{
 		String removeFriends = new String("DELETE FROM FRIENDS WHERE "

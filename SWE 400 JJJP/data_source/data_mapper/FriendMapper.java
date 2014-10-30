@@ -13,14 +13,21 @@ import domain_model.Friend;
 import domain_model.Person;
 /**
  * @author Joshua McMillen
+ * Checks against Domain and Database to return data requested about a user's friends
  */
 public class FriendMapper
 {
-	
+		
 	private static FriendMapper friendMapper;
 	
-	private FriendMapper(){}
+	private FriendMapper()
+	{
+		
+	}
 	
+	/**
+	 * @return instance of friendMapper
+	 */
 	public static FriendMapper getInstance()
 	{
 		if(friendMapper == null)
@@ -34,10 +41,9 @@ public class FriendMapper
 	
 	/**
 	 * Get complete List of User's Friends
-	 * @param userID
-	 * @return
+	 * @param user Unique user object from PersonMapper
+	 * @return ArrayList of Friends
 	 */
-	@SuppressWarnings("unchecked")
 	public ArrayList<Friend> getAllFriends(Person user)
 	{	
 		if(!friendsList.containsKey(user.getID()))
@@ -50,12 +56,12 @@ public class FriendMapper
 					Friend friend;
 					if(results.getInt(1)!= user.getID())
 					{	
-						friend = new Friend(FriendMapper.getFriendName(results.getInt(1), user));
+						friend = new Friend(getFriendName(results.getInt(1), user));
 						friend.setID(results.getInt(1));
 						
 					}else
 					{
-						friend = new Friend(FriendMapper.getFriendName(results.getInt(2), user));
+						friend = new Friend(getFriendName(results.getInt(2), user));
 						friend.setID(results.getInt(2));
 					}
 					list.add(friend);
@@ -70,11 +76,11 @@ public class FriendMapper
 	
 	/**
 	 * Removes Friend from both database and domain	
-	 * @param userID
-	 * @param friend
+	 * @param user unique user object from PersonMapper
+	 * @param friendID requested id of Friend
+	 * @return true upon completion of try, false if not 
 	 */
-	@SuppressWarnings("unchecked")
-	public static boolean removeFriend(Person user, int friendID)
+	public boolean removeFriend(Person user, int friendID)
 	{
 		try{
 			FriendGateway.removeFriendship(user.getID(),friendID);
@@ -110,10 +116,10 @@ public class FriendMapper
 	 * Checks User Object, then FriendsList object, then Database for friendID
 	 * @param friendID
 	 * @param person
-	 * @return
+	 * @return String of Friend Name
 	 * @throws SQLException
 	 */
-	public static String getFriendName(int friendID,Person person) throws SQLException
+	public String getFriendName(int friendID,Person person) throws SQLException
 	{
 		if(!person.getFriends().isEmpty())
 		{
@@ -141,9 +147,9 @@ public class FriendMapper
 	
 	/** 
 	 * Stores a given Friend into appropriate locations in Domain and Database
-	 * @param person
-	 * @param friend
-	 * @return
+	 * @param person Unique User from PersonMapper
+	 * @param friend Unique Friend from with Unique Friend from User's FriendList
+	 * @return True upon completion, False if DB Insert Fails
 	 */
 	public static boolean saveFriend(Person person, Friend friend)
 	{
