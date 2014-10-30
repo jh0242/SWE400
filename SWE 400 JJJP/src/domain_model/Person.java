@@ -151,6 +151,7 @@ public class Person extends DomainObject
 		if (!getFriends().contains(f)) {
 			getFriends().add(f);
 			status = true;
+			Session.getInstance().getUnitOfWork().registerNew(f);
 		}
 		return status;
 	}
@@ -166,6 +167,7 @@ public class Person extends DomainObject
 		if (friends.contains(f)) {
 			friends.remove(f);
 			status = true;
+			Session.getInstance().getUnitOfWork().registerRemoved(f);
 		}
 		return status;
 	}
@@ -198,23 +200,23 @@ public class Person extends DomainObject
 	}
 	
 	/**
-	 * This adds this userID to the otherUserID's pending friend request table 
-	 * TODO
-	 * @param uname The other person's unique username.
-	 * @return True on success, false on failure.
-	 */
-	public boolean sendFriendRequest(String uname) {
-		return false;
-	}
-	
-	/**
 	 * Receive a friend request from another user.
 	 * @param uname Username of the person who sent the request to us.
 	 */
 	public void receiveFriendRequest(String uname) {
 		// Sender: uname, whoever is given. Receiver: me! This object.
-		FriendRequest f = new FriendRequest(uname, this.userName);
-		getFriendRequests().add(f);
+		boolean okayToAdd = true;
+		this.getFriendRequests();
+		for (FriendRequest x : this.friendRequests) {
+			if (x.getSender() == uname) {
+				okayToAdd = false;
+			}
+		}
+		if (okayToAdd) {
+			FriendRequest f = new FriendRequest(uname, this.userName);
+			getFriendRequests().add(f);
+			Session.getInstance().getUnitOfWork().registerNew(f);
+		}
 	}
 	
 	/**
@@ -246,6 +248,7 @@ public class Person extends DomainObject
 			FriendRequest f = it.next();
 			if (f.getSender().equals(uname)) {
 				// Match!
+				Session.getInstance().getUnitOfWork().registerRemoved(f); // Remove this now that it has been accepted.
 				it.remove();
 				success = true;
 			}	
@@ -269,6 +272,7 @@ public class Person extends DomainObject
 			FriendRequest f = it.next();
 			if (f.getSender().equals(uname)) {
 				// Match!
+				Session.getInstance().getUnitOfWork().registerRemoved(f);
 				it.remove();
 				success = true;
 			}	
@@ -302,7 +306,9 @@ public class Person extends DomainObject
 				break;
 			}
 		}
-		friendRequestsOutgoing.add(new FriendRequest(this.userName, target));
+		FriendRequest f = new FriendRequest(this.userName, target);
+		friendRequestsOutgoing.add(f);
+		Session.getInstance().getUnitOfWork().registerNew(f);
 		
 		return success;
 	}

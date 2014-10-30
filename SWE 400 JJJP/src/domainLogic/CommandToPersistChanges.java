@@ -1,4 +1,7 @@
 package domainLogic;
+
+import domain_model.Session;
+
 /**
  * Tells the system to save any pending changes
  * 
@@ -15,8 +18,7 @@ public class CommandToPersistChanges implements Command
 	@Override
 	public void execute()
 	{
-		// TODO Auto-generated method stub
-
+		Session.getInstance().getUnitOfWork().commit();
 	}
 
 	/**
@@ -28,7 +30,6 @@ public class CommandToPersistChanges implements Command
 	@Override
 	public Object getResult()
 	{
-		// TODO Auto-generated method stub
 		return null;
 	}
 

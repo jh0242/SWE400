@@ -11,12 +11,14 @@ public class Session
 {
 	private static Session instance = null;
 	private ThreadLocal<Person> person;
+	private ThreadLocal<UnitOfWork> uow;
 	
 	/**
 	 * Bare private constructor, prevents anyone from making one illegally.
 	 */
 	private Session() {
 		this.person = new ThreadLocal<>();
+		this.uow = new ThreadLocal<>();
 	}
 	
 	/**
@@ -43,5 +45,17 @@ public class Session
 	 */
 	public void setPerson(Person p) {
 		this.person.set(p);
+	}
+	
+	/**
+	 * Gets this thread's UnitOfWork.
+	 * If it doesn't exist yet, make it and return it.
+	 * @return UnitOfWork
+	 */
+	public UnitOfWork getUnitOfWork() {
+		if (this.uow.get() == null) {
+			this.uow.set(new UnitOfWork());
+		}
+		return this.uow.get();
 	}
 }

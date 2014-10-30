@@ -12,8 +12,7 @@ import java.util.ArrayList;
  * TODO: Implement commit method once we have a data mapper.
  */
 public class UnitOfWork
-{
-	
+{	
 	private ArrayList<DomainObject> newRegister = new ArrayList<>();
 	private ArrayList<DomainObject> dirtyRegister = new ArrayList<>();
 	private ArrayList<DomainObject> cleanRegister = new ArrayList<>();
@@ -95,5 +94,13 @@ public class UnitOfWork
 			success = false;
 		}
 		return success;
+	}
+
+	/**
+	 * Commit the changes down to the data mappers.
+	 */
+	public void commit()
+	{
+		
 	}
 }
