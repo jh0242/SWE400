@@ -39,6 +39,7 @@ public class CommandToCreateUser implements Command
 	}
 
 	/**
+	 * Calls the PersonMapper's insert method to attempt to create a new user.
 	 * @see Command#execute()
 	 */
 	@Override

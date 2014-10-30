@@ -38,6 +38,13 @@ public class PersonGateway
 		return false;
 	}
 	
+	/**
+	 * Gets the id of the user with the associated userName and password.
+	 * @param userName of the user being requested.
+	 * @param password of the user being requested.
+	 * @return the user's unique id number if the userName and password is valid, else -1.
+	 * @throws SQLException
+	 */
 	public static int getID(String userName, String password) throws SQLException
 	{
 		String selectUser = new String("SELECT * FROM USER where UserName = '" + userName + "' AND Password = '" + password + "';");
@@ -155,7 +162,7 @@ public class PersonGateway
 	 * @return true if the User is in the table, false if the User is not in the table.
 	 * @throws SQLException
 	 */
-	private static boolean userNameIsInTable(String userName) throws SQLException
+	public static boolean userNameIsInTable(String userName) throws SQLException
 	{
 		String checkUniqueUserName = new String("SELECT * FROM USER where UserName = '" + userName + "';");
 		PreparedStatement stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(checkUniqueUserName);
@@ -165,6 +172,12 @@ public class PersonGateway
 		return true;
 	}
 	
+	/**
+	 * Gets the row with the associated userID
+	 * @param userID of the user.
+	 * @return ResultSet of the associated userID.
+	 * @throws SQLException
+	 */
 	public static ResultSet getUserName(int userID) throws SQLException
 	{
 		String getUserName = new String("SELECT UserName FROM USER where UserID = '" + userID + "';");

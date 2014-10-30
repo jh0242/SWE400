@@ -127,6 +127,17 @@ public class PersonMapper
 		return true;
 	}
 
+	/**
+	 * Checks if the userName is already in the users hashmap and returns null if it is.
+	 * If not, it attempts to insert the new user into the database and returns null if it
+	 * is unsuccessful.  If it is successful, it adds the new Person object to the users
+	 * hashmap and returns that Person object.
+	 * @param userName the userName of the new user.
+	 * @param password the password of the new user.
+	 * @param displayName the displayNmae of the new user.
+	 * @return person if the insert is successful, else return false.
+	 * @throws SQLException
+	 */
 	public static Person insert(String userName, String password, String displayName) throws SQLException
 	{
 		if (!checkUserLoaded(userName))
