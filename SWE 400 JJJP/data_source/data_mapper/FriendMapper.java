@@ -139,7 +139,7 @@ public class FriendMapper
 		return result.getString(1);
 	}
 	
-	/**
+	/** 
 	 * Stores a given Friend into appropriate locations in Domain and Database
 	 * @param person
 	 * @param friend

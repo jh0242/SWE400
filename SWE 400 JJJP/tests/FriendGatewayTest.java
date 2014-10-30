@@ -14,7 +14,7 @@ import data_gateway.FriendGateway;
  */
 public class FriendGatewayTest
 {
-	/**
+	/** 
 	 * Checks Functionality of Friends Gateway
 	 * These Tests Require that Test Users Exist in USER table with UserID's
 	 * 					1594, 1595, & 1596
