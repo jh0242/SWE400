@@ -16,6 +16,10 @@ public class DomainObject
 		return id;
 	}
 	
+	/**
+	 * Setter for ID. Be careful with this. It's assumed to be unique.
+	 * @param id unique integer
+	 */
 	public void setID(int id){
 		this.id = id;
 	}

@@ -17,11 +17,18 @@ public class Person extends DomainObject
 	String password;    // Passwords aren't protected. We're Sony now.
 	boolean updated;
 	
+	/**
+	 * @return Getter for updated boolean
+	 */
 	public boolean isUpdated()
 	{
 		return updated;
 	}
 
+	/**
+	 * 
+	 * @param updated Setter for updated boolean
+	 */
 	public void setUpdated(boolean updated)
 	{
 		this.updated = updated;
@@ -129,7 +136,7 @@ public class Person extends DomainObject
 	{
 		// This is where loading should occur.
 		if (friends == null) {
-			friends = new ArrayList<Friend>();
+			friends = new ArrayList<>();
 			FriendMapper.getAllFriends(this);
 		}
 		return friends;
