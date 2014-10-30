@@ -103,14 +103,20 @@ public class PersonGateway
 	 * @return boolean whether or not the remove was successful.
 	 * @throws SQLException
 	 */
-	public static boolean removeByUserName(String userName) throws SQLException
+	public static boolean removeByUserName(String userName)
 	{
-		if (userNameIsInTable(userName))
+		try {
+			if (userNameIsInTable(userName))
+			{
+				String removeUser = new String("DELETE FROM USER where UserName = '" + userName + "';");
+				PreparedStatement stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(removeUser);
+				stmt.executeUpdate();
+				return true;
+			}
+		} catch (SQLException e) 
 		{
-			String removeUser = new String("DELETE FROM USER where UserName = '" + userName + "';");
-			PreparedStatement stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(removeUser);
-			stmt.executeUpdate();
-			return true;
+			System.out.println("Delete User Failed!");
+			e.printStackTrace();
 		}
 		return false;
 	}

@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.lang.reflect.Constructor;
 import java.util.Scanner;
 
+import data_gateway.PersonGateway;
 import domainLogic.Command;
 
 /**
@@ -46,6 +47,7 @@ public class UserThread implements Runnable
 	private Scanner commandReader;
 	private int currentUserID;
 	private boolean running;
+	private String userName;
 
 	/**
 	 * Checks to see if this thread is currently running
@@ -140,6 +142,7 @@ public class UserThread implements Runnable
 				}
 			} else if (parameters.length == 3)
 			{
+				userName = instructionTokens[1];
 				result = (Command) constructors[0].newInstance(
 						instructionTokens[1], instructionTokens[2],
 						instructionTokens[3]);
@@ -228,7 +231,7 @@ public class UserThread implements Runnable
 			}
 		}
 		this.running = false;
-
+		PersonGateway.removeByUserName(userName);
 	}
 
 	/**
