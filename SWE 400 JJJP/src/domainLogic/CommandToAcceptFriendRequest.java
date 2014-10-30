@@ -1,5 +1,8 @@
 package domainLogic;
 
+import domain_model.Person;
+import domain_model.Session;
+
 /**
  * Accept a friend request from one user to another
  * 
@@ -33,7 +36,10 @@ public class CommandToAcceptFriendRequest implements Command
 	@Override
 	public void execute()
 	{
-		// TODO Auto-generated method stub
+		Person p = Session.getInstance().getPerson();
+		if (p.getID() == userIDOfRequestee) {
+			p.confirmFriendRequest(userNameOfRequester);	
+		}
 
 	}
 
