@@ -22,7 +22,7 @@ public class PersonMapper
 	 * 		-- returns null if user Does not Exist
 	 * @throws SQLException
 	 */
-	public Person getPerson(String userName,String password) throws SQLException
+	public static Person getPerson(String userName,String password) throws SQLException
 	{
 		if(checkUserLoaded(userName)){
 			return users.get(userName);
@@ -37,7 +37,7 @@ public class PersonMapper
 	 * @return New Domain Object :: Person
 	 * @throws SQLException
 	 */
-	private Person loadUser(String userName,String password) throws SQLException
+	private static Person loadUser(String userName,String password) throws SQLException
 	{
 		ResultSet record = PersonGateway.selectUser(userName,password);
 		Person loadedUser = new Person(record.getInt("UserID"));

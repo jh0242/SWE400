@@ -1,5 +1,9 @@
 package domainLogic;
+import java.sql.SQLException;
+
 import domain_model.Person;
+import domain_model.Session;
+import data_mapper.PersonMapper;
 
 /**
  * Retrieve a specified user from the database into the domain model
@@ -30,7 +34,18 @@ public class CommandToSelectUser implements Command
 	@Override
 	public void execute()
 	{
-		// TODO Auto-generated method stub
+		
+		Person p = null;
+		try
+		{
+			p = PersonMapper.getPerson(this.userName, this.password);
+		} catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+		if (p != null) {
+			Session.getInstance().setPerson(p);
+		}
 	}
 
 	/**
@@ -50,10 +65,9 @@ public class CommandToSelectUser implements Command
 	 * @see Command#getResult()
 	 */
 	@Override
-	public Person getResult()
+	public String getResult()
 	{
-		// TODO Auto-generated method stub
-		return null;
+		return Session.getInstance().getPerson().getUsername();
 	}
 
 	/**
