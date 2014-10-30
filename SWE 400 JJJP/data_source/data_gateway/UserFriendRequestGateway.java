@@ -21,15 +21,12 @@ public class UserFriendRequestGateway {
 	 * @return 
 	 * @throws SQLException 
 	 */
-	public static boolean findOutgoingFriendRequests(int user) throws SQLException{
-		if (isValidUserID(user))
-		{
-			String findData = new String("SELECT * FROM PENDINGFRIENDREQUESTS WHERE UserIDA='" + user + "';");
-			PreparedStatement stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(findData);
-			stmt.executeQuery();
-			return true;
-		}
-		return false;	
+	public static ResultSet findOutgoingFriendRequests(int user) throws SQLException{
+		
+		String findData = new String("SELECT * FROM PENDINGFRIENDREQUESTS WHERE UserIDA='" + user + "';");
+		PreparedStatement stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(findData);
+		ResultSet outgoingFriendRequests = stmt.executeQuery();
+		return outgoingFriendRequests;
 	}
 	
 	/**
@@ -38,15 +35,12 @@ public class UserFriendRequestGateway {
 	 * @return 
 	 * @throws SQLException 
 	 */
-	public static boolean findIncomingFriendRequests(int user) throws SQLException{
-		if (isValidUserID(user))
-		{
-			String findData = new String("SELECT * FROM PENDINGFRIENDREQUESTS WHERE UserIDB='" + user + "';");
-			PreparedStatement stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(findData);
-			stmt.executeQuery();
-			return true;
-		}
-		return false;	
+	public static ResultSet findIncomingFriendRequests(int user) throws SQLException{
+		
+		String findData = new String("SELECT * FROM PENDINGFRIENDREQUESTS WHERE UserIDB='" + user + "';");
+		PreparedStatement stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(findData);
+		ResultSet incomingFriendRequests = stmt.executeQuery();
+		return incomingFriendRequests;
 	}
 	
 	/**
@@ -59,7 +53,7 @@ public class UserFriendRequestGateway {
 	 */
 	public static boolean insertFriendRequest(int userA, int userB) throws SQLException
 	{
-		if (isValidUserID(userB) & areValidFriendRequestIDS(userA, userB))
+		if (isValidUserID(userB) & !isPendingFriendRequest(userA, userB))
 		{
 			String insertData = new String("INSERT INTO PENDINGFRIENDREQUESTS(UserIDA, UserIDB) VALUES (?,?)");
 			PreparedStatement stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(insertData);
@@ -81,7 +75,7 @@ public class UserFriendRequestGateway {
 	public static boolean removeFriendRequest(int userA, int userB) throws SQLException
 	{
 
-		if (isValidUserID(userA) & areValidFriendRequestIDS(userA, userB))
+		if (isValidUserID(userA) & !isPendingFriendRequest(userA, userB))
 		{
 			String removeData = new String("DELETE FROM PENDINGFRIENDREQUESTS WHERE "
 					+ "( UserIDA = '" + userA + "' AND UserIDB = '" + userB + "') OR "
@@ -117,13 +111,20 @@ public class UserFriendRequestGateway {
 	 * @return
 	 * @throws SQLException
 	 */
-	private static boolean areValidFriendRequestIDS(int userIDA, int userIDB) throws SQLException
+	private static boolean isPendingFriendRequest(int userIDA, int userIDB) throws SQLException
 	{
-		String checkUserIDA = new String("SELECT * FROM PENDINGFRIENDREQUESTS where UserIDA = '" + userIDA + "' and UserIDB = '" + userIDB + "';");
-		PreparedStatement stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(checkUserIDA);
-		ResultSet rs = stmt.executeQuery(checkUserIDA);
-		if (rs.next())
+		String checkFriendRequestIDS = new String("SELECT * FROM PENDINGFRIENDREQUESTS where UserIDA = '" + userIDA + "' and UserIDB = '" + userIDB + "';");
+//		String checkFriendRequestIDS = new String("SELECT UserIDA FROM FRIENDS WHERE "
+//				+ "( UserIDA = '" + userIDA + "' AND UserIDB = '" + userIDB + "') OR "
+//				+ "( UserIDA = '" + userIDB + "' AND UserIDB = '" + userIDA + "');");
+		PreparedStatement stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(checkFriendRequestIDS);
+		ResultSet rs = stmt.executeQuery(checkFriendRequestIDS);
+		if (!rs.next())
 			return false; // the userIDA is not located in the table
 		return true;
+//		if(!rs.isBeforeFirst()){
+//			return false;
+//		}
+//		return true;
 	}
 }
