@@ -1,5 +1,6 @@
 package domainLogic;
 import java.util.ArrayList;
+import domain_model.Friend;
 
 /**
  * Cause a user's friend list to be fetched from the domain model (may or may

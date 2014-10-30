@@ -10,36 +10,48 @@ package domain_model;
  */
 public class Friend extends DomainObject
 {
-	String displayName;
+	private String userName;
+	private String displayName;
 	
 	/**
-	 * Simple constructor.
-	 * @param uname Unique username.
+	 * Simple constructor, userName only.
+	 * @param userName Unique userName; should be checked against DB.
 	 */
-	public Friend(String displayName) {
+	public Friend(String userName) {
+		this.userName = userName;
+	}
+	
+	/**
+	 * Full constructor.
+	 * @param userName Unique username (Unique to DB)
+	 * @param displayName Non-unique visual name.
+	 */
+	public Friend(String userName, String displayName) {
+		this.userName = userName;
 		this.displayName = displayName;
 	}
 	
-	/** (non-Javadoc)
-	 * @see domain_model.PersonShell#getFullname()
+	/**
+	 * @return The user's userName
 	 */
-	public String getFullname()
-	{
+	public String getUserName() {
+		return this.userName;
+	}
+	
+	/**
+	 * 
+	 * @return User's displayName.
+	 */
+	public String getDisplayName() {
 		return this.displayName;
 	}
 	
-	public void setFullName(String displayName)
+	/**
+	 * Set (or re-set) the display name.
+	 * @param displayName Fancy full-name, non-unique.
+	 */
+	public void setDisplayName(String displayName)
 	{
 		this.displayName = displayName;
 	}
-
-	/** (non-Javadoc)
-	 * @see domain_model.PersonShell#getUsername()
-	 */
-	/*public String getUsername()
-	{
-		// TODO Auto-generated method stub
-		return this.userName;
-	}*/
-
 }

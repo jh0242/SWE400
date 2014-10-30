@@ -1,4 +1,5 @@
 package domainLogic;
+import domain_model.Person;
 
 /**
  * Retrieve a specified user from the database into the domain model

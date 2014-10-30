@@ -1,5 +1,6 @@
 package domainLogic;
 import java.util.ArrayList;
+import domain_model.Friend;
 
 /**
  * Cause the list of pending friend requests from this user to other users to be fetched

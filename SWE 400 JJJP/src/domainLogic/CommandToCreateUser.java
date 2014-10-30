@@ -1,4 +1,5 @@
 package domainLogic;
+import domain_model.Person;
 
 /**
  * Creates a new user in the system
