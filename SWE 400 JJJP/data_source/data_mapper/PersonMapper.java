@@ -55,8 +55,9 @@ public class PersonMapper
 		Person loadedUser = new Person(record.getInt("UserID"));
 		loadedUser.setDisplayName(record.getString("DisplayName"));
 		loadedUser.setPassword(record.getString("Password"));
-		loadedUser.setUsername("UserName");
+		loadedUser.setUsername(record.getString("UserName"));
 		users.put(userName, loadedUser);
+		System.out.println("correct");
 		return loadedUser;
 	}
 	

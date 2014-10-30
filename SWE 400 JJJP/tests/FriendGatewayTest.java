@@ -1,5 +1,6 @@
 import static org.junit.Assert.*;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -34,9 +35,12 @@ public class FriendGatewayTest
 		assertTrue(FriendGateway.areFriends(1594,1595));
 		
 		// Return Friendslist
-		assertEquals("1595",FriendGateway.getFriends(1594).get(0));
-		assertEquals("1594",FriendGateway.getFriends(1595).get(0));
-		
+		ResultSet result = FriendGateway.getFriends(1594);
+		ResultSet result2 = FriendGateway.getFriends(1595);
+		result.next();
+		result2.next();
+		assertEquals(1595,result.getInt(2));
+		assertEquals(1594,result2.getInt(1));
 		// Remove Friendship
 		FriendGateway.removeFriendship(1594,1595);
 		
@@ -68,17 +72,23 @@ public class FriendGatewayTest
 		FriendGateway.insertFriend(1594,1596);
 		FriendGateway.insertFriend(1596,1595);
 		
-		// Store ArrayLists for Testing
-		ArrayList<String> user1594 = FriendGateway.getFriends(1594);
-		ArrayList<String> user1595 = FriendGateway.getFriends(1595);
-		ArrayList<String> user1596 = FriendGateway.getFriends(1596);
+		// Store ResultSet for Testing
+		ResultSet user1594 = FriendGateway.getFriends(1594);
+		user1594.next();
+		ResultSet user1595 = FriendGateway.getFriends(1595);
+		user1595.next();
+		ResultSet user1596 = FriendGateway.getFriends(1596);
+		user1596.next();
 		
 		// Assert Multiple Friendships Exist
-		assertTrue(user1594.contains("1595"));
-		assertTrue(user1594.contains("1596"));
-		assertTrue(user1595.contains("1596"));
-		assertTrue(user1596.contains("1594"));
-		assertTrue(user1596.contains("1595"));
+		/*assertTrue(user1594.getInt(2)==1595);
+		assertTrue(user1594.getInt(2)==1596);
+		assertTrue(user1595.getInt(1)==1596);
+		assertTrue(user1596.getInt(2)==1594);
+		assertTrue(user1596.getInt(1)==1595);*/
+		System.out.println(user1594.getInt(2));
+		System.out.println(user1595.getInt(2));
+		System.out.println(user1596.getInt(2));
 		
 		// Remove Friendships
 		FriendGateway.removeAllFriendships(1594);

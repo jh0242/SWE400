@@ -13,7 +13,6 @@ import domain_model.Friend;
 import domain_model.Person;
 /**
  * @author Joshua McMillen
- *
  */
 public class FriendMapper
 {
@@ -138,5 +137,29 @@ public class FriendMapper
 		}		
 		ResultSet result = PersonGateway.getUserName(friendID);
 		return result.getString(1);
+	}
+	
+	/**
+	 * Stores a given Friend into appropriate locations in Domain and Database
+	 * @param person
+	 * @param friend
+	 * @return
+	 */
+	public static boolean saveFriend(Person person, Friend friend)
+	{
+		person.addFriend(friend);
+		ArrayList<Friend> list = person.getFriends();
+		if(!list.contains(friend))
+		{
+			list.add(friend);
+			friendsList.put(person.getID(), list);
+		}
+		try {
+			FriendGateway.insertFriend(person.getID(),friend.getID());
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}		
+		return true;
 	}
 }
