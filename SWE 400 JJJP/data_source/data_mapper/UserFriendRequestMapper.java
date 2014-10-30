@@ -42,6 +42,11 @@ public class UserFriendRequestMapper {
 		return userFriendRequestMapper;
 	}
 	
+	/**
+	 * TODO create one hash map that mimics the pending friend request table instead of the
+	 * two that are below 
+	 */
+	
 	// Hash Map that stores the incoming friend requests for the user
 	private static Map<Integer, List<FriendRequest>> incomingFriendRequestsList = new HashMap<Integer,List<FriendRequest>>();
 	// Hash Map that stores the outgoing friend requests for the user
