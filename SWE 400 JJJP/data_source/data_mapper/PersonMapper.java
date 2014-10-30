@@ -13,7 +13,19 @@ import domain_model.Person;
  */
 public class PersonMapper
 {
+	private static PersonMapper personMapper;
+	
+	//private static Map<String,Person> users = new HashMap<String,Person>();
+	
+	private PersonMapper(){}
 	static Map<String,Person> users = new HashMap<String,Person>();
+	
+	public static PersonMapper getInstance(){
+		if(personMapper == null){
+			personMapper = new PersonMapper();
+		}
+		return personMapper;
+	}
 	
 	/**
 	 * @param userName
@@ -67,7 +79,7 @@ public class PersonMapper
 	 * returns True if operation Succeeds, False if not
 	 * @throws SQLException 
 	 */
-	public boolean removeUser(String userName,String password) throws SQLException
+	public static boolean removeUser(String userName,String password) throws SQLException
 	{
 		if(users.containsKey(userName)){
 			if(users.get(userName).getPassword() == password){
@@ -89,7 +101,7 @@ public class PersonMapper
 	 * @return true on success and false if user does not exist
 	 * @throws SQLException
 	 */
-	public boolean updateDisplayName(String userName,String password, String display) throws SQLException
+	public static boolean updateDisplayName(String userName,String password, String display) throws SQLException
 	{
 		if(checkUserLoaded(userName))
 		{
@@ -116,7 +128,7 @@ public class PersonMapper
 	 * @return true upon completion
 	 * @throws SQLException
 	 */
-	public boolean persistUpdates() throws SQLException
+	public static boolean persistUpdates() throws SQLException
 	{
 		for(Entry<String, Person> entry : users.entrySet())
 		{
