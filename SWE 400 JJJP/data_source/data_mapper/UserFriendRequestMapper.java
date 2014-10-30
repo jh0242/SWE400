@@ -1,14 +1,11 @@
 package data_mapper;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import data_gateway.DataBaseConnection;
 import data_gateway.UserFriendRequestGateway;
+import domain_model.Person;
 
 /**
  * Mapper for the FriendRequestGateway
@@ -18,8 +15,8 @@ import data_gateway.UserFriendRequestGateway;
 
 public class UserFriendRequestMapper {
 	
-	ArrayList<Integer> friendRequests;
-	//Map<Integer,Integer> friendRequestsMap = new HashMap<Integer, Integer>();
+	Map<Integer, Person> users = new HashMap<Integer, Person>();
+	Map<Integer, Integer> friendRequests = new HashMap<Integer, Integer>();
 	
 	/**
 	 * Inserts a FriendRequest into the database and the domain layer	
@@ -28,11 +25,11 @@ public class UserFriendRequestMapper {
 	 * @return
 	 * @throws SQLException
 	 */
-	public boolean insertFriendRequest(int userID, int friendRequestID) throws SQLException{
-		UserFriendRequestGateway.insertFriendRequest(userID,friendRequestID);
-		//friendRequestsMap.add(friendRequestID);
-		//friendRequestsMap.add(friendRequestID);
-		if (friendRequests != null && isValidFriendRequestIDInsert(userID, friendRequestID)){
+	public boolean insertFriendRequest(int userIDA, Person userA, int friendRequestIDB) throws SQLException{
+		if(isValidUserObject(userIDA, userA) && !isValidFriendRequestObject(friendRequestIDB))
+		{
+			friendRequests.put(userIDA, friendRequestIDB);
+			UserFriendRequestGateway.insertFriendRequest(userIDA, friendRequestIDB);
 			return true;
 		}
 		return false;
@@ -45,10 +42,11 @@ public class UserFriendRequestMapper {
 	 * @return
 	 * @throws SQLException
 	 */
-	public boolean removeFriendRequest(int userID, int friendRequestID) throws SQLException{
-		UserFriendRequestGateway.removeFriendRequest(userID,friendRequestID);
-		friendRequests.remove(friendRequestID);
-		if (friendRequests == null && !isValidFriendRequestIDInsert(userID, friendRequestID)){
+	public boolean removeFriendRequest(int userIDA, Person userA, int friendRequestIDB) throws SQLException{
+		if(isValidUserObject(userIDA, userA) && isValidFriendRequestObject(friendRequestIDB))
+		{
+			friendRequests.remove(friendRequestIDB);
+			UserFriendRequestGateway.removeFriendRequest(userIDA,friendRequestIDB);
 			return true;
 		}
 		return false;
@@ -61,11 +59,14 @@ public class UserFriendRequestMapper {
 	 * @return
 	 * @throws SQLException
 	 */
-	public boolean findOutgoingFriendRequests(int userID, int friendRequestID) throws SQLException{
-		UserFriendRequestGateway.findOutgoingFriendRequests(userID);
-		if (friendRequests.contains(friendRequestID) && isValidFriendRequestID(userID, friendRequestID)){
+	public boolean findOutgoingFriendRequests(int userIDA, Person userA, int friendRequestIDB) throws SQLException{
+		
+		if(isValidUserObject(userIDA, userA))
+		{
+			friendRequests.get(userIDA);
+			UserFriendRequestGateway.findOutgoingFriendRequests(userIDA);
 			return true;
-		} 
+		}
 		return false;
 	}
 	
@@ -76,44 +77,45 @@ public class UserFriendRequestMapper {
 	 * @return
 	 * @throws SQLException
 	 */
-	public boolean findIncomingFriendRequests(int userID, int friendRequestID) throws SQLException{
-		UserFriendRequestGateway.findIncomingFriendRequests(friendRequestID);
-		if (friendRequests.contains(userID) && isValidFriendRequestID(userID, friendRequestID)){
+	public boolean findIncomingFriendRequests(int userIDA, Person userA, int friendRequestIDB) throws SQLException{
+
+		if(isValidFriendRequestObject(userIDA))
+		{
+			friendRequests.get(friendRequestIDB);
+			UserFriendRequestGateway.findOutgoingFriendRequests(friendRequestIDB);
 			return true;
-		} 
+		}
 		return false;
 	}
 	
 	/**
-	 * Checks if the friendship of both users is listed in the PENDINGFRIENDREQUESTS table 
-	 * @param userID
+	 * Checks to make sure that the user object is listed in the users HashMap
+	 * @param userIDA
+	 * @param userA
 	 * @return
 	 * @throws SQLException
 	 */
-	private static boolean isValidFriendRequestIDInsert(int userIDA, int userIDB) throws SQLException
+	private boolean isValidUserObject(int userIDA, Person userA) throws SQLException
 	{
-		String checkUserIDA = new String("SELECT * FROM PENDINGFRIENDREQUESTS where UserIDA = '" + userIDA + "' and UserIDB = '" + userIDB + "';");
-		PreparedStatement stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(checkUserIDA);
-		ResultSet rs = stmt.executeQuery(checkUserIDA);
-		if (rs.next())
-			return false; // the userIDA is not located in the table
-		return true;
+		if(users.containsKey(userIDA) && users.containsValue(userA))
+		{
+			return true;
+		}
+		return false;
 	}
 	
 	/**
-	 * Checks if the friendship of both users is listed in the PENDINGFRIENDREQUESTS table 
-	 * @param userID
+	 * Checks to make sure that the friendRequest object is listed in the friendRequests HashMap
+	 * @param userIDA
 	 * @return
 	 * @throws SQLException
 	 */
-	private static boolean isValidFriendRequestID(int userIDA, int userIDB) throws SQLException
+	private boolean isValidFriendRequestObject(int userIDA) throws SQLException
 	{
-		String checkFriendship = new String("SELECT * FROM PENDINGFRIENDREQUESTS where UserIDA = '" + userIDA + "' and UserIDB = '" + userIDB + "';");
-//		String checkFriendship = new String("SELECT * FROM PENDINGFRIENDREQUESTS WHERE "
-//				+ "( UserIDA = '" + userIDA + "' AND UserIDB = '" + userIDB + "') OR "
-//				+ "( UserIDA = '" + userIDB + "' AND UserIDB = '" + userIDA + "');");
-		PreparedStatement stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(checkFriendship);
-		boolean result = stmt.execute();
-		return result;
+		if(friendRequests.containsKey(userIDA))
+		{
+			return true;
+		}
+		return false;
 	}
 }

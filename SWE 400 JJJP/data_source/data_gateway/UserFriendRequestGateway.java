@@ -59,7 +59,7 @@ public class UserFriendRequestGateway {
 	 */
 	public static boolean insertFriendRequest(int userA, int userB) throws SQLException
 	{
-		if (isValidUserID(userB) & isValidFriendRequestIDInsert(userA, userB))
+		if (isValidUserID(userB) & areValidFriendRequestIDS(userA, userB))
 		{
 			String insertData = new String("INSERT INTO PENDINGFRIENDREQUESTS(UserIDA, UserIDB) VALUES (?,?)");
 			PreparedStatement stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(insertData);
@@ -80,7 +80,8 @@ public class UserFriendRequestGateway {
 	 */
 	public static boolean removeFriendRequest(int userA, int userB) throws SQLException
 	{
-		if (isValidUserID(userA) & isValidFriendRequestID(userA, userB))
+
+		if (isValidUserID(userA) & areValidFriendRequestIDS(userA, userB))
 		{
 			String removeData = new String("DELETE FROM PENDINGFRIENDREQUESTS WHERE "
 					+ "( UserIDA = '" + userA + "' AND UserIDB = '" + userB + "') OR "
@@ -89,7 +90,7 @@ public class UserFriendRequestGateway {
 			stmt.executeUpdate();
 			return true;
 		}
-		return false;	
+		return false;
 	}
 	
 	/**
@@ -104,8 +105,9 @@ public class UserFriendRequestGateway {
 		String checkUserID = new String("SELECT * FROM USER where UserID = '" + userID + "';");
 		PreparedStatement stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(checkUserID);
 		ResultSet rs = stmt.executeQuery(checkUserID);
-		if (!rs.next())
-			return false; // the userID is not located in the table
+		if (!rs.next()){
+			return false;
+		}
 		return true;
 	}
 	
@@ -115,7 +117,7 @@ public class UserFriendRequestGateway {
 	 * @return
 	 * @throws SQLException
 	 */
-	private static boolean isValidFriendRequestIDInsert(int userIDA, int userIDB) throws SQLException
+	private static boolean areValidFriendRequestIDS(int userIDA, int userIDB) throws SQLException
 	{
 		String checkUserIDA = new String("SELECT * FROM PENDINGFRIENDREQUESTS where UserIDA = '" + userIDA + "' and UserIDB = '" + userIDB + "';");
 		PreparedStatement stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(checkUserIDA);
@@ -123,22 +125,5 @@ public class UserFriendRequestGateway {
 		if (rs.next())
 			return false; // the userIDA is not located in the table
 		return true;
-	}
-	
-	/**
-	 * Checks if the friendship of both users is listed in the PENDINGFRIENDREQUESTS table 
-	 * @param userID
-	 * @return
-	 * @throws SQLException
-	 */
-	private static boolean isValidFriendRequestID(int userIDA, int userIDB) throws SQLException
-	{
-		String checkFriendship = new String("SELECT * FROM PENDINGFRIENDREQUESTS where UserIDA = '" + userIDA + "' and UserIDB = '" + userIDB + "';");
-//		String checkFriendship = new String("SELECT * FROM PENDINGFRIENDREQUESTS WHERE "
-//				+ "( UserIDA = '" + userIDA + "' AND UserIDB = '" + userIDB + "') OR "
-//				+ "( UserIDA = '" + userIDB + "' AND UserIDB = '" + userIDA + "');");
-		PreparedStatement stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(checkFriendship);
-		boolean result = stmt.execute();
-		return result;
 	}
 }

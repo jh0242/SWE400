@@ -9,14 +9,16 @@ import data_gateway.UserFriendRequestGateway;
 
 public class UserFriendRequestTest {
 
+	int user1 = 1594;
+	int user2 = 1595;
+	int user3 = 1596;
+	
 	/**
 	 * Tests that a friendship request can be successfully added to the 
 	 * PENDINGFRIENDREQUEST table in the database
 	 */
 	@Test
-	public void testInsertFriend() throws SQLException {
-		int user1 = 1594;
-		int user2 = 1595;
+	public void testInsertFriend() throws SQLException {	
 		
 		assertTrue(UserFriendRequestGateway.insertFriendRequest(user1, user2));
 		assertFalse((UserFriendRequestGateway.insertFriendRequest(user1, user2)));
@@ -30,12 +32,10 @@ public class UserFriendRequestTest {
 	 */
 	@Test
 	public void testRemoveFriend() throws SQLException {
-		int user1 = 1594;
-		int user2 = 1595;
 		
 		assertTrue(UserFriendRequestGateway.insertFriendRequest(user1, user2));
 		assertTrue(UserFriendRequestGateway.removeFriendRequest(user2, user1));	
-//		assertFalse(UserFriendRequestGateway.removeFriendRequest(user2, user1));	
+//		assertTrue(UserFriendRequestGateway.removeFriendRequest(user2, user1));	
 	}
 	
 	/**
@@ -45,9 +45,6 @@ public class UserFriendRequestTest {
 	 */
 	@Test
 	public void testFindOutgoingFriend() throws SQLException {
-		int user1 = 1594;
-		int user2 = 1595;
-		int user3 = 1596;
 		
 		assertTrue(UserFriendRequestGateway.insertFriendRequest(user1, user2));
 		assertTrue(UserFriendRequestGateway.insertFriendRequest(user1, user3));
@@ -65,9 +62,6 @@ public class UserFriendRequestTest {
 	 */
 	@Test
 	public void testFindIncomingFriend() throws SQLException {
-		int user1 = 1594;
-		int user2 = 1595;
-		int user3 = 1596;
 		
 		assertTrue(UserFriendRequestGateway.insertFriendRequest(user1, user2));
 		assertTrue(UserFriendRequestGateway.insertFriendRequest(user3, user2));
@@ -77,6 +71,4 @@ public class UserFriendRequestTest {
 		assertTrue(UserFriendRequestGateway.removeFriendRequest(user2, user3));
 //		assertFalse(UserFriendRequestGateway.findIncomingFriendRequests(user2));
 	}
-	
-
 }
