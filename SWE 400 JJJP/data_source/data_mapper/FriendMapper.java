@@ -125,7 +125,8 @@ public class FriendMapper
 					return person.getFriends().get(i).getDisplayName();
 				}
 			}
-		}else if(friendsList.containsKey(person.getID())){
+		}
+		if(friendsList.containsKey(person.getID())){
 			ArrayList<Friend> list = (ArrayList<Friend>) friendsList.get(person.getID());
 			for(int i=0;i<list.size();i++)
 			{
