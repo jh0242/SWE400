@@ -38,7 +38,7 @@ public class FriendMapper
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public static ArrayList<Friend> getAllFriends(Person user)
+	public ArrayList<Friend> getAllFriends(Person user)
 	{	
 		if(!friendsList.containsKey(user.getID()))
 		{

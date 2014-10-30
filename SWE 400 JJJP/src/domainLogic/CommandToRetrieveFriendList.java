@@ -1,6 +1,9 @@
 package domainLogic;
 import java.util.ArrayList;
+
+import data_mapper.FriendMapper;
 import domain_model.Friend;
+import domain_model.Session;
 
 /**
  * Cause a user's friend list to be fetched from the domain model (may or may
@@ -30,8 +33,10 @@ public class CommandToRetrieveFriendList implements Command
 	@Override
 	public void execute()
 	{
-		// TODO Auto-generated method stub
-
+		if(Session.getInstance().getPerson().getID() == userID)
+		{
+			FriendMapper.getInstance().getAllFriends(Session.getInstance().getPerson());
+		}
 	}
 
 	/**
@@ -41,8 +46,7 @@ public class CommandToRetrieveFriendList implements Command
 	@Override
 	public ArrayList<Friend> getResult()
 	{
-		// TODO Auto-generated method stub
-		return null;
+		return Session.getInstance().getPerson().getFriends();
 	}
 
 }
