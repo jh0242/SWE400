@@ -18,9 +18,9 @@ public class SessionTest
 	public void testSessionCreation() {
 		Session s = Session.getInstance();
 		Person p = s.getPerson();
-		assertNull(p);
 		p = new Person(1337);
 		s.setPerson(p);
 		assertNotNull(s.getPerson());
+		assertEquals(s.getPerson().getID(), 1337);
 	}
 }

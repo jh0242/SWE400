@@ -9,7 +9,7 @@ public class FriendRequest
 	private String sender;
 	private String receiver;
 	
-	FriendRequest(String s, String r) {
+	public FriendRequest(String s, String r) {
 		sender = s;
 		receiver = r;
 	}

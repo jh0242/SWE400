@@ -1,5 +1,11 @@
 package domainLogic;
 
+import java.util.ArrayList;
+
+import domain_model.FriendRequest;
+import domain_model.Person;
+import domain_model.Session;
+
 /**
  * Cause the list of friend requests from other user to this user to be fetched
  * from the domain model (may or may not cause reading from the DB depending on
@@ -12,6 +18,7 @@ public class CommandToGetPendingIncomingFriendList implements Command
 {
 
 	private int userID;
+	private ArrayList<FriendRequest> incomingRequests;
 
 	/**
 	 * The userID of the current user
@@ -31,7 +38,10 @@ public class CommandToGetPendingIncomingFriendList implements Command
 	@Override
 	public void execute()
 	{
-		// TODO Auto-generated method stub
+		Person p = Session.getInstance().getPerson();
+		if (p.getID() == userID) {
+			incomingRequests = p.getFriendRequests();
+		}
 	}
 
 	/**
@@ -42,8 +52,16 @@ public class CommandToGetPendingIncomingFriendList implements Command
 	@Override
 	public String getResult()
 	{
-		// TODO Auto-generated method stub
-		return null;
+		String ret = "";
+		boolean addSpace = false;
+		for (FriendRequest x : incomingRequests) {
+			if (addSpace) {
+				ret = ret + ", ";
+			}
+			ret = ret + x.getSender();
+			addSpace = true;
+		}
+		return ret;
 	}
 
 	/**

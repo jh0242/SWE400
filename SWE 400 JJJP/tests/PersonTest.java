@@ -121,5 +121,14 @@ public class PersonTest
 		assertNotNull(x);
 		
 	}
-
+	
+	/**
+	 * Test new outgoing friend requests.
+	 */
+	@Test
+	public void testOutgoingFriendRequest() {
+		Person p1 = new Person(0);
+		assertTrue(p1.newOutgoingFriendRequest("test"));
+		assertFalse(p1.newOutgoingFriendRequest("test")); // Fail if duplicate
+	}
 }

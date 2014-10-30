@@ -16,24 +16,6 @@ public class Person extends DomainObject
 	String userName;    // Unique username e.g.: xXxJavaLordxXx
 	String password;    // Passwords aren't protected. We're Sony now.
 	boolean updated;
-	
-	/**
-	 * @return Getter for updated boolean
-	 */
-	public boolean isUpdated()
-	{
-		return updated;
-	}
-
-	/**
-	 * 
-	 * @param updated Setter for updated boolean
-	 */
-	public void setUpdated(boolean updated)
-	{
-		this.updated = updated;
-	}
-
 	/**
 	 * Lazy-loaded field. Be sure to use getFriends()
 	 */
@@ -72,6 +54,23 @@ public class Person extends DomainObject
 		this.userName = username;
 		this.displayName = displayname;
 		this.password = password;
+	}
+	
+	/**
+	 * @return Getter for updated boolean
+	 */
+	public boolean isUpdated()
+	{
+		return updated;
+	}
+
+	/**
+	 * 
+	 * @param updated Setter for updated boolean
+	 */
+	public void setUpdated(boolean updated)
+	{
+		this.updated = updated;
 	}
 	
 	/**
@@ -285,6 +284,27 @@ public class Person extends DomainObject
 	 */
 	public boolean denyFriendRequest(String uname){
 		return removeFriendRequest(uname);
+	}
+	
+	/**
+	 * Send a new friend request to someone. Put it in this person's outgoing list.
+	 * @param target A person.
+	 * @return Success on true.
+	 */
+	public boolean newOutgoingFriendRequest(String target) {
+		boolean success = true;
+		
+		this.getFriendRequestsOutgoing();
+		
+		for (FriendRequest x : friendRequestsOutgoing) {
+			if (x.getReceiver().equals(target)) {
+				success = false;
+				break;
+			}
+		}
+		friendRequestsOutgoing.add(new FriendRequest(this.userName, target));
+		
+		return success;
 	}
 	
 	/**
