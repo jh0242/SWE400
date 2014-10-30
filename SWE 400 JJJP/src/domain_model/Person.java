@@ -104,6 +104,7 @@ public class Person extends DomainObject
 	public void setDisplayName(String name)
 	{
 		this.displayName = name;
+		Session.getInstance().getUnitOfWork().registerDirty(this);
 	}
 
 	/**

@@ -1,4 +1,8 @@
 package domainLogic;
+
+import domain_model.Person;
+import domain_model.Session;
+
 /**
  * Used to change information associated with a person (at this point, only the display name)
  * @author merlin
@@ -28,7 +32,8 @@ public class CommandToModifyUser implements Command
 	@Override
 	public void execute()
 	{
-		// TODO Auto-generated method stub
+		Person p = Session.getInstance().getPerson();
+		p.setDisplayName(newDisplayName);
 	}
 
 	/**
@@ -40,7 +45,6 @@ public class CommandToModifyUser implements Command
 	@Override
 	public Object getResult()
 	{
-		// TODO Auto-generated method stub
 		return null;
 	}
 }
