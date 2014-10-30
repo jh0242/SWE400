@@ -3,10 +3,12 @@ package domain_model;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import data_mapper.FriendMapper;
+
 /**
  * @author Patrick Joseph Flanagan
  * @author John Terry
- *
+ * @author Josh McMillen
  */
 public class Person extends DomainObject
 {
@@ -126,9 +128,9 @@ public class Person extends DomainObject
 	public ArrayList<Friend> getFriends()
 	{
 		// This is where loading should occur.
-		// TODO: actually make it load from somewhere.
 		if (friends == null) {
 			friends = new ArrayList<Friend>();
+			FriendMapper.getAllFriends(this);
 		}
 		return friends;
 	}

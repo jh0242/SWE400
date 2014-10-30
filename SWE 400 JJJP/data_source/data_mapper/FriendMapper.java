@@ -2,7 +2,6 @@ package data_mapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 import data_gateway.FriendGateway;
 import data_gateway.PersonGateway;
@@ -23,17 +22,18 @@ public class FriendMapper
 	{		
 		try{
 			ResultSet results = FriendGateway.getFriends(user.getID());
-			ArrayList<String> friends =	new ArrayList<String>();
 			while(results.next())
 			{
-				Friend friend = new Friend(null);
+				Friend friend;
 				if(results.getInt(1)!= user.getID())
-				{						
+				{	
+					friend = new Friend(FriendMapper.getFriendName(results.getInt(1), user));
 					friend.setID(results.getInt(1));
 					
 				}else
 				{
-					friends.add(results.getInt(2)+"");
+					friend = new Friend(FriendMapper.getFriendName(results.getInt(2), user));
+					friend.setID(results.getInt(2));
 				}
 				user.addFriend(friend);
 			}
@@ -49,7 +49,7 @@ public class FriendMapper
 	 * @param userID
 	 * @param friend
 	 */
-	public boolean removeFriend(Person user, int friendID)
+	public static boolean removeFriend(Person user, int friendID)
 	{
 		try{
 			FriendGateway.removeFriendship(user.getID(),friendID);

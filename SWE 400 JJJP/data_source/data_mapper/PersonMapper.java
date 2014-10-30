@@ -31,12 +31,6 @@ public class PersonMapper
 		}
 	}
 	
-	public String getDisplayName(int userID) throws SQLException
-	{
-		ResultSet result = PersonGateway.getUserName(userID);
-		return result.getString(1);
-	}
-	
 	/**
 	 * @param userName
 	 * @param password
