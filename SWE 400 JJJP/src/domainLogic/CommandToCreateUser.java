@@ -45,14 +45,7 @@ public class CommandToCreateUser implements Command
 	@Override
 	public void execute()
 	{
-		try 
-		{
-			person = PersonMapper.insert(userName, password, displayName);
-		} catch (SQLException e) 
-		{
-			System.out.println("Failure in CommandToCreateUser.");
-			e.printStackTrace();
-		}
+		person = PersonMapper.insert(userName, password, displayName);
 	}
 	
 	/**

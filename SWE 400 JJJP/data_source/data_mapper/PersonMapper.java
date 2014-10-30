@@ -151,7 +151,7 @@ public class PersonMapper
 	 * @return person if the insert is successful, else return false.
 	 * @throws SQLException
 	 */
-	public static Person insert(String userName, String password, String displayName) throws SQLException
+	public static Person insert(String userName, String password, String displayName)
 	{
 		if (!checkUserLoaded(userName))
 		{

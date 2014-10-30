@@ -28,7 +28,7 @@ public class CommandToCreateUserTest
 	 * @throws SQLException
 	 */
 	@After
-	public void removeUser() throws SQLException
+	public void removeUser()
 	{
 		PersonGateway.removeByUserName(userName);
 	}
@@ -39,7 +39,7 @@ public class CommandToCreateUserTest
 	 * @throws SQLException
 	 */
 	@Test
-	public void testCreateUser() throws SQLException
+	public void testCreateUser()
 	{
 		CommandToCreateUser command = new CommandToCreateUser(userName, "pass", "display");
 		assertNull(command.getResult());

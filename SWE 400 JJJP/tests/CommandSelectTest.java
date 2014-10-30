@@ -37,13 +37,7 @@ public class CommandSelectTest
 	 */
 	@After
 	public void cleanUp() {
-		try
-		{
-			PersonGateway.removeByUserName("Selectman");
-		} catch (SQLException e)
-		{
-			e.printStackTrace();
-		}
+		PersonGateway.removeByUserName("Selectman");
 	}
 
 }

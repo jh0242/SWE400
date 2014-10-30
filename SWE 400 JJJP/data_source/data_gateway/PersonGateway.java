@@ -23,17 +23,24 @@ public class PersonGateway
 	 * @return boolean true if the insert succeeded or false if the insert did not succeed.
 	 * @throws SQLException
 	 */
-	public static boolean insert(String userName, String password, String displayName) throws SQLException
+	public static boolean insert(String userName, String password, String displayName)
 	{
-		if (!userNameIsInTable(userName))
+		try 
 		{
-			String insertData = new String("INSERT INTO USER (UserName,Password,DisplayName) VALUES (?,?,?)");
-			PreparedStatement stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(insertData);
-			stmt.setString(1, userName);
-			stmt.setString(2, password);
-			stmt.setString(3, displayName);
-			stmt.executeUpdate();
-			return true;
+			if (!userNameIsInTable(userName))
+			{
+				String insertData = new String("INSERT INTO USER (UserName,Password,DisplayName) VALUES (?,?,?)");
+				PreparedStatement stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(insertData);
+				stmt.setString(1, userName);
+				stmt.setString(2, password);
+				stmt.setString(3, displayName);
+				stmt.executeUpdate();
+				return true;
+			}
+		} catch (SQLException e) 
+		{
+			System.out.println("Error on inserting a new user to the database in PersonGateway.");
+			e.printStackTrace();
 		}
 		return false;
 	}
@@ -45,14 +52,25 @@ public class PersonGateway
 	 * @return the user's unique id number if the userName and password is valid, else -1.
 	 * @throws SQLException
 	 */
-	public static int getID(String userName, String password) throws SQLException
+	public static int getID(String userName, String password)
 	{
 		String selectUser = new String("SELECT * FROM USER where UserName = '" + userName + "' AND Password = '" + password + "';");
-		PreparedStatement stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(selectUser);
-		ResultSet rs = stmt.executeQuery(selectUser);
-		if (!rs.next())
-			return -1;
-		return rs.getInt(rs.findColumn("UserID"));
+		PreparedStatement stmt;
+		ResultSet rs;
+		int id = -1;
+		try 
+		{
+			stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(selectUser);
+			rs = stmt.executeQuery(selectUser);
+			if (!rs.next())
+				return id;
+			id = rs.getInt(rs.findColumn("UserID"));
+		} catch (SQLException e) 
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return id;
 	}
 	
 	/**
@@ -115,7 +133,7 @@ public class PersonGateway
 			}
 		} catch (SQLException e) 
 		{
-			System.out.println("Delete User Failed!");
+			System.out.println("removeByUserName Failed!");
 			e.printStackTrace();
 		}
 		return false;
@@ -168,13 +186,22 @@ public class PersonGateway
 	 * @return true if the User is in the table, false if the User is not in the table.
 	 * @throws SQLException
 	 */
-	public static boolean userNameIsInTable(String userName) throws SQLException
+	public static boolean userNameIsInTable(String userName)
 	{
 		String checkUniqueUserName = new String("SELECT * FROM USER where UserName = '" + userName + "';");
-		PreparedStatement stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(checkUniqueUserName);
-		ResultSet rs = stmt.executeQuery(checkUniqueUserName);
-		if (!rs.next())
-			return false;
+		PreparedStatement stmt;
+		ResultSet rs;
+		try 
+		{
+			stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(checkUniqueUserName);
+			rs = stmt.executeQuery(checkUniqueUserName);
+			if (!rs.next())
+				return false;
+		} catch (SQLException e) 
+		{
+			System.out.println();
+			e.printStackTrace();
+		}
 		return true;
 	}
 	
