@@ -58,7 +58,7 @@ public class UserFriendRequestGateway {
 			String insertData = new String("INSERT INTO PENDINGFRIENDREQUESTS(UserIDA, UserIDB) VALUES (?,?)");
 			PreparedStatement stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(insertData);
 			stmt.setInt(1, userA);
-			stmt.setInt(2, userB);
+			stmt.setInt(2, userB); 
 			stmt.executeUpdate();
 			return true;
 		}
