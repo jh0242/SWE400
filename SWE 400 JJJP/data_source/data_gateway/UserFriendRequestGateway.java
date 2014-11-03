@@ -21,11 +21,20 @@ public class UserFriendRequestGateway
 	 * @return
 	 * @throws SQLException
 	 */
-	public static ResultSet findOutgoingFriendRequests(int user) throws SQLException
+	public static ResultSet findOutgoingFriendRequests(String user)
 	{
 		String findData = new String("SELECT * FROM PENDINGFRIENDREQUESTS WHERE Requester='" + user + "';");
-		PreparedStatement stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(findData);
-		ResultSet outgoingFriendRequests = stmt.executeQuery();
+		PreparedStatement stmt;
+		ResultSet outgoingFriendRequests = null;
+		try 
+		{
+			stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(findData);
+			outgoingFriendRequests = stmt.executeQuery();
+		} catch (SQLException e) 
+		{
+			System.out.println("Error with MySQL syntax in findOutGoingFriendRequests!");
+			e.printStackTrace();
+		}
 		return outgoingFriendRequests;
 	}
 
@@ -37,11 +46,20 @@ public class UserFriendRequestGateway
 	 * @return
 	 * @throws SQLException
 	 */
-	public static ResultSet findIncomingFriendRequests(int user) throws SQLException
+	public static ResultSet findIncomingFriendRequests(String user)
 	{
 		String findData = new String("SELECT * FROM PENDINGFRIENDREQUESTS WHERE Requestee='" + user + "';");
-		PreparedStatement stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(findData);
-		ResultSet incomingFriendRequests = stmt.executeQuery();
+		PreparedStatement stmt;
+		ResultSet incomingFriendRequests = null;
+		try 
+		{
+			stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(findData);
+		incomingFriendRequests = stmt.executeQuery();
+		} catch (SQLException e) 
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return incomingFriendRequests;
 	}
 

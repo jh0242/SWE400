@@ -1,5 +1,8 @@
 import static org.junit.Assert.*;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -8,7 +11,7 @@ import data_gateway.PersonGateway;
 import data_gateway.UserFriendRequestGateway;
 
 
-public class UserFriendRequestTest 
+public class UserFriendRequestGatewayTest 
 {
 	private String requester, requestee;
 	
@@ -31,6 +34,7 @@ public class UserFriendRequestTest
 	@After
 	public void remove()
 	{
+		UserFriendRequestGateway.removeFriendRequest(requester, requestee);
 		PersonGateway.removeByUserName(requester);
 		PersonGateway.removeByUserName(requestee);
 	}
@@ -45,7 +49,6 @@ public class UserFriendRequestTest
 	{
 		assertTrue(UserFriendRequestGateway.insertFriendRequest(requester, requestee));
 		assertFalse(UserFriendRequestGateway.insertFriendRequest(requester, requestee));
-		UserFriendRequestGateway.removeFriendRequest(requester, requestee);
 	}
 	
 	/**
@@ -72,5 +75,38 @@ public class UserFriendRequestTest
 		UserFriendRequestGateway.insertFriendRequest(requester, requestee);
 		assertTrue(UserFriendRequestGateway.removeFriendRequest(requester, requestee));
 		assertFalse(UserFriendRequestGateway.removeFriendRequest(requester, requestee));
+	}
+	
+	/**
+	 * Tests that findOutGoingFriendRequests
+	 */
+	@Test
+	public void testFindOutGoingFriendRequests()
+	{
+		assertFalse(checkResultSet(UserFriendRequestGateway.findOutgoingFriendRequests(requester)));
+		UserFriendRequestGateway.insertFriendRequest(requester, requestee);
+		assertTrue(checkResultSet(UserFriendRequestGateway.findOutgoingFriendRequests(requester)));
+	}
+	
+	@Test
+	public void testFindIncomingFriendRequests()
+	{
+		assertFalse(checkResultSet(UserFriendRequestGateway.findIncomingFriendRequests(requestee)));
+		UserFriendRequestGateway.insertFriendRequest(requester, requestee);
+		assertTrue(checkResultSet(UserFriendRequestGateway.findIncomingFriendRequests(requestee)));
+		
+	}
+	
+	private boolean checkResultSet(ResultSet rs)
+	{
+		try 
+		{
+			return rs.next();
+		} catch (SQLException e) 
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
 	}
 }

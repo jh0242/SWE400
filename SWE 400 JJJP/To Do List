@@ -1,0 +1,5 @@
+isPendingFriendRequest in UserFriendRequestGateway does not check if the requestee has
+	already made a friend request to the requester.
+	
+UserFriendRequestGateway is only at 84.8% coverage due to not testing for
+sql exceptions in the methods.
