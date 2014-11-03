@@ -49,7 +49,7 @@ public class DataBaseConnection
 	 */
 	public Connection getConnection() throws SQLException
 	{
-		if (conn == null)
+		if (conn == null || conn.isClosed())
 		{
 			conn = DriverManager.getConnection(LOCATION, LOGIN_NAME, PASSWORD);
 		}

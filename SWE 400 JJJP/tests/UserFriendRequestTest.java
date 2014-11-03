@@ -1,74 +1,76 @@
 import static org.junit.Assert.*;
 
-import java.sql.SQLException;
-
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
+import data_gateway.PersonGateway;
 import data_gateway.UserFriendRequestGateway;
 
 
-public class UserFriendRequestTest {
-
-	int user1 = 1594;
-	int user2 = 1595;
-	int user3 = 1596;
+public class UserFriendRequestTest 
+{
+	private String requester, requestee;
 	
 	/**
-	 * Tests that a friendship request can be successfully added to the 
-	 * PENDINGFRIENDREQUEST table in the database
+	 * Creates two unique users for the tests in this class and inserts them
+	 * into the USER table.
 	 */
-	@Test
-	public void testInsertFriend() throws SQLException {	
-		
-		assertTrue(UserFriendRequestGateway.insertFriendRequest(user1, user2));
-		assertFalse((UserFriendRequestGateway.insertFriendRequest(user1, user2)));
-		assertTrue(UserFriendRequestGateway.removeFriendRequest(user2, user1));	
+	@Before
+	public void create()
+	{
+		requester = ((int) (Math.random() * 100000)) + "";
+		requestee = ((int) (Math.random() * 100000)) + "";
+		PersonGateway.insert(requester, "password", "display");
+		PersonGateway.insert(requestee, "password", "display");
 	}
 	
 	/**
-	 * Tests that a friendship request can be successfully removed from the 
-	 * PENDINGFRIENDREQUEST table in the database
-	 * @throws SQLException
+	 * Removes the two unique users created for testing purposes.
 	 */
-	@Test
-	public void testRemoveFriend() throws SQLException {
-		
-		assertTrue(UserFriendRequestGateway.insertFriendRequest(user1, user2));
-		assertTrue(UserFriendRequestGateway.removeFriendRequest(user2, user1));	
-//		assertTrue(UserFriendRequestGateway.removeFriendRequest(user2, user1));	
+	@After
+	public void remove()
+	{
+		PersonGateway.removeByUserName(requester);
+		PersonGateway.removeByUserName(requestee);
 	}
 	
 	/**
-	 * Tests that all outgoing friend requests for a user can be retrieved 
-	 * from the PENDINGFRIENDREQUEST table in the database
-	 * @throws SQLException
+	 * Tests that insertFriendRequest can add a valid friend request relationship
+	 * into PENDINGFRIENDREQUESTS and that trying to add the exact same row into
+	 * the table will not be valid and the method will not add the row and return false.
 	 */
 	@Test
-	public void testFindOutgoingFriend() throws SQLException {
-		
-		assertTrue(UserFriendRequestGateway.insertFriendRequest(user1, user2));
-		assertTrue(UserFriendRequestGateway.insertFriendRequest(user1, user3));
-		
-		assertTrue(UserFriendRequestGateway.findOutgoingFriendRequests(user1));
-		assertTrue(UserFriendRequestGateway.removeFriendRequest(user2, user1));
-		assertTrue(UserFriendRequestGateway.removeFriendRequest(user3, user1));	
-//		assertFalse(UserFriendRequestGateway.findOutgoingFriendRequests(user1));
+	public void testInsertFriendRequest()
+	{
+		assertTrue(UserFriendRequestGateway.insertFriendRequest(requester, requestee));
+		assertFalse(UserFriendRequestGateway.insertFriendRequest(requester, requestee));
+		UserFriendRequestGateway.removeFriendRequest(requester, requestee);
 	}
 	
 	/**
-	 * Tests that all incoming friend requests for a user can be retrieved 
-	 * from the PENDINGFRIENDREQUEST table in the database
-	 * @throws SQLException
+	 * Tests that trying to add a friend request relationship will not happen if
+	 * the user name does not exist in the USER table.
 	 */
 	@Test
-	public void testFindIncomingFriend() throws SQLException {
-		
-		assertTrue(UserFriendRequestGateway.insertFriendRequest(user1, user2));
-		assertTrue(UserFriendRequestGateway.insertFriendRequest(user3, user2));
-		
-		assertTrue(UserFriendRequestGateway.findIncomingFriendRequests(user2));
-		assertTrue(UserFriendRequestGateway.removeFriendRequest(user2, user1));	
-		assertTrue(UserFriendRequestGateway.removeFriendRequest(user2, user3));
-//		assertFalse(UserFriendRequestGateway.findIncomingFriendRequests(user2));
+	public void testInvalidInsertFriendRequest()
+	{
+		assertFalse(UserFriendRequestGateway.insertFriendRequest(requester, "false"));
+		assertFalse(UserFriendRequestGateway.insertFriendRequest("false", requestee));
+		assertFalse(UserFriendRequestGateway.insertFriendRequest("false", "false"));
+	}
+	
+	/**
+	 * Tests that removeFriendRequest removes a friend request relationship whenever
+	 * the relationship exists in the PENDINGFRIENDREQUESTS table.  If the
+	 * relationship does not exist, then it is detected and the method returns
+	 * false to denote that the relationship did not exist.
+	 */
+	@Test
+	public void testRemoveFriendRequest()
+	{
+		UserFriendRequestGateway.insertFriendRequest(requester, requestee);
+		assertTrue(UserFriendRequestGateway.removeFriendRequest(requester, requestee));
+		assertFalse(UserFriendRequestGateway.removeFriendRequest(requester, requestee));
 	}
 }

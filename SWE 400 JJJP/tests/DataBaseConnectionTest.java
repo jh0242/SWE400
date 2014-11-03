@@ -1,14 +1,9 @@
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.concurrent.BrokenBarrierException;
-import java.util.concurrent.CyclicBarrier;
-
 import org.junit.Test;
 
 import data_gateway.DataBaseConnection;
-import data_gateway.PersonGateway;
 
 /**
  * 
