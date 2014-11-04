@@ -1,6 +1,4 @@
 package domainLogic;
-import java.sql.SQLException;
-
 import data_mapper.PersonMapper;
 import domain_model.Person;
 

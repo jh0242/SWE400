@@ -33,7 +33,9 @@ public class CommandToModifyUser implements Command
 	public void execute()
 	{
 		Person p = Session.getInstance().getPerson();
-		p.setDisplayName(newDisplayName);
+		if (p.getID() == this.userID) {
+			p.setDisplayName(newDisplayName);
+		}
 	}
 
 	/**
