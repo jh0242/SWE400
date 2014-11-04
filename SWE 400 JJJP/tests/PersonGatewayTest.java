@@ -12,6 +12,11 @@ import org.junit.Test;
 import data_gateway.DataBaseConnection;
 import data_gateway.PersonGateway;
 
+/**
+ * @author JJJP
+ * Tests for the PersonGateway.
+ *
+ */
 public class PersonGatewayTest 
 {
 	private String userName;
