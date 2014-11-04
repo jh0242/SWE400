@@ -36,13 +36,7 @@ public class CommandToSelectUser implements Command
 	{
 		
 		Person p = null;
-		try
-		{
-			p = PersonMapper.getPerson(this.userName, this.password);
-		} catch (SQLException e)
-		{
-			e.printStackTrace();
-		}
+		p = PersonMapper.getPerson(this.userName, this.password); 
 		if (p != null) {
 			Session.getInstance().setPerson(p);
 		}
