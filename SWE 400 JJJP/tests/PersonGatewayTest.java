@@ -125,4 +125,12 @@ public class PersonGatewayTest
 		assertEquals("newDisplayName", getCurrentDisplayName());
 		assertFalse(PersonGateway.updateDisplayName(999999999, "newDisplayName"));
 	}
+	
+	@Test
+	public void testGetID()
+	{
+		assertEquals(-1, PersonGateway.getID("false", "false"));
+		PersonGateway.insert(userName, "password", "displayName");
+		assertEquals(1594, PersonGateway.getID("userA", "123"));
+	}
 }

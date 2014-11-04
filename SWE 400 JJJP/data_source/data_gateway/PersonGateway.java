@@ -39,7 +39,7 @@ public class PersonGateway
 			}
 		} catch (SQLException e) 
 		{
-			System.out.println("Error on inserting a new user to the database in PersonGateway.");
+			System.out.println("Error with MySQL syntax in insert!");
 			e.printStackTrace();
 		}
 		return false;
@@ -67,7 +67,7 @@ public class PersonGateway
 			id = rs.getInt(rs.findColumn("UserID"));
 		} catch (SQLException e) 
 		{
-			// TODO Auto-generated catch block
+			System.out.println("Error with MySQL syntax in getID!");
 			e.printStackTrace();
 		}
 		return id;
@@ -83,35 +83,24 @@ public class PersonGateway
 	 * or the password is incorrect.
 	 * @throws SQLException
 	 */
-	public static ResultSet selectUser(String userName, String password) throws SQLException
+	public static ResultSet selectUser(String userName, String password)
 	{
 		String selectUser = new String("SELECT * FROM USER where UserName = '" + userName + "' AND Password = '" + password + "';");
-		PreparedStatement stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(selectUser);
-		ResultSet rs = stmt.executeQuery(selectUser);
-		if (!rs.next())
-			return null;
+		PreparedStatement stmt;
+		ResultSet rs = null;
+		try
+		{
+			stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(selectUser);
+			rs = stmt.executeQuery(selectUser);
+			if (!rs.next())
+				return null;
+		} catch (SQLException e)
+		{
+			System.out.println("Error with MySQL syntax in selectUser!");
+			e.printStackTrace();
+		}
 		return rs;
 	}
-
-//	/**
-//	 * Checks that the userID is in the database.  If the userID is in the database, that row is
-//	 * deleted from the database and return true.  If the userID is not in the database, return
-//	 * false to alert of an unsuccessful remove due to an invalid userID.
-//	 * @param userID, the id of the user making the request
-//	 * @return boolean, whether or not the 
-//	 * @throws SQLException
-//	 */
-//	public static boolean removeByUserID(int userID) throws SQLException
-//	{
-//		if (userIDisInTable(userID))
-//		{
-//			String removeUser = new String("DELETE FROM PERSON where UserID = '" + userID + "';");
-//			PreparedStatement stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(removeUser);
-//			stmt.executeUpdate();
-//			return true;
-//		}
-//		return false;
-//	}
 	
 	/**
 	 * Checks that the userName is in the table.  If the userName is in the table, that row
@@ -133,7 +122,7 @@ public class PersonGateway
 			}
 		} catch (SQLException e) 
 		{
-			System.out.println("removeByUserName Failed!");
+			System.out.println("Error with MySQL syntax in removeByUserName!");
 			e.printStackTrace();
 		}
 		return false;
@@ -148,13 +137,21 @@ public class PersonGateway
 	 * @return boolean true if the update is successful, false if the update is unsuccessful
 	 * @throws SQLException
 	 */
-	public static boolean updateDisplayName(int userID, String newDisplayName) throws SQLException
+	public static boolean updateDisplayName(int userID, String newDisplayName)
 	{
 		if (userIDisInTable(userID))
 		{
 			String removeUser = new String("UPDATE USER set DisplayName = '" + newDisplayName + "' where UserID = '" + userID + "';");
-			PreparedStatement stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(removeUser);
-			stmt.executeUpdate();
+			PreparedStatement stmt;
+			try
+			{
+				stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(removeUser);
+				stmt.executeUpdate();
+			} catch (SQLException e)
+			{
+				System.out.println("Error with MySQL syntax in updateDisplayName!");
+				e.printStackTrace();
+			}
 			return true;
 		}
 		return false;
@@ -168,13 +165,22 @@ public class PersonGateway
 	 * @return true if the User is in the table, false if the User is not in the table.
 	 * @throws SQLException
 	 */
-	private static boolean userIDisInTable(int userID) throws SQLException
+	private static boolean userIDisInTable(int userID)
 	{
 		String checkValidUserID = new String("SELECT * FROM USER where UserID = '" + userID + "';");
-		PreparedStatement stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(checkValidUserID);
-		ResultSet rs = stmt.executeQuery(checkValidUserID);
-		if (!rs.next())
-			return false;
+		PreparedStatement stmt;
+		ResultSet rs = null;
+		try
+		{
+			stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(checkValidUserID);
+			rs = stmt.executeQuery(checkValidUserID);
+			if (!rs.next())
+				return false;
+		} catch (SQLException e)
+		{
+			System.out.println("Error with MySQL syntax in userIDisInTable!");
+			e.printStackTrace();
+		}
 		return true;
 	}
 
@@ -199,23 +205,9 @@ public class PersonGateway
 				return false;
 		} catch (SQLException e) 
 		{
-			System.out.println();
+			System.out.println("Error with MySQL syntax in userNameIsInTable!");
 			e.printStackTrace();
 		}
 		return true;
-	}
-	
-	/**
-	 * Gets the row with the associated userID
-	 * @param userID of the user.
-	 * @return ResultSet of the associated userID.
-	 * @throws SQLException
-	 */
-	public static ResultSet getUserName(int userID) throws SQLException
-	{
-		String getUserName = new String("SELECT UserName FROM USER where UserID = '" + userID + "';");
-		PreparedStatement stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(getUserName);
-		ResultSet rs = stmt.executeQuery(getUserName);
-		return rs;
 	}
 }

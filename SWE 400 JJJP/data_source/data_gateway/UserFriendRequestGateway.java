@@ -57,7 +57,7 @@ public class UserFriendRequestGateway
 		incomingFriendRequests = stmt.executeQuery();
 		} catch (SQLException e) 
 		{
-			// TODO Auto-generated catch block
+			System.out.println("Error with MySQL syntax in findIncomingFriendRequests!");
 			e.printStackTrace();
 		}
 		return incomingFriendRequests;
@@ -87,7 +87,7 @@ public class UserFriendRequestGateway
 			}
 		} catch (SQLException e)
 		{
-			System.out.println("InsertFriendRequest has failed!");
+			System.out.println("Error with MySQL syntax in insertFriendRequest!");
 			e.printStackTrace();
 		}
 		return false;
