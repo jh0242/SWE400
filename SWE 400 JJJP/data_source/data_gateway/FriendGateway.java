@@ -12,20 +12,28 @@ public class FriendGateway
 {
 	/**
 	 * Executes the insertion of a row in FRIENDS with the corresponding userIDs
-	 * @param userIDa
-	 * @param userIDb
+	 * @param userNameA
+	 * @param userNameB
 	 * @return
 	 * @throws SQLException
 	 */
-	public static boolean insertFriend(int userIDa, int userIDb) throws SQLException
+	public static boolean insertFriend(String userNameA, String userNameB)
 	{
-		if (!areFriends(userIDa,userIDb))
+		if (!areFriends(userNameA,userNameB))
 		{
-			String insertFriends = new String("INSERT INTO FRIENDS (UserIDA,UserIDB) VALUES (?,?)");
-			PreparedStatement stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(insertFriends);
-			stmt.setInt(1, userIDa);
-			stmt.setInt(2, userIDb);
-			stmt.executeUpdate();
+			String insertFriends = new String("INSERT INTO FRIENDS (UserNameA,UserNameB) VALUES (?,?)");
+			PreparedStatement stmt;
+			try
+			{
+				stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(insertFriends);
+				stmt.setString(1, userNameA);
+				stmt.setString(2, userNameB);
+				stmt.executeUpdate();
+			} catch (SQLException e)
+			{
+				System.out.println("Error with MySQL syntax in insertFriend!");
+				e.printStackTrace();
+			}
 			return true;
 		}
 		return false;
@@ -33,75 +41,103 @@ public class FriendGateway
 
 	/**
 	 * Executes the removal of a FRIENDS row where both COLUMNS contain either of the corresponding userIDs
-	 * @param userIDa userId of requesting User
-	 * @param userIDb userID of friend User
+	 * @param userNameA userId of requesting User
+	 * @param userNameB userID of friend User
 	 * @return
 	 * @throws SQLException
 	 */
-	public static boolean removeFriendship(int userIDa, int userIDb) throws SQLException
+	public static boolean removeFriendship(String userNameA, String userNameB)
 	{
-		if (areFriends(userIDa,userIDb))
+		try
 		{
-			String removeFriends = new String("DELETE FROM FRIENDS WHERE "
-					+ "( UserIDA = '" + userIDa + "' AND UserIDB = '" + userIDb + "') OR "
-					+ "( UserIDA = '" + userIDb + "' AND UserIDB = '" + userIDa + "');");
-			PreparedStatement stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(removeFriends);
-			stmt.executeUpdate();
-			return true;
+			if (areFriends(userNameA,userNameB))
+			{
+				String removeFriends = new String("DELETE FROM FRIENDS WHERE "
+						+ "( UserNameA = '" + userNameA + "' AND UserNameB = '" + userNameB + "') OR "
+						+ "( UserNameA = '" + userNameB + "' AND UserNameB = '" + userNameA + "');");
+				PreparedStatement stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(removeFriends);
+				stmt.executeUpdate();
+				return true;
+			}
+		} catch (SQLException e)
+		{
+			System.out.println("Error with MySQL syntax in removeFriendship!");
+			e.printStackTrace();
 		}
 		return false;
 	}
 	
 	/**
 	 * Executes the removal of All Friendships for a user
-	 * @param userID
+	 * @param userName
 	 * @return True upon completion of removal of Friendships
 	 * @throws SQLException
 	 */
-	public static boolean removeAllFriendships(int userID) throws SQLException
+	public static boolean removeAllFriendships(String userName)
 	{
 		String removeFriends = new String("DELETE FROM FRIENDS WHERE "
-				+ "( UserIDA = '" + userID + "' OR UserIDB = '" + userID + "');");
-		PreparedStatement stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(removeFriends);
-		stmt.executeUpdate();
+				+ "( UserNameA = '" + userName + "' OR UserNameB = '" + userName + "');");
+		PreparedStatement stmt;
+		try
+		{
+			stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(removeFriends);
+			stmt.executeUpdate();
+		} catch (SQLException e)
+		{
+			System.out.println("Error with MySQL syntax in removeAllFriendShips!");
+			e.printStackTrace();
+		}
 		return true;	
 	}
 
 	/**
 	 * Returns Object of Friends related to userID
-	 * @param userID
+	 * @param userName
 	 * @return
 	 * @throws SQLException
 	 */
-	public static ResultSet getFriends(int userID) throws SQLException
+	public static ResultSet getFriends(String userName)
 	{
 		String getFriends = new String("SELECT * FROM FRIENDS WHERE "
-				+ "( UserIDA = '" + userID + "' OR UserIDB = '" + userID + "');");
-		PreparedStatement stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(getFriends);
-		ResultSet friends = stmt.executeQuery();		
+				+ "( UserNameA = '" + userName + "' OR UserNameB = '" + userName + "');");
+		PreparedStatement stmt;
+		ResultSet friends = null;
+		try
+		{
+			stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(getFriends);
+			friends = stmt.executeQuery();
+		} catch (SQLException e)
+		{
+			System.out.println("Error with MySQL syntax in getFriends!");
+			e.printStackTrace();
+		}		
 		return friends;
 	}
 		
 	/**
 	 * Checks if there is a friendship between two users in database
-	 * @param userIDa
-	 * @param userIDb
+	 * @param userNameA
+	 * @param userNameB
 	 * @return
 	 * @throws SQLException
 	 */
-	public static boolean areFriends(int userIDa,int userIDb) throws SQLException
+	public static boolean areFriends(String userNameA, String userNameB)
 	{
-		String checkAreFriends = new String("SELECT UserIDA FROM FRIENDS WHERE "
-				+ "( UserIDA = '" + userIDa + "' AND UserIDB = '" + userIDb + "') OR "
-				+ "( UserIDA = '" + userIDb + "' AND UserIDB = '" + userIDa + "');");
-		PreparedStatement stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(checkAreFriends);
-		ResultSet result = stmt.executeQuery();
-		if(!result.isBeforeFirst())
+		String checkAreFriends = new String("SELECT UserNameA FROM FRIENDS WHERE "
+				+ "( UserNameA = '" + userNameA + "' AND UserNameB = '" + userNameB + "') OR "
+				+ "( UserNameA = '" + userNameB + "' AND UserNameB = '" + userNameA + "');");
+		PreparedStatement stmt;
+		try
 		{
-			return false;
-		}else
+			stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(checkAreFriends);
+			ResultSet result = stmt.executeQuery();
+			if(!result.isBeforeFirst())
+				return false;
+		} catch (SQLException e)
 		{
-			return true;
+			System.out.println("Error with MySQL syntax in areFriends!");
+			e.printStackTrace();
 		}
+		return true;
 	}
 }

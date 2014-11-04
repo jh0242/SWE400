@@ -4,9 +4,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import data_gateway.FriendGateway;
+import data_gateway.PersonGateway;
 
 /**
  * @author Josh McMillen
@@ -14,86 +17,122 @@ import data_gateway.FriendGateway;
  */
 public class FriendGatewayTest
 {
-	/** 
-	 * Checks Functionality of Friends Gateway
-	 * These Tests Require that Test Users Exist in USER table with UserID's
-	 * 					1594, 1595, & 1596
-	 * @throws SQLException
+	private String userA, userB;
+	
+	/**
+	 * Creates a userA and userB for each test method in
+	 * this class and inserts them into the USER table
+	 * to satisfy the foreign key restraints in FRIENDS
+	 * table.
 	 */
-	
-	// Checks Basic Operations Work
-	@Test
-	public void functionsTest() throws SQLException
+	@Before()
+	public void create()
 	{
-		// Check Friendship does not exist
-		assertFalse(FriendGateway.areFriends(1594,1595));
-		
-		// Add Friendship
-		FriendGateway.insertFriend(1594,1595);
-		
-		// Check Friendship Exists
-		assertTrue(FriendGateway.areFriends(1594,1595));
-		
-		// Return Friendslist
-		ResultSet result = FriendGateway.getFriends(1594);
-		ResultSet result2 = FriendGateway.getFriends(1595);
-		result.next();
-		result2.next();
-		assertEquals(1595,result.getInt(2));
-		assertEquals(1594,result2.getInt(1));
-		// Remove Friendship
-		FriendGateway.removeFriendship(1594,1595);
-		
-		// Check Friendship does not exist
-		assertFalse(FriendGateway.areFriends(1594,1595));
+		userA = ((int) (Math.random() * 100000)) + "";
+		userB = ((int) (Math.random() * 100000)) + "";
+		PersonGateway.insert(userA, "password", "display");
+		PersonGateway.insert(userB, "password", "display");
 	}
 	
-	// Checks Duplicate Friendships Are Not Added To Database
-	@Test
-	public void checkDuplicates() throws SQLException
+	/**
+	 * Remove the friendship relationships and users
+	 * that are used for testing purposes only.
+	 */
+	@After
+	public void remove()
 	{
-		// Insert Friendship
-		FriendGateway.insertFriend(1594,1595);
-		
-		// Check That Duplicate Friendship Can Not Be Added
-		assertFalse(FriendGateway.insertFriend(1594,1595));
-		
-		// Check That Reverse Friendship Can Not Be Added
-		assertFalse(FriendGateway.insertFriend(1595,1594));
-		FriendGateway.removeFriendship(1594,1595);
+		FriendGateway.removeAllFriendships(userA);
+		PersonGateway.removeByUserName(userA);
+		PersonGateway.removeByUserName(userB);
 	}
 	
-	// Checks Users Can Have Multiple Friends
+	/**
+	 * Tests that insertFriend will successfully insert the
+	 * friendship of the two users specified by user names in
+	 * the parameters and return true if the insert was successful
+	 * or false if the insert was unsuccessful.  If unsuccessful,
+	 * the friendship already exists.
+	 */
 	@Test
-	public void checkMultipleFriends() throws SQLException
+	public void testInsertFriend()
 	{
-		// Insert Multiple Friendships
-		FriendGateway.insertFriend(1594,1595);
-		FriendGateway.insertFriend(1594,1596);
-		FriendGateway.insertFriend(1596,1595);
-		
-		// Store ResultSet for Testing
-		ResultSet user1594 = FriendGateway.getFriends(1594);
-		user1594.next();
-		ResultSet user1595 = FriendGateway.getFriends(1595);
-		user1595.next();
-		ResultSet user1596 = FriendGateway.getFriends(1596);
-		user1596.next();
-		
-		// Assert Multiple Friendships Exist
-		/*assertTrue(user1594.getInt(2)==1595);
-		assertTrue(user1594.getInt(2)==1596);
-		assertTrue(user1595.getInt(1)==1596);
-		assertTrue(user1596.getInt(2)==1594);
-		assertTrue(user1596.getInt(1)==1595);*/
-		System.out.println(user1594.getInt(2));
-		System.out.println(user1595.getInt(2));
-		System.out.println(user1596.getInt(2));
-		
-		// Remove Friendships
-		FriendGateway.removeAllFriendships(1594);
-		FriendGateway.removeAllFriendships(1595);
-		FriendGateway.removeAllFriendships(1596);
+		assertTrue(FriendGateway.insertFriend(userA, userB));
+		assertFalse(FriendGateway.insertFriend(userA, userB));
+		assertFalse(FriendGateway.insertFriend(userB, userA));
 	}
-
+	
+	/**
+	 * Tests that areFriends returns true if the friendship of
+	 * the two user names are in the table or false if they
+	 * are not in the table.
+	 */
+	@Test
+	public void testAreFriends()
+	{
+		assertFalse(FriendGateway.areFriends(userA, userB));
+		FriendGateway.insertFriend(userA, userB);
+		assertTrue(FriendGateway.areFriends(userA, userB));
+	}
+	
+	/**
+	 * Tests that removeFriendship will remove the friendship of
+	 * the two users specified in the parameters and return true
+	 * if it was successful or false if it was unsuccessful.
+	 */
+	@Test
+	public void testRemoveFriendship()
+	{
+		assertFalse(FriendGateway.areFriends(userA, userB));
+		assertFalse(FriendGateway.removeFriendship(userA, userB));
+		FriendGateway.insertFriend(userA, userB);
+		assertTrue(FriendGateway.areFriends(userA, userB));
+		assertTrue(FriendGateway.removeFriendship(userA, userB));
+		assertFalse(FriendGateway.areFriends(userA, userB));
+	}
+	
+	/**
+	 * Tests that removeAllFriendships removes all of the friendships
+	 * associated with the user name passed in the parameter.  It
+	 * should remove all friendships where the user is in column 1 or 2
+	 * of any row.
+	 */
+	@Test
+	public void testRemoveAllFriendships()
+	{
+		String userC = ((int) (Math.random() * 100000)) + "";
+		PersonGateway.insert(userC, "password", "display");
+		FriendGateway.insertFriend(userA, userB);
+		FriendGateway.insertFriend(userA, userC);
+		assertTrue(FriendGateway.removeAllFriendships(userA));
+		assertFalse(FriendGateway.areFriends(userA, userB));
+		assertFalse(FriendGateway.areFriends(userA, userC));
+		PersonGateway.removeByUserName(userC);
+	}
+	
+	/**
+	 * Tests that getFriends returns the ResultSet that contains
+	 * all of the friends associated with the user name passed
+	 * into the parameter.
+	 */
+	@Test
+	public void testGetFriends()
+	{
+		String userC = ((int) (Math.random() * 100000)) + "";
+		PersonGateway.insert(userC, "password", "display");
+		FriendGateway.insertFriend(userA, userB);
+		FriendGateway.insertFriend(userC, userA);
+		ResultSet rs = FriendGateway.getFriends(userA);
+		int i = 0;
+		try
+		{
+			while (rs.next())
+				assertTrue((rs.getString(1).equals(userA) && rs.getString(2).equals(userB)) || (rs.getString(1).equals(userC) && rs.getString(2).equals(userA)));
+		} catch (SQLException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		FriendGateway.removeAllFriendships(userA);
+		PersonGateway.removeByUserName(userC);
+	}
 }
