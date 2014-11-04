@@ -1,7 +1,5 @@
 import static org.junit.Assert.*;
 
-import java.sql.SQLException;
-
 import org.junit.After;
 import org.junit.Test;
 

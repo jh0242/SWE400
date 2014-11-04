@@ -1,7 +1,5 @@
 import static org.junit.Assert.*;
 
-import java.sql.SQLException;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,6 +8,10 @@ import data_gateway.PersonGateway;
 import domainLogic.CommandToCreateUser;
 
 
+/**
+ * @author JJJP
+ *
+ */
 public class CommandToCreateUserTest 
 {
 	private String userName;
@@ -25,7 +27,6 @@ public class CommandToCreateUserTest
 	
 	/**
 	 * Removes the user from the table after we are done testing.
-	 * @throws SQLException
 	 */
 	@After
 	public void removeUser()
@@ -36,7 +37,6 @@ public class CommandToCreateUserTest
 	/**
 	 * Tests that CommandToCreateUser's execute method actually creates a
 	 * new user when called.
-	 * @throws SQLException
 	 */
 	@Test
 	public void testCreateUser()

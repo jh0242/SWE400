@@ -12,6 +12,9 @@ import data_gateway.DataBaseConnection;
  */
 public class DataBaseConnectionTest 
 {
+	/**
+	 * @throws SQLException SQL errors are handled elsewhere.
+	 */
 	@Test
 	public void testInitializeConnection() throws SQLException 
 	{
