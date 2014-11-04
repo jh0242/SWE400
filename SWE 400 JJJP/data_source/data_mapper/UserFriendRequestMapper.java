@@ -12,8 +12,6 @@ import data_gateway.PersonGateway;
 import data_gateway.UserFriendRequestGateway;
 import domain_model.Friend;
 import domain_model.FriendRequest;
-import domain_model.FriendRequestIncoming;
-import domain_model.FriendRequestOutgoing;
 import domain_model.Person;
 
 /**
@@ -23,87 +21,91 @@ import domain_model.Person;
  * @author Joshua McMillen
  */
 
-public class UserFriendRequestMapper {
-	
+public class UserFriendRequestMapper
+{
+
 	private static UserFriendRequestMapper userFriendRequestMapper;
-	
-	private UserFriendRequestMapper(){}
-	
+
+	private UserFriendRequestMapper()
+	{
+	}
+
 	/**
-	 * Checks to make sure that there is an instance of a UserFriendRequest Mapper
+	 * Checks to make sure that there is an instance of a UserFriendRequest
+	 * Mapper
+	 * 
 	 * @return
 	 */
 	public static UserFriendRequestMapper getInstance()
 	{
-		if(userFriendRequestMapper == null)
+		if (userFriendRequestMapper == null)
 		{
 			userFriendRequestMapper = new UserFriendRequestMapper();
 		}
 		return userFriendRequestMapper;
 	}
-	
+
 	// Hash Map that stores the friend request list
-	private static Map<Integer, List<FriendRequest>> FriendRequestsList = new HashMap<Integer,List<FriendRequest>>();
-	
+	private static Map<String, List<String>> FriendRequestsList = new HashMap<String, List<String>>();
+
 	/**
-	 * Returns the list outgoing friend requests for the user in the domain layer and in the database
+	 * Returns the list outgoing friend requests for the user in the domain
+	 * layer and in the database
+	 * 
 	 * @param user
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
-	public static ArrayList<FriendRequest> getAllFriendRequests(Person user) throws SQLException
-	{	
-		if(!FriendRequestsList.containsKey(user.getID()))
+	public static ArrayList<String> getAllOutgoingFriendRequests(Person user)
+	{
+		if (!FriendRequestsList.containsKey(user.getUsername()))
+			loadFriendRequestsList(user);
+		return (ArrayList<String>) FriendRequestsList.get(user.getUsername());
+	}
+
+	public static void loadFriendRequestsList(Person user)
+	{
+		FriendRequestsList.put(user.getUsername(), new ArrayList<String>());
+		ResultSet results = UserFriendRequestGateway.findOutgoingFriendRequests(user.getUsername());
+		try
 		{
-			ArrayList<FriendRequest> List = new ArrayList<FriendRequest>();
-			ResultSet results = UserFriendRequestGateway.findOutgoingFriendRequests(user.getID());
-			while(results.next())
-			{
-				FriendRequest friendRequest;
-				if(results.getInt(1)!= user.getID())
-				{	
-					friendRequest = new FriendRequest(UserFriendRequestMapper.getSenderName(results.getInt(1), user), List);
-					friendRequest.setID(results.getInt(1));
-					
-				}else
-				{
-					friendRequest = new FriendRequest(UserFriendRequestMapper.getSenderName(results.getInt(2), user), List);
-					friendRequest.setID(results.getInt(2));
-				}
-				List.add(friendRequest);
-			}
-				FriendRequestsList.put(user.getID(), List);
-		
-		return (ArrayList<FriendRequest>) FriendRequestsList.get(user.getID());
+			while (results.next())
+				FriendRequestsList.get(user.getUsername()).add(results.getString(results.findColumn("UserNameB")));
+		} catch (SQLException e)
+		{
+			System.out.println("Error in getAllOutgoingFriendRequests!");
+			e.printStackTrace();
 		}
 	}
-	
+
 	/**
-	 * Removes the outgoing friend request from the domain layer and the database
+	 * Removes the outgoing friend request from the domain layer and the
+	 * database
+	 * 
 	 * @param user
 	 * @param friendRequestID
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
 	public static boolean removeOutgoingFriendRequest(Person user, int friendRequestID)
 	{
-		try{
-			UserFriendRequestGateway.removeFriendRequest(user.getID(),friendRequestID);
-			if(!user.getFriendRequests().isEmpty()){
-				for(int i=0;i<user.getFriends().size();i++)
+		try
+		{
+			UserFriendRequestGateway.removeFriendRequest(user.getID(), friendRequestID);
+			if (!user.getFriendRequests().isEmpty())
+			{
+				for (int i = 0; i < user.getFriends().size(); i++)
 				{
-					if(user.getFriendRequests().get(i).getID()==friendRequestID)
+					if (user.getFriendRequests().get(i).getID() == friendRequestID)
 					{
 						user.getFriendRequests().remove(i);
 					}
 				}
 			}
-			if(FriendRequestsList.containsKey(user.getID()))
+			if (FriendRequestsList.containsKey(user.getID()))
 			{
 				ArrayList<FriendRequest> list = (ArrayList<FriendRequest>) FriendRequestsList.get(user.getID());
-				for(int i=0;i<list.size();i++)
+				for (int i = 0; i < list.size(); i++)
 				{
-					if(list.get(i).getID() == friendRequestID)
+					if (list.get(i).getID() == friendRequestID)
 					{
 						list.remove(i);
 					}
@@ -111,80 +113,91 @@ public class UserFriendRequestMapper {
 				FriendRequestsList.put(user.getID(), list);
 			}
 			return true;
-		} catch (SQLException e){
-			System.out.println("Could Not Remove Outgoing Friend Request");			
+		} catch (SQLException e)
+		{
+			System.out.println("Could Not Remove Outgoing Friend Request");
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Inserts the friend request into the domain layer and the database
+	 * 
 	 * @param user
-	 * @param friendRequestID
+	 * @param friendRequestUsername
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
-	public static boolean insertFriendRequest(Person user, int friendRequestID)
+	public static boolean insertFriendRequest(Person user, String friendRequestUsername)
 	{
-		try{
-			UserFriendRequestGateway.insertFriendRequest(user.getID(),friendRequestID);
-			if(!user.getFriendRequestsOutgoing().contains(friendRequestID)){
-				for(int i=0;i<user.getFriendRequestsOutgoing().size();i++)
-				{
-					if(user.getFriendRequestsOutgoing().get(i).getID()==friendRequestID)
-					{
-						user.getFriendRequestsOutgoing().add(i, (FriendRequest) FriendRequestsList);
-					}
-				}
-			}
-			if(FriendRequestsList.containsKey(user.getID()))
-			{
-				ArrayList<FriendRequest> list = (ArrayList<FriendRequest>) FriendRequestsList.get(user.getID());
-				for(int i=0;i<list.size();i++)
-				{
-					if(list.get(i).getID() == friendRequestID)
-					{
-						list.add(i, (FriendRequest) FriendRequestsList);
-					}
-				}
-				FriendRequestsList.put(user.getID(), list);
-			}
+		if (!FriendRequestsList.containsKey(user.getUsername()))
+			loadFriendRequestsList(user);
+		
+		if (!FriendRequestsList.get(user.getUsername()).contains(friendRequestUsername))
+		{
+			UserFriendRequestGateway.insertFriendRequest(user.getUsername(), friendRequestUsername);
+			FriendRequestsList.get(user.getUsername()).add(friendRequestUsername);
 			return true;
-		} catch (SQLException e){
-			System.out.println("Could Not Insert Outgoing Friend Request");			
 		}
 		return false;
+		
+//		if (!user.getFriendRequestsOutgoing().contains(friendRequestUsername))
+//		{
+//			for (int i = 0; i < user.getFriendRequestsOutgoing().size(); i++)
+//			{
+//				if (user.getFriendRequestsOutgoing().get(i).getReceiver() == friendRequestUsername)
+//				{
+//					user.getFriendRequestsOutgoing().add(i, (FriendRequest) FriendRequestsList);
+//				}
+//			}
+//		}
+//		if (FriendRequestsList.containsKey(user.getUsername()))
+//		{
+//			ArrayList<FriendRequest> list = (ArrayList<FriendRequest>) FriendRequestsList.get(user.getUsername());
+//			for (int i = 0; i < list.size(); i++)
+//			{
+//				if (list.get(i).getReceiver() == friendRequestUsername)
+//				{
+//					list.add(i, (FriendRequest) FriendRequestsList);
+//				}
+//			}
+//			FriendRequestsList.put(user.getUsername(), list);
+//		}
+//		return true;
+//		return false;
 	}
-	
+
 	/**
-	 * Checks that the senderID exists in the User object, friendsList object and the database
+	 * Checks that the senderID exists in the User object, friendsList object
+	 * and the database
+	 * 
 	 * @param senderID
 	 * @param person
 	 * @return
 	 * @throws SQLException
 	 */
-	public static String getSenderName(int senderID,Person person) throws SQLException
+	public static String getSenderName(int senderID, Person person)
 	{
-		if(!person.getFriendRequests().isEmpty())
+		if (!person.getFriendRequests().isEmpty())
 		{
-			for(int i=0;i<person.getFriendRequests().size();i++)
+			for (int i = 0; i < person.getFriendRequests().size(); i++)
 			{
-				if(person.getFriendRequests().get(i).getID()==senderID)
+				if (person.getFriendRequests().get(i).getID() == senderID)
 				{
 					return person.getFriendRequests().get(i).getSender();
 				}
 			}
-		}else if(FriendRequestsList.containsKey(person.getID())){
+		} else if (FriendRequestsList.containsKey(person.getID()))
+		{
 			ArrayList<FriendRequest> list = (ArrayList<FriendRequest>) FriendRequestsList.get(person.getID());
-			for(int i=0;i<list.size();i++)
+			for (int i = 0; i < list.size(); i++)
 			{
-				if(list.get(i).getID()==senderID)
+				if (list.get(i).getID() == senderID)
 				{
 					return list.get(i).getSender();
 				}
 			}
-		}		
-		ResultSet result = PersonGateway.getUserName(senderID);
+		}
+		ResultSet result = PersonGateway.getUsername(senderID);
 		return result.getString(1);
 	}
 }
