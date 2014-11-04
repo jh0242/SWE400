@@ -34,7 +34,7 @@ public class PersonMapper
 	 * 		-- returns null if user Does not Exist
 	 * @throws SQLException
 	 */
-	public static Person getPerson(String userName,String password) throws SQLException
+	public static Person getPerson(String userName,String password)
 	{
 		if(checkUserLoaded(userName)){
 			return users.get(userName);
@@ -49,13 +49,21 @@ public class PersonMapper
 	 * @return New Domain Object :: Person
 	 * @throws SQLException
 	 */
-	private static Person loadUser(String userName,String password) throws SQLException
+	private static Person loadUser(String userName,String password)
 	{
 		ResultSet record = PersonGateway.selectUser(userName,password);
-		Person loadedUser = new Person(record.getInt("UserID"));
-		loadedUser.setDisplayName(record.getString("DisplayName"));
-		loadedUser.setPassword(record.getString("Password"));
-		loadedUser.setUsername(record.getString("UserName"));
+		Person loadedUser = null;
+		try 
+		{
+			loadedUser = new Person(record.getInt("UserID"));
+			loadedUser.setDisplayName(record.getString("DisplayName"));
+			loadedUser.setPassword(record.getString("Password"));
+			loadedUser.setUsername(record.getString("UserName"));
+		} catch (SQLException e) 
+		{
+			System.out.println("An error occurred in loadUser!");
+			e.printStackTrace();
+		}
 		users.put(userName, loadedUser);
 		System.out.println("correct");
 		return loadedUser;
@@ -80,7 +88,7 @@ public class PersonMapper
 	 * returns True if operation Succeeds, False if not
 	 * @throws SQLException 
 	 */
-	public static boolean removeUser(String userName,String password) throws SQLException
+	public static boolean removeUser(String userName,String password)
 	{
 		if(users.containsKey(userName)){
 			if(users.get(userName).getPassword() == password){
@@ -102,7 +110,7 @@ public class PersonMapper
 	 * @return true on success and false if user does not exist
 	 * @throws SQLException
 	 */
-	public static boolean updateDisplayName(String userName,String password, String display) throws SQLException
+	public static boolean updateDisplayName(String userName,String password, String display)
 	{
 		if(checkUserLoaded(userName))
 		{
@@ -129,7 +137,7 @@ public class PersonMapper
 	 * @return true upon completion
 	 * @throws SQLException
 	 */
-	public static boolean persistUpdates() throws SQLException
+	public static boolean persistUpdates()
 	{
 		for(Entry<String, Person> entry : users.entrySet())
 		{
