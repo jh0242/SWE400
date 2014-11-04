@@ -1,4 +1,8 @@
 package domainLogic;
+
+import domain_model.Person;
+import domain_model.Session;
+
 /**
  * Reject a friend request from one user to another
  * @author merlin
@@ -30,7 +34,10 @@ public class CommandToRejectFriendRequest implements Command
 	@Override
 	public void execute()
 	{
-		// TODO Auto-generated method stub
+		Person p = Session.getInstance().getPerson();
+		if (p.getID() == userIDOfRequestee) {
+			p.denyFriendRequest(userNameOfRequester);
+		}
 
 	}
 
