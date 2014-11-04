@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 
 import data_gateway.FriendGateway;
-import data_gateway.PersonGateway;
 import domain_model.Friend;
 import domain_model.Person;
 /**
@@ -19,6 +18,7 @@ public class FriendMapper
 {
 		
 	private static FriendMapper friendMapper;
+	private static Map<String, List<Friend>> friendsList = new HashMap<String,List<Friend>>();
 	
 	private FriendMapper()
 	{
@@ -35,9 +35,7 @@ public class FriendMapper
 			friendMapper = new FriendMapper();
 		}
 		return friendMapper;
-	}
-	
-	private static Map<Integer, List<Friend>> friendsList = new HashMap<Integer,List<Friend>>();
+	}	
 	
 	/**
 	 * Get complete List of User's Friends
@@ -46,103 +44,65 @@ public class FriendMapper
 	 */
 	public ArrayList<Friend> getAllFriends(Person user)
 	{	
-		if(!friendsList.containsKey(user.getID()))
+		if(!friendsList.containsKey(user.getUsername()))
 		{
 			try{
 				ArrayList<Friend> list = new ArrayList<Friend>();
-				ResultSet results = FriendGateway.getFriends(user.getID());
+				ResultSet results = FriendGateway.getFriends(user.getUsername());
 				while(results.next())
 				{
 					Friend friend;
-					if(results.getInt(1)!= user.getID())
+					if(!results.getString(1).equals(user.getUsername()))
 					{	
-						friend = new Friend(getFriendName(results.getInt(1), user));
+						friend = new Friend(results.getString(1));
 						friend.setID(results.getInt(1));
 						
 					}else
 					{
-						friend = new Friend(getFriendName(results.getInt(2), user));
+						friend = new Friend(results.getString(2));
 						friend.setID(results.getInt(2));
 					}
 					list.add(friend);
 				}
-				friendsList.put(user.getID(), list);
+				friendsList.put(user.getUsername(), list);
 			}catch (SQLException e){
 				System.out.println("Friends Could Not Be Reached");
 			}
 		}
-		return (ArrayList<Friend>) friendsList.get(user.getID());
+		return (ArrayList<Friend>) friendsList.get(user.getUsername());
 	}
 	
 	/**
 	 * Removes Friend from both database and domain	
 	 * @param user unique user object from PersonMapper
-	 * @param friendID requested id of Friend
+	 * @param friendUserName requested id of Friend
 	 * @return true upon completion of try, false if not 
 	 */
-	public boolean removeFriend(Person user, int friendID)
+	public boolean removeFriend(Person user, String friendUserName)
 	{
-		try{
-			FriendGateway.removeFriendship(user.getID(),friendID);
-			if(!user.getFriends().isEmpty()){
-				for(int i=0;i<user.getFriends().size();i++)
-				{
-					if(user.getFriends().get(i).getID()==friendID)
-					{
-						user.getFriends().remove(i);
-					}
-				}
-			}
-			if(friendsList.containsKey(user.getID()))
+		
+		if(!user.getFriends().isEmpty()){
+			for(int i=0;i<user.getFriends().size();i++)
 			{
-				ArrayList<Friend> list = (ArrayList<Friend>) friendsList.get(user.getID());
-				for(int i=0;i<list.size();i++)
+				if(user.getFriends().get(i).getUserName().equals(friendUserName))
 				{
-					if(list.get(i).getID() == friendID)
-					{
-						list.remove(i);
-					}
+					user.getFriends().remove(i);
 				}
-				friendsList.put(user.getID(), list);
 			}
-			return true;
-		} catch (SQLException e){
-			System.out.println("Could Not Remove Friend");			
 		}
-		return false;
-	}
-	
-	/**
-	 * Checks User Object, then FriendsList object, then Database for friendID
-	 * @param friendID
-	 * @param person
-	 * @return String of Friend Name
-	 * @throws SQLException
-	 */
-	public String getFriendName(int friendID,Person person) throws SQLException
-	{
-		if(!person.getFriends().isEmpty())
+		if(friendsList.containsKey(user.getUsername()))
 		{
-			for(int i=0;i<person.getFriends().size();i++)
-			{
-				if(person.getFriends().get(i).getID()==friendID)
-				{
-					return person.getFriends().get(i).getDisplayName();
-				}
-			}
-		}
-		if(friendsList.containsKey(person.getID())){
-			ArrayList<Friend> list = (ArrayList<Friend>) friendsList.get(person.getID());
+			ArrayList<Friend> list = (ArrayList<Friend>) friendsList.get(user.getUsername());
 			for(int i=0;i<list.size();i++)
 			{
-				if(list.get(i).getID()==friendID)
+				if(list.get(i).getUserName().equals(friendUserName))
 				{
-					return list.get(i).getDisplayName();
+					list.remove(i);
 				}
 			}
-		}		
-		ResultSet result = PersonGateway.getUserName(friendID);
-		return result.getString(1);
+			friendsList.put(user.getUsername(), list);
+		}
+		return FriendGateway.removeFriendship(user.getUsername(),friendUserName);
 	}
 	
 	/** 
@@ -158,14 +118,8 @@ public class FriendMapper
 		if(!list.contains(friend))
 		{
 			list.add(friend);
-			friendsList.put(person.getID(), list);
-		}
-		try {
-			FriendGateway.insertFriend(person.getID(),friend.getID());
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return false;
-		}		
-		return true;
+			friendsList.put(person.getUsername(), list);
+		}			
+		return FriendGateway.insertFriend(person.getUsername(),friend.getUserName());
 	}
 }
