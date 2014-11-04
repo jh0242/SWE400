@@ -1,5 +1,4 @@
 package domainLogic;
-import java.sql.SQLException;
 
 import domain_model.Person;
 import domain_model.Session;
