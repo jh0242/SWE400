@@ -1,4 +1,8 @@
 package domainLogic;
+
+import domain_model.Person;
+import domain_model.Session;
+
 /**
  * Cancels a friend request between two users
  * @author merlin
@@ -30,7 +34,10 @@ public class CommandToUnFriend implements Command
 	@Override
 	public void execute()
 	{
-		// TODO Auto-generated method stub
+		Person p = Session.getInstance().getPerson();
+		if (p.getID() == userIDOfRequester) {
+			p.deleteFriendByUsername(userNameOfRequestee);
+		}
 
 	}
 

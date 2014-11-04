@@ -69,6 +69,19 @@ public class PersonTest
 	}
 	
 	/**
+	 * Make sure one can also delete friends by username
+	 */
+	@Test
+	public void testDeleteFriendByUsername() {
+		Person p1 = new Person(0);
+		Friend f = new Friend("Dave");
+		p1.addFriend(f);
+		assertEquals(1, p1.getFriends().size());
+		p1.deleteFriendByUsername("Dave");
+		assertEquals(0, p1.getFriends().size());
+	}
+	
+	/**
 	 * Test friend confirmation.
 	 * TODO: test will change when we have people being loaded
 	 * from the database.

@@ -159,7 +159,7 @@ public class Person extends DomainObject
 	
 	/**
 	 * Removes a friend from the friendslist in this person.
-	 * @param f A person instance. Will fail if it's this person.
+	 * @param f Some friend instance.
 	 * @return true on success, false on failure. Will fail if the friend is not on this list.
 	 */
 	public boolean deleteFriend(Friend f) {
@@ -169,6 +169,25 @@ public class Person extends DomainObject
 			friends.remove(f);
 			status = true;
 			Session.getInstance().getUnitOfWork().registerRemoved(f);
+		}
+		return status;
+	}
+	
+	/**
+	 * Remove a friend by their username (which is unique)
+	 * @param friendtodelete The username of a friend you want to remove.
+	 * @return True if this friend was removed; false if they were not or not found.
+	 */
+	public boolean deleteFriendByUsername(String friendtodelete) {
+		boolean status = false;
+		if (friends == null) getFriends();
+		Iterator<Friend> i = friends.iterator();
+		while (i.hasNext() && status == false) {
+			Friend x = i.next();
+			if (x.getUserName().equals(friendtodelete)) {
+				i.remove();
+				status = true;
+			}
 		}
 		return status;
 	}
