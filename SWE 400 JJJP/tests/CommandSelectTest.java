@@ -27,7 +27,7 @@ public class CommandSelectTest
 		create.execute();
 		sel.execute();
 		assertNotNull(sel.getResult());
-		assertEquals(sel.getResult(), "Selectman");
+		assertEquals(sel.getResult().getUsername(), "Selectman");
 	}
 	
 	/**
