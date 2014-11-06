@@ -26,7 +26,7 @@ public class CommandToGetPendingIncomingFriendListTest
 		p.receiveFriendRequest("second");
 		CommandToGetPendingIncomingFriendList c = new CommandToGetPendingIncomingFriendList(0);
 		c.execute();
-		assertEquals(c.getResult(), "first, second");
+		assertEquals(c.getResult(), "first,second");
 	}
 
 }
