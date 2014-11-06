@@ -2,6 +2,8 @@ package domain_model;
 
 /**
  * @author Patrick Flanagan
+ * A friend request has a sender and receiver.
+ * It's an extremely simple mapping of username -> username.
  *
  */
 public class FriendRequest extends DomainObject
