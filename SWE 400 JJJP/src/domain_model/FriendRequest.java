@@ -8,16 +8,31 @@ package domain_model;
  */
 public class FriendRequest extends DomainObject
 {
-	private String sender;
-	private String receiver;
+	private String senderUsername;
+	private String senderDisplayName;
+	private String receiverUsername;
+	private String receiverDisplayName;
 	
 	/**
 	 * @param s Sender
 	 * @param r Receiver
 	 */
 	public FriendRequest(String s, String r) {
-		sender = s;
-		receiver = r;
+		senderUsername = s;
+		receiverUsername = r;
+	}
+	
+	/**
+	 * @param sUsername Sender Username
+	 * @param sDisplayname Sender Displayname
+	 * @param rUsername Receiver Username
+	 * @param rDisplayname Receiver Displayname
+	 */
+	public FriendRequest(String sUsername, String sDisplayname, String rUsername, String rDisplayname) {
+		senderUsername = sUsername;
+		senderDisplayName = sDisplayname;
+		receiverUsername = rUsername;
+		receiverDisplayName = rDisplayname;
 	}
 	
 	/**
@@ -25,7 +40,15 @@ public class FriendRequest extends DomainObject
 	 * @return sender
 	 */
 	public String getSender() {
-		return sender;
+		return senderUsername;
+	}
+	
+	/**
+	 * Getter for sender's display name
+	 * @return senderDisplayName
+	 */
+	public String getSenderDisplayName() {
+		return senderDisplayName;
 	}
 	
 	/**
@@ -33,6 +56,14 @@ public class FriendRequest extends DomainObject
 	 * @return receiver
 	 */
 	public String getReceiver() {
-		return receiver;
+		return receiverUsername;
+	}
+	
+	/**
+	 * Getter for receiver
+	 * @return receiverDisplayName
+	 */
+	public String getReceiverDisplayName() {
+		return receiverDisplayName;
 	}
 }
