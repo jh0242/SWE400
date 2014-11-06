@@ -44,9 +44,16 @@ public class CommandToRetrieveFriendList implements Command
 	 * @see Command#getResult()
 	 */
 	@Override
-	public ArrayList<Friend> getResult()
+	public String getResult()
 	{
-		return Session.getInstance().getPerson().getFriends();
+		String ret = "";
+		for (Friend x : Session.getInstance().getPerson().getFriends()) {
+			if (!ret.equals("")) {
+				ret = ret + " ";
+			}
+			ret = ret + x.getUserName();
+		}
+		return ret;
 	}
 
 }
