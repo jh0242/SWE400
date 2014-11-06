@@ -5,8 +5,9 @@ import java.io.FileNotFoundException;
 import java.lang.reflect.Constructor;
 import java.util.Scanner;
 
-import data_gateway.PersonGateway;
 import domainLogic.Command;
+import domainLogic.CommandToSelectUser;
+import domain_model.Person;
 
 /**
  * Reads a file of instructions, executes them, and verifies the results as it
@@ -37,6 +38,8 @@ import domainLogic.Command;
  * 
  * PendingIncomingFriendList; fred
  * 
+ * Lines that start with two asterisks will be ignored
+ * 
  * @author Merlin
  * 
  */
@@ -47,10 +50,10 @@ public class UserThread implements Runnable
 	private Scanner commandReader;
 	private int currentUserID;
 	private boolean running;
-	private String userName;
 
 	/**
 	 * Checks to see if this thread is currently running
+	 * 
 	 * @return true if we are still working
 	 */
 	public boolean isRunning()
@@ -142,15 +145,14 @@ public class UserThread implements Runnable
 				}
 			} else if (parameters.length == 3)
 			{
-				userName = instructionTokens[1];
 				result = (Command) constructors[0].newInstance(
 						instructionTokens[1], instructionTokens[2],
 						instructionTokens[3]);
 			}
 		} catch (Exception e)
 		{
-			System.out.println(Thread.currentThread().getName() + " couldn't create a command for "
-					+ commandDescription);
+			System.out.println(Thread.currentThread().getName()
+					+ " couldn't create a command for " + commandDescription);
 			e.printStackTrace();
 		}
 		return result;
@@ -189,6 +191,11 @@ public class UserThread implements Runnable
 		String[] parts = splitInstruction(instruction);
 		Command cmd = buildCommand(parts[0]);
 		cmd.execute();
+		if (cmd instanceof CommandToSelectUser)
+		{
+			Person selectedUser = (Person)cmd.getResult();
+			currentUserID = selectedUser.getID();
+		}
 		if (parts.length == 2)
 		{
 			String result = (String) cmd.getResult();
@@ -209,29 +216,46 @@ public class UserThread implements Runnable
 	@Override
 	public void run()
 	{
-		this.running = true;  
-		String input = commandReader.nextLine();
+		this.running = true;
+		String input = getNextCommandLine();
 		boolean allIsWell = true;
 		while (allIsWell && input != null)
 		{
 			if (!executeInstruction(input))
 			{
 				allIsWell = false;
-				System.out.println(Thread.currentThread().getName() + " failed when executing this instruction: "
-						+ input);
+				System.out.println(Thread.currentThread().getName()
+						+ " failed when executing this instruction: " + input);
+				input = getNextCommandLine();
 			} else
 			{
-				if (commandReader.hasNextLine())
-				{
-					input = commandReader.nextLine();
-				} else
-				{
-					input = null;
-				}
+
+				input = getNextCommandLine();
+
 			}
 		}
 		this.running = false;
-		PersonGateway.removeByUserName(userName);
+
+	}
+
+	private String getNextCommandLine()
+	{
+		String input = null;
+		if (commandReader.hasNextLine())
+		{
+			input = commandReader.nextLine();
+		}
+		while ((input != null) && input.startsWith("**"))
+		{
+			if (commandReader.hasNextLine())
+			{
+				input = commandReader.nextLine();
+			} else
+			{
+				input = null;
+			}
+		}
+		return input;
 	}
 
 	/**
