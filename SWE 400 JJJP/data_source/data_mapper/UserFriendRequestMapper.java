@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Set;
 
 import data_gateway.UserFriendRequestGateway;
+import domain_model.FriendRequest;
 import domain_model.Person;
 
 /**
@@ -59,6 +60,38 @@ public class UserFriendRequestMapper
 			loadFriendRequestsList(user);
 		return (ArrayList<String>) FriendRequestsList.get(user.getUsername());
 	}
+	
+	/**
+	 * Like getAllOutgoingFriendRequests, but returns the object form instead of just strings.
+	 * @param user The session person
+	 * @return An arraylist of FriendRequests.
+	 */
+	public static ArrayList<FriendRequest> getAllOutgoingFriendRequestObjects(Person user) {
+		ArrayList<String> outgoingFriendRequestUsernames = getAllOutgoingFriendRequests(user);
+		ArrayList<FriendRequest> fr = new ArrayList<>();
+		Iterator<String> i = outgoingFriendRequestUsernames.iterator();
+		while (i.hasNext()) {
+			String x = i.next();
+			fr.add(new FriendRequest(user.getUsername(), x));
+		}
+		return fr;
+	}
+	
+	/**
+	 * Like getAllIncomingFriendRequests, but returns the object form instead of just strings.
+	 * @param user The session person.
+	 * @return An arraylist of FriendRequests.
+	 */
+	public static ArrayList<FriendRequest> getAllIncomingFriendRequestObjects(Person user) {
+		ArrayList<String> incomingFriendRequestUsernames = getAllIncomingFriendRequests(user);
+		ArrayList<FriendRequest> fr = new ArrayList<>();
+		Iterator<String> i = incomingFriendRequestUsernames.iterator();
+		while (i.hasNext()) {
+			String x = i.next();
+			fr.add(new FriendRequest(x, user.getUsername()));
+		}
+		return fr;
+	}
 
 	/**
 	 * Returns the list outgoing friend requests for the user in the domain
@@ -72,6 +105,7 @@ public class UserFriendRequestMapper
 		ArrayList<String> incomingFriendRequests = new ArrayList<String>();
 		String name = user.getUsername();
 		Iterator<String> list = FriendRequestsList.keySet().iterator();
+
 		while (list.hasNext())
 		{
 			String key = list.next();

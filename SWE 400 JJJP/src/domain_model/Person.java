@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import data_mapper.FriendMapper;
+import data_mapper.UserFriendRequestMapper;
 
 /**
  * @author Patrick Joseph Flanagan
@@ -186,6 +187,7 @@ public class Person extends DomainObject
 			Friend x = i.next();
 			if (x.getUserName().equals(friendtodelete)) {
 				i.remove();
+				Session.getInstance().getUnitOfWork().registerRemoved(x);
 				status = true;
 			}
 		}
@@ -196,12 +198,12 @@ public class Person extends DomainObject
 	
 	/**
 	 * This returns the list of friendRequests from this userID
+	 * This is the "incoming" list.
 	 * @return friendRequests
 	 */
 	public ArrayList<FriendRequest> getFriendRequests() {
-		// TODO this ought to be a database load operation
-		// Until then, it just makes an empty ArrayList.
 		if (friendRequests == null) {
+			//friendRequests = UserFriendRequestMapper.getAllIncomingFriendRequestObjects(this);
 			friendRequests = new ArrayList<>();
 		}
 		return friendRequests;
@@ -214,6 +216,7 @@ public class Person extends DomainObject
 	 */
 	public ArrayList<FriendRequest> getFriendRequestsOutgoing() {
 		if (friendRequestsOutgoing == null) {
+			//friendRequestsOutgoing = UserFriendRequestMapper.getAllOutgoingFriendRequestObjects(this);
 			friendRequestsOutgoing = new ArrayList<>();
 		}
 		return friendRequestsOutgoing;
@@ -276,6 +279,7 @@ public class Person extends DomainObject
 		if (success) {
 			Friend f = new Friend(uname);
 			getFriends().add(f);
+			Session.getInstance().getUnitOfWork().registerNew(f);
 		}
 		return success;
 	}
@@ -308,6 +312,7 @@ public class Person extends DomainObject
 	 */
 	public boolean denyFriendRequest(String uname){
 		return removeFriendRequest(uname);
+		// Intentionally no UOW operation here; it's carried out in the above method call.
 	}
 	
 	/**
