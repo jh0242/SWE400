@@ -50,14 +50,15 @@ public class CommandToGetPendingOutgoingFriendList implements Command
 	@Override
 	public String getResult()
 	{
-		if (invitesSent == null) return null;
-		
 		String ret = "";
-		for (FriendRequest x : invitesSent) {
-			if (!ret.equals("")) {
-				ret = ret + " ";
+		if (invitesSent == null) ret = null;
+		else {
+			for (FriendRequest x : invitesSent) {
+				if (!ret.equals("")) {
+					ret = ret + " ";
+				}
+				ret = ret + x.getReceiver();
 			}
-			ret = ret + x.getReceiver();
 		}
 		return ret;
 	}
