@@ -236,7 +236,6 @@ public class Person extends DomainObject
 			}
 		}
 		if (okayToAdd) {
-			System.out.println(uname + " " + this.userName + " " + dname + " " + this.displayName);
 			FriendRequest f = new FriendRequest(uname, dname, this.userName, this.displayName);
 			getFriendRequests().add(f);
 			Session.getInstance().getUnitOfWork().registerNew(f);
