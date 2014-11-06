@@ -55,7 +55,7 @@ public class CommandToGetPendingOutgoingFriendList implements Command
 		else {
 			for (FriendRequest x : invitesSent) {
 				if (!ret.equals("")) {
-					ret = ret + " ";
+					ret = ret + ",";
 				}
 				ret = ret + x.getReceiver();
 			}

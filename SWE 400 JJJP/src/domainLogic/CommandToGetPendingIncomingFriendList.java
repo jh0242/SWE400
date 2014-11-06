@@ -56,7 +56,7 @@ public class CommandToGetPendingIncomingFriendList implements Command
 		boolean addSpace = false;
 		for (FriendRequest x : incomingRequests) {
 			if (addSpace) {
-				ret = ret + ", ";
+				ret = ret + ",";
 			}
 			ret = ret + x.getSender();
 			addSpace = true;

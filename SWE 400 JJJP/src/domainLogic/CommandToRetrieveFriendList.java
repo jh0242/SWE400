@@ -49,7 +49,7 @@ public class CommandToRetrieveFriendList implements Command
 		String ret = "";
 		for (Friend x : Session.getInstance().getPerson().getFriends()) {
 			if (!ret.equals("")) {
-				ret = ret + " ";
+				ret = ret + ",";
 			}
 			ret = ret + x.getUserName();
 		}
