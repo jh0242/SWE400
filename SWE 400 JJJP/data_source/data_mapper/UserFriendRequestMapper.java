@@ -7,10 +7,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import data_gateway.UserFriendRequestGateway;
-import domain_model.FriendRequest;
 import domain_model.Person;
 
 /**
@@ -33,7 +31,7 @@ public class UserFriendRequestMapper
 	 * Checks to make sure that there is an instance of a UserFriendRequest
 	 * Mapper
 	 * 
-	 * @return
+	 * @return UserFriendRequestMapper the singleton instance of this class
 	 */
 	public static UserFriendRequestMapper getInstance()
 	{
@@ -44,15 +42,17 @@ public class UserFriendRequestMapper
 		return userFriendRequestMapper;
 	}
 
-	// Hash Map that stores the friend request list
-	private static Map<String, List<String>> FriendRequestsList = new HashMap<String, List<String>>();
+	/**
+	 * The Hash Map that stores the friend friend request list
+	 */
+	public static Map<String, List<String>> FriendRequestsList = new HashMap<String, List<String>>();
 
 	/**
 	 * Returns the list outgoing friend requests for the user in the domain
 	 * layer and in the database
 	 * 
-	 * @param user
-	 * @return
+	 * @param user the user that needs outgoing friend requests loaded
+	 * @return ArrayList<String> the list of users that have been sent friend requests from this user
 	 */
 	public static ArrayList<String> getAllOutgoingFriendRequests(Person user)
 	{
@@ -60,52 +60,19 @@ public class UserFriendRequestMapper
 			loadFriendRequestsList(user);
 		return (ArrayList<String>) FriendRequestsList.get(user.getUsername());
 	}
-	
-	/**
-	 * Like getAllOutgoingFriendRequests, but returns the object form instead of just strings.
-	 * @param user The session person
-	 * @return An arraylist of FriendRequests.
-	 */
-	public static ArrayList<FriendRequest> getAllOutgoingFriendRequestObjects(Person user) {
-		ArrayList<String> outgoingFriendRequestUsernames = getAllOutgoingFriendRequests(user);
-		ArrayList<FriendRequest> fr = new ArrayList<>();
-		Iterator<String> i = outgoingFriendRequestUsernames.iterator();
-		while (i.hasNext()) {
-			String x = i.next();
-			fr.add(new FriendRequest(user.getUsername(), x));
-		}
-		return fr;
-	}
-	
-	/**
-	 * Like getAllIncomingFriendRequests, but returns the object form instead of just strings.
-	 * @param user The session person.
-	 * @return An arraylist of FriendRequests.
-	 */
-	public static ArrayList<FriendRequest> getAllIncomingFriendRequestObjects(Person user) {
-		ArrayList<String> incomingFriendRequestUsernames = getAllIncomingFriendRequests(user);
-		ArrayList<FriendRequest> fr = new ArrayList<>();
-		Iterator<String> i = incomingFriendRequestUsernames.iterator();
-		while (i.hasNext()) {
-			String x = i.next();
-			fr.add(new FriendRequest(x, user.getUsername()));
-		}
-		return fr;
-	}
 
 	/**
-	 * Returns the list outgoing friend requests for the user in the domain
+	 * Returns the list incoming friend requests for the user in the domain
 	 * layer and in the database
 	 * 
-	 * @param user
-	 * @return
+	 * @param user the user that needs incoming friend requests loaded
+	 * @return ArrayList<String> the list of users that have sent the user a friend request
 	 */
 	public static ArrayList<String> getAllIncomingFriendRequests(Person user)
 	{
 		ArrayList<String> incomingFriendRequests = new ArrayList<String>();
 		String name = user.getUsername();
 		Iterator<String> list = FriendRequestsList.keySet().iterator();
-
 		while (list.hasNext())
 		{
 			String key = list.next();
@@ -118,7 +85,7 @@ public class UserFriendRequestMapper
 	/**
 	 * Loads this Data Mapper with the list of friend requests associated with the
 	 * given user in the parameter
-	 * @param user
+	 * @param user the user that needs their friend requests loaded
 	 */
 	public static void loadFriendRequestsList(Person user)
 	{
@@ -139,9 +106,8 @@ public class UserFriendRequestMapper
 	 * Removes the outgoing friend request from the domain layer and the
 	 * database
 	 * 
-	 * @param user
-	 * @param friendUsername
-	 * @return
+	 * @param user the user that sent the friend request
+	 * @param friendUsername the name of the user that was sent a friend request
 	 */
 	public static void removeOutgoingFriendRequest(Person user, String friendUsername)
 	{
@@ -151,17 +117,17 @@ public class UserFriendRequestMapper
 
 	/**
 	 * Inserts the friend request into the domain layer and the database
-	 * 
-	 * @param user
-	 * @param friendRequestUsername
-	 * @return
+	 * @param user the user sending the friend request
+	 * @param friendRequestUsername the user name of the user receiving the request
+	 * @return true if the request was successfully created or false if not
 	 */
 	public static boolean insertFriendRequest(Person user, String friendRequestUsername)
 	{
 		if (!FriendRequestsList.containsKey(user.getUsername()))
 			loadFriendRequestsList(user);
 		
-		if (!FriendRequestsList.get(user.getUsername()).contains(friendRequestUsername))
+		if (!FriendRequestsList.get(user.getUsername()).contains(friendRequestUsername)
+				&& (!FriendRequestsList.containsKey(friendRequestUsername) || !FriendRequestsList.get(friendRequestUsername).contains(user.getUsername())))
 		{
 			UserFriendRequestGateway.insertFriendRequest(user.getUsername(), friendRequestUsername);
 			FriendRequestsList.get(user.getUsername()).add(friendRequestUsername);
