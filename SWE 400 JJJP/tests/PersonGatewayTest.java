@@ -136,6 +136,7 @@ public class PersonGatewayTest
 	{
 		assertEquals(-1, PersonGateway.getID("false", "false"));
 		PersonGateway.insert(userName, "password", "displayName");
-		assertEquals(1594, PersonGateway.getID("userA", "123"));
+		int id = PersonGateway.getID("userA", "123");
+		assertFalse(id == -1);
 	}
 }
