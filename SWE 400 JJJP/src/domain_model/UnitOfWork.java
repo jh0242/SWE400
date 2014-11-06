@@ -147,6 +147,16 @@ public class UnitOfWork
 				//  
 			}
 		}
+		discard();
+	}
+	
+	/**
+	 * Discard everything the unit of work currently knows.
+	 * To be used with Cancel Changes command. This doesn't actually impact
+	 * the state of the domain model outside of the unit of work's knowledge.
+	 * This is also used after a persist.
+	 */
+	public void discard() {
 		newRegister.clear();
 		dirtyRegister.clear();
 		removeRegister.clear();
