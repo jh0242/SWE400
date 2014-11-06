@@ -3,3 +3,6 @@ isPendingFriendRequest in UserFriendRequestGateway does not check if the request
 	
 UserFriendRequestGateway is only at 84.8% coverage due to not testing for
 sql exceptions in the methods.
+
+
+Add changes to init file.

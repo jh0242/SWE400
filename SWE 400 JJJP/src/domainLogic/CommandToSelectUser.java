@@ -58,9 +58,9 @@ public class CommandToSelectUser implements Command
 	 * @see Command#getResult()
 	 */
 	@Override
-	public String getResult()
+	public Person getResult()
 	{
-		return Session.getInstance().getPerson().getUsername();
+		return Session.getInstance().getPerson();
 	}
 
 	/**
