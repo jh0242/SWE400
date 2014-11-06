@@ -2,6 +2,10 @@ package domain_model;
 
 import java.util.ArrayList;
 
+import data_mapper.FriendMapper;
+import data_mapper.PersonMapper;
+import data_mapper.UserFriendRequestMapper;
+
 /**
  * @author Patrick Joseph Flanagan
  *
@@ -15,7 +19,6 @@ public class UnitOfWork
 {	
 	private ArrayList<DomainObject> newRegister = new ArrayList<>();
 	private ArrayList<DomainObject> dirtyRegister = new ArrayList<>();
-	private ArrayList<DomainObject> cleanRegister = new ArrayList<>();
 	private ArrayList<DomainObject> removeRegister = new ArrayList<>();
 	
 	/**
@@ -27,7 +30,6 @@ public class UnitOfWork
 		boolean registered = false;
 		if (newRegister.contains(something)) registered = true;
 		if (dirtyRegister.contains(something)) registered = true;
-		if (cleanRegister.contains(something)) registered = true;
 		if (removeRegister.contains(something)) registered = true;
 		return registered;
 	}
@@ -67,8 +69,9 @@ public class UnitOfWork
 	/**
 	 * @param something Something to register.
 	 * @return True if successful, false if given something is already registered.
+	 *   Not actually needed.
 	 */
-	public boolean registerClean(DomainObject something) {
+	/**public boolean registerClean(DomainObject something) {
 		boolean success = false;
 		if (!alreadyRegistered(something)) {
 			 cleanRegister.add(something);
@@ -78,7 +81,7 @@ public class UnitOfWork
 			success = false;
 		}
 		return success;
-	}
+	}*/
 	
 	/**
 	 * @param something Something to register.
@@ -101,6 +104,51 @@ public class UnitOfWork
 	 */
 	public void commit()
 	{
+		Person sessionPerson = Session.getInstance().getPerson();
+		for (DomainObject x : newRegister) {
+			
+			// Friends
+			if (x.getClass().equals(Friend.class)) {
+				Friend f = (Friend) x;
+				FriendMapper.saveFriend(sessionPerson, f);
+			}
+			
+			// FriendRequests, outgoing only at the moment.
+			else if (x.getClass().equals(FriendRequest.class)) {
+				FriendRequest fr = (FriendRequest) x;
+				if (fr.getSender() == sessionPerson.getUsername()) {
+					UserFriendRequestMapper.insertFriendRequest(sessionPerson, fr.getReceiver());
+				}
+			}
+		}
 		
+		for (DomainObject x : dirtyRegister) {
+			// Person
+			if (x.getClass().equals(Person.class)) {
+				Person p = (Person) x;
+				PersonMapper.updateDisplayName(p.getUsername(), p.getPassword(), p.getFullname());
+			}
+		}
+		
+		for (DomainObject x : removeRegister) {
+			// Friend
+			if (x.getClass().equals(Friend.class)) {
+				Friend f = (Friend) x;
+				FriendMapper.getInstance().removeFriend(sessionPerson, f.getUserName());
+			}
+			// Friend Request
+			else if (x.getClass().equals(FriendRequest.class)) {
+				FriendRequest fr = (FriendRequest) x;
+				// Outgoing
+				if (fr.getSender() == sessionPerson.getUsername()) {
+					UserFriendRequestMapper.removeOutgoingFriendRequest(sessionPerson, fr.getReceiver());
+				}
+				// Incoming
+				//  
+			}
+		}
+		newRegister.clear();
+		dirtyRegister.clear();
+		removeRegister.clear();
 	}
 }

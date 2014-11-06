@@ -42,16 +42,16 @@ public class UnitOfWorkTest
 	public void testAddBlocking() {
 		UnitOfWork UOW = new UnitOfWork();
 		
-		TestDomainObject t1 = new TestDomainObject(1);
+		//TestDomainObject t1 = new TestDomainObject(1);
 		TestDomainObject t2 = new TestDomainObject(2);
 		TestDomainObject t3 = new TestDomainObject(3);
 		TestDomainObject t4 = new TestDomainObject(4);
-		assertTrue(UOW.registerClean(t1));
+		//assertTrue(UOW.registerClean(t1));
 		assertTrue(UOW.registerDirty(t2));
 		assertTrue(UOW.registerNew(t3));
 		assertTrue(UOW.registerRemoved(t4));
 		
 		// Erroneous add. This should fail.
-		assertFalse(UOW.registerClean(t2));
+		assertFalse(UOW.registerNew(t4));
 	}
 }

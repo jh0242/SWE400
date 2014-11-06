@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import data_mapper.FriendMapper;
-import data_mapper.UserFriendRequestMapper;
 
 /**
  * @author Patrick Joseph Flanagan
