@@ -51,7 +51,7 @@ public class CommandToRetrieveFriendList implements Command
 			if (!ret.equals("")) {
 				ret = ret + ",";
 			}
-			ret = ret + x.getUserName();
+			ret = ret + x.getDisplayName();
 		}
 		return ret;
 	}

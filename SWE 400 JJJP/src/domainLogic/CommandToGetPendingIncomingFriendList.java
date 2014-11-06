@@ -58,7 +58,7 @@ public class CommandToGetPendingIncomingFriendList implements Command
 			if (addSpace) {
 				ret = ret + ",";
 			}
-			ret = ret + x.getSender();
+			ret = ret + x.getSenderDisplayName();
 			addSpace = true;
 		}
 		return ret;

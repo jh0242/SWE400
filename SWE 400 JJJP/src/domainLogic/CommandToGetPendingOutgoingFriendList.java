@@ -57,7 +57,7 @@ public class CommandToGetPendingOutgoingFriendList implements Command
 				if (!ret.equals("")) {
 					ret = ret + ",";
 				}
-				ret = ret + x.getReceiver();
+				ret = ret + x.getReceiverDisplayName();
 			}
 		}
 		return ret;

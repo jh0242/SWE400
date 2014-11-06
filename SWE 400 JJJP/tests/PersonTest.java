@@ -89,7 +89,7 @@ public class PersonTest
 	@Test
 	public void testConfirmFriendRequest() {
 		Person p1 = new Person(0);
-		p1.receiveFriendRequest("JavaLord");
+		p1.receiveFriendRequest("JavaLord", "JavaLordDisplayName");
 		assertTrue(p1.hasFriendRequest("JavaLord"));
 		p1.confirmFriendRequest("JavaLord");
 		assertFalse(p1.hasFriendRequest("JavaLord"));
@@ -103,7 +103,7 @@ public class PersonTest
 	@Test
 	public void testDenyFriendRequest() {
 		Person p1 = new Person(0);
-		p1.receiveFriendRequest("JavaLord");
+		p1.receiveFriendRequest("JavaLord", "JavaLordDisplayName");
 		assertTrue(p1.hasFriendRequest("JavaLord"));
 		assertTrue(p1.denyFriendRequest("JavaLord"));
 		assertFalse(p1.denyFriendRequest("JavaLord"));

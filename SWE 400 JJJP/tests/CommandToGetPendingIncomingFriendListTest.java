@@ -20,13 +20,13 @@ public class CommandToGetPendingIncomingFriendListTest
 	@Test
 	public void test()
 	{
-		Person p = new Person(0);
+		Person p = new Person(0, "man", "123", "mrman");
 		Session.getInstance().setPerson(p);
-		p.receiveFriendRequest("first");
-		p.receiveFriendRequest("second");
+		p.receiveFriendRequest("first", "mrfirst");
+		p.receiveFriendRequest("second", "mrsecond");
 		CommandToGetPendingIncomingFriendList c = new CommandToGetPendingIncomingFriendList(0);
 		c.execute();
-		assertEquals(c.getResult(), "first,second");
+		assertEquals("mrfirst,mrsecond", c.getResult());
 	}
 
 }

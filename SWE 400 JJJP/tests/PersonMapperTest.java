@@ -17,6 +17,5 @@ public class PersonMapperTest {
 		System.out.println(userA.getUsername());
 		assertEquals("userA",userA.getUsername());
 		assertEquals("newdisplay",userA.getFullname());
-		assertEquals(1594,userA.getID());
 	}
 }

@@ -22,7 +22,7 @@ public class CommandToAcceptFriendRequestTest
 	{
 		Person p = new Person(1);
 		Session.getInstance().setPerson(p);
-		p.receiveFriendRequest("testman");
+		p.receiveFriendRequest("testman", "testmandisplayname");
 		assertEquals(p.getFriends().size(), 0); // No friends yet, we hope.
 		CommandToAcceptFriendRequest c = new CommandToAcceptFriendRequest(1, "testman");
 		c.execute();

@@ -224,8 +224,9 @@ public class Person extends DomainObject
 	/**
 	 * Receive a friend request from another user.
 	 * @param uname Username of the person who sent the request to us.
+	 * @param dname Displayname of the person who sent the request to us.
 	 */
-	public void receiveFriendRequest(String uname) {
+	public void receiveFriendRequest(String uname, String dname) {
 		// Sender: uname, whoever is given. Receiver: me! This object.
 		boolean okayToAdd = true;
 		this.getFriendRequests();
@@ -235,7 +236,8 @@ public class Person extends DomainObject
 			}
 		}
 		if (okayToAdd) {
-			FriendRequest f = new FriendRequest(uname, this.userName);
+			System.out.println(uname + " " + this.userName + " " + dname + " " + this.displayName);
+			FriendRequest f = new FriendRequest(uname, dname, this.userName, this.displayName);
 			getFriendRequests().add(f);
 			Session.getInstance().getUnitOfWork().registerNew(f);
 		}
