@@ -5,6 +5,7 @@ import java.util.Iterator;
 
 import data_mapper.FriendMapper;
 import data_mapper.PersonMapper;
+import data_mapper.UserFriendRequestMapper;
 
 /**
  * @author Patrick Joseph Flanagan
@@ -203,8 +204,8 @@ public class Person extends DomainObject
 	 */
 	public ArrayList<FriendRequest> getFriendRequests() {
 		if (friendRequests == null) {
-			//friendRequests = UserFriendRequestMapper.getAllIncomingFriendRequestObjects(this);
-			friendRequests = new ArrayList<>();
+			friendRequests = UserFriendRequestMapper.getAllIncomingFriendRequests(this);
+			//friendRequests = new ArrayList<>();
 		}
 		return friendRequests;
 	}

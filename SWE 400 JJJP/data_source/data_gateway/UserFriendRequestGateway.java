@@ -72,16 +72,18 @@ public class UserFriendRequestGateway
 	 * @return
 	 * @throws SQLException
 	 */
-	public static boolean insertFriendRequest(String requester, String requestee)
+	public static boolean insertFriendRequest(String requester, String requestee, String requesterDisplayName, String requesteeDisplayName)
 	{
 		try
 		{
 			if (PersonGateway.userNameIsInTable(requestee) && PersonGateway.userNameIsInTable(requester) && !isPendingFriendRequest(requester, requestee))
 			{
-				String insertData = new String("INSERT INTO PENDINGFRIENDREQUESTS(Requester, Requestee) VALUES (?,?)");
+				String insertData = new String("INSERT INTO PENDINGFRIENDREQUESTS(Requester, Requestee, RequesterDisplayName, RequesteeDisplayName) VALUES (?,?,?,?)");
 				PreparedStatement stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(insertData);
 				stmt.setString(1, requester);
 				stmt.setString(2, requestee);
+				stmt.setString(3, requesterDisplayName);
+				stmt.setString(4, requesteeDisplayName);
 				stmt.executeUpdate();
 				return true;
 			}
