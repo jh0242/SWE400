@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import data_mapper.FriendMapper;
+import data_mapper.PersonMapper;
 
 /**
  * @author Patrick Joseph Flanagan
@@ -331,7 +332,7 @@ public class Person extends DomainObject
 				break;
 			}
 		}
-		FriendRequest f = new FriendRequest(this.userName, target);
+		FriendRequest f = new FriendRequest(this.userName, displayName, target, PersonMapper.findDisplayName(target));
 		friendRequestsOutgoing.add(f);
 		Session.getInstance().getUnitOfWork().registerNew(f);
 		

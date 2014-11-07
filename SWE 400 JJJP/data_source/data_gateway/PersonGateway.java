@@ -210,4 +210,30 @@ public class PersonGateway
 		}
 		return true;
 	}
+
+	/**
+	 * Gets the displayName of the target user in the USER table.
+	 * @param target the UserName of the row to be used
+	 * @return the DisplayName of the target row
+	 */
+	public static String getDisplayName(String target) 
+	{
+		String checkUniqueUserName = new String("SELECT * FROM USER where UserName = '" + target + "';");
+		PreparedStatement stmt;
+		ResultSet rs;
+		String displayName = "";
+		try 
+		{
+			stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(checkUniqueUserName);
+			rs = stmt.executeQuery(checkUniqueUserName);
+			if (!rs.next())
+				return "nonexistent person";
+			displayName = rs.getString("DisplayName");
+		} catch (SQLException e) 
+		{
+			System.out.println("Error with MySQL syntax in userNameIsInTable!");
+			e.printStackTrace();
+		}
+		return displayName;
+	}
 }

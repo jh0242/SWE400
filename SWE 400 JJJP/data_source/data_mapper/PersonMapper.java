@@ -177,4 +177,20 @@ public class PersonMapper
 		}
 		return null;
 	}
+
+	/**
+	 * Calls PersonGateway to get the displayName of the specified
+	 * target person.
+	 * @param target the userName of the person we want a display name for
+	 * @return the displayName of the target
+	 */
+	public static String findDisplayName(String target) 
+	{
+		String displayName;
+		if (users.containsKey(target))
+			displayName = users.get(target).getFullname();
+		else
+			displayName = PersonGateway.getDisplayName(target);
+		return displayName;
+	}
 }
