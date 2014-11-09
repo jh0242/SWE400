@@ -103,7 +103,8 @@ public class UserFriendRequestMapper
 				String requesteeDisplay = results.getString(results.findColumn("RequesteeDisplayName"));
 				FriendRequest fr = new FriendRequest(user.getUsername(), user.getFullname(), requestee, requesteeDisplay);
 				OutgoingFriendRequestsList.get(user.getUsername()).add(fr);
-				IncomingFriendRequestsList.put(requestee, new ArrayList<FriendRequest>()).add(fr);
+				IncomingFriendRequestsList.put(requestee, new ArrayList<FriendRequest>());
+				IncomingFriendRequestsList.get(requestee).add(fr);
 			}
 			while (results2.next())
 			{

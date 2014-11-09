@@ -27,7 +27,8 @@ public class CommandToGetPendingOutgoingFriendListTest
 		CommandToGetPendingOutgoingFriendList c = new CommandToGetPendingOutgoingFriendList(0);
 		assertNull(c.getResult());
 		c.execute();
-		assertEquals(c.getResult().length(), 4);
+		System.out.println(c.getResult());
+		assertTrue(c.getResult().equals("nonexistent person"));
 	}
 
 }
