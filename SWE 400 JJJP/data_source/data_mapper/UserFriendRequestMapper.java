@@ -4,10 +4,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import data_gateway.UserFriendRequestGateway;
+import domain_model.DomainObject;
 import domain_model.FriendRequest;
 import domain_model.Person;
 
@@ -96,11 +98,21 @@ public class UserFriendRequestMapper
 		try
 		{
 			while (results.next())
-				OutgoingFriendRequestsList.get(user.getUsername()).add(
-						new FriendRequest(user.getUsername(), user.getFullname(), results.getString(results.findColumn("Requestee")), results.getString(results.findColumn("RequesteeDisplayName"))));
+			{
+				String requestee = results.getString(results.findColumn("Requestee"));
+				String requesteeDisplay = results.getString(results.findColumn("RequesteeDisplayName"));
+				FriendRequest fr = new FriendRequest(user.getUsername(), user.getFullname(), requestee, requesteeDisplay);
+				OutgoingFriendRequestsList.get(user.getUsername()).add(fr);
+				IncomingFriendRequestsList.put(requestee, new ArrayList<FriendRequest>()).add(fr);
+			}
 			while (results2.next())
-				IncomingFriendRequestsList.get(user.getUsername()).add(
-						new FriendRequest(results2.getString(results2.findColumn("Requester")), results2.getString(results2.findColumn("RequesterDisplayName")), user.getUsername(), user.getFullname()));
+			{
+				String requester = results2.getString(results2.findColumn("Requester"));
+				String requesterDisplay = results2.getString(results2.findColumn("RequesterDisplayName"));
+				FriendRequest fr = new FriendRequest(requester, requesterDisplay, user.getUsername(), user.getFullname());
+				IncomingFriendRequestsList.get(user.getUsername()).add(fr);
+				OutgoingFriendRequestsList.put(requester, new ArrayList<FriendRequest>()).add(fr);
+			}
 		} catch (SQLException e)
 		{
 			System.out.println("Error in loadFriendRequestsList!");
@@ -113,12 +125,13 @@ public class UserFriendRequestMapper
 	 * database
 	 * 
 	 * @param user the user that sent the friend request
-	 * @param friendUsername the name of the user that was sent a friend request
+	 * @param fr the name of the user that was sent a friend request
 	 */
-	public static void removeOutgoingFriendRequest(Person user, String friendUsername)
+	public static void removeFriendRequest(Person user, FriendRequest fr)
 	{
-		UserFriendRequestGateway.removeFriendRequest(user.getUsername(), friendUsername);
-		OutgoingFriendRequestsList.get(user.getUsername()).remove(friendUsername);
+		UserFriendRequestGateway.removeFriendRequest(user.getUsername(), fr.getReceiver());
+		OutgoingFriendRequestsList.get(user.getUsername()).remove(fr);
+		IncomingFriendRequestsList.get(fr.getReceiver()).remove(fr);
 	}
 
 	/**
@@ -129,18 +142,41 @@ public class UserFriendRequestMapper
 	 */
 	public static boolean insertFriendRequest(Person user, FriendRequest fr)
 	{
-		if (!OutgoingFriendRequestsList.containsKey(user.getUsername()) || !IncomingFriendRequestsList.containsKey(user.getUsername()))
+		Map<String, List<FriendRequest>> out = OutgoingFriendRequestsList;
+		Map<String, List<FriendRequest>> in = IncomingFriendRequestsList;
+		
+		
+		if (!OutgoingFriendRequestsList.containsKey(user.getUsername()) && !IncomingFriendRequestsList.containsKey(user.getUsername()))
 			loadFriendRequestsList(user);
 		
-		if (!OutgoingFriendRequestsList.get(user.getUsername()).contains(fr.getReceiver()) &&
-				!IncomingFriendRequestsList.get(user.getUsername())
-				.contains(fr.getReceiver()))
+		if (!friendRequestExists(fr))
 		{
 			UserFriendRequestGateway.insertFriendRequest(user.getUsername(), fr.getReceiver(), user.getFullname(), fr.getReceiverDisplayName());
+			if (!OutgoingFriendRequestsList.containsKey(user.getUsername()))
+				OutgoingFriendRequestsList.put(user.getUsername(), new ArrayList<FriendRequest>());
 			OutgoingFriendRequestsList.get(user.getUsername()).add(fr);
-			IncomingFriendRequestsList.get(user.getUsername()).add(fr);
+			IncomingFriendRequestsList.put(fr.getReceiver(), new ArrayList<FriendRequest>());
+			IncomingFriendRequestsList.get(fr
+					.getReceiver())
+					.add(fr);
 			return true;
 		}
 		return false;
+	}
+	
+	public static boolean friendRequestExists(FriendRequest fr)
+	{
+		boolean exists = false;
+		if (OutgoingFriendRequestsList.containsKey(fr.getSender()))
+			for (FriendRequest f: OutgoingFriendRequestsList.get(fr.getSender()))
+				if ((f.getSender() == fr.getSender() && f.getReceiver() == fr.getReceiver()) || 
+						(f.getReceiver() == fr.getSender() && f.getSender() == fr.getReceiver()))
+					exists = true;
+		if (IncomingFriendRequestsList.containsKey(fr.getSender()))
+			for (FriendRequest f: IncomingFriendRequestsList.get(fr.getSender()))
+				if ((f.getSender() == fr.getSender() && f.getReceiver() == fr.getReceiver()) || 
+						(f.getReceiver() == fr.getSender() && f.getSender() == fr.getReceiver()))
+					exists = true;
+		return exists;
 	}
 }
