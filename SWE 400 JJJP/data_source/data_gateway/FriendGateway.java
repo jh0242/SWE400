@@ -14,20 +14,24 @@ public class FriendGateway
 	 * Executes the insertion of a row in FRIENDS with the corresponding userIDs
 	 * @param userNameA
 	 * @param userNameB
+	 * @param userDisplayNameA 
+	 * @param userDisplayNameB 
 	 * @return
 	 * @throws SQLException
 	 */
-	public static boolean insertFriend(String userNameA, String userNameB)
+	public static boolean insertFriend(String userNameA, String userNameB, String userDisplayNameA, String userDisplayNameB)
 	{
 		if (!areFriends(userNameA,userNameB))
 		{
-			String insertFriends = new String("INSERT INTO FRIENDS (UserNameA,UserNameB) VALUES (?,?)");
+			String insertFriends = new String("INSERT INTO FRIENDS (UserNameA,UserNameB,UserDisplayNameA,UserDisplayNameB) VALUES (?,?,?,?)");
 			PreparedStatement stmt;
 			try
 			{
 				stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(insertFriends);
 				stmt.setString(1, userNameA);
 				stmt.setString(2, userNameB);
+				stmt.setString(3, userDisplayNameA);
+				stmt.setString(4, userDisplayNameB);
 				stmt.executeUpdate();
 			} catch (SQLException e)
 			{

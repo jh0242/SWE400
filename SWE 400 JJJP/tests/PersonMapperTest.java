@@ -9,8 +9,8 @@ import org.junit.Test;
 import data_mapper.PersonMapper;
 import domain_model.Person;
 
-public class PersonMapperTest {
-
+public class PersonMapperTest 
+{
 	@Test
 	public void testGetUser() throws SQLException {
 		Person userA = PersonMapper.getPerson("userA", "123");

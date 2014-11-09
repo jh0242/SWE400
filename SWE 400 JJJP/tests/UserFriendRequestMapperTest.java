@@ -9,6 +9,7 @@ import org.junit.Test;
 import data_gateway.PersonGateway;
 import data_gateway.UserFriendRequestGateway;
 import data_mapper.UserFriendRequestMapper;
+import domain_model.FriendRequest;
 import domain_model.Person;
 
 
@@ -20,6 +21,7 @@ public class UserFriendRequestMapperTest
 {
 	private String requester, requestee;
 	private Person person, person2;
+	private FriendRequest fr;
 	
 	/**
 	 * Inserts two users into the USER table for test
@@ -35,6 +37,7 @@ public class UserFriendRequestMapperTest
 		person2 = new Person(PersonGateway.getID(requestee, "password"), requestee, "password", "display");
 		PersonGateway.insert(requester, "password", "display");
 		PersonGateway.insert(requestee, "password", "display");
+		fr = new FriendRequest(requester, "display", requestee, "display");
 	}
 	
 	/**
@@ -67,10 +70,10 @@ public class UserFriendRequestMapperTest
 	@Test
 	public void testGetAllIncomingFriendRequests()
 	{
-		assertTrue(UserFriendRequestMapper.insertFriendRequest(person, requestee));
+		assertTrue(UserFriendRequestMapper.insertFriendRequest(person, fr));
 		assertEquals(requester, UserFriendRequestMapper.getAllIncomingFriendRequests(person2).get(0));
 		UserFriendRequestMapper.removeOutgoingFriendRequest(person, requestee);
-		UserFriendRequestMapper.insertFriendRequest(person2, requester);
+		UserFriendRequestMapper.insertFriendRequest(person2, fr);
 		assertEquals(requestee, UserFriendRequestMapper.getAllIncomingFriendRequests(person).get(0));
 	}
 	
@@ -82,11 +85,12 @@ public class UserFriendRequestMapperTest
 	public void testLoadFriendRequestsList()
 	{
 		assertEquals(0, UserFriendRequestMapper.getAllOutgoingFriendRequests(person).size());
-		assertTrue(UserFriendRequestMapper.insertFriendRequest(person, requestee));
-		assertFalse(UserFriendRequestMapper.insertFriendRequest(person, requestee));
+		assertTrue(UserFriendRequestMapper.insertFriendRequest(person, fr));
+		assertFalse(UserFriendRequestMapper.insertFriendRequest(person, fr));
 		assertEquals(requestee, UserFriendRequestMapper.getAllOutgoingFriendRequests(person).get(0));
 		UserFriendRequestMapper.removeOutgoingFriendRequest(person, requestee);
-		UserFriendRequestMapper.insertFriendRequest(person2, requester);
+		fr = new FriendRequest(requestee, "display", requester, "display");
+		UserFriendRequestMapper.insertFriendRequest(person2, fr);
 		assertEquals(requester, UserFriendRequestMapper.getAllOutgoingFriendRequests(person2).get(0));
 	}
 
@@ -99,9 +103,9 @@ public class UserFriendRequestMapperTest
 	@Test
 	public void testInsert()
 	{
-		assertTrue(UserFriendRequestMapper.insertFriendRequest(person, requestee));
-		assertFalse(UserFriendRequestMapper.insertFriendRequest(person, requestee));
-		assertFalse(UserFriendRequestMapper.insertFriendRequest(person2, requester));
+		assertTrue(UserFriendRequestMapper.insertFriendRequest(person, fr));
+		assertFalse(UserFriendRequestMapper.insertFriendRequest(person, fr));
+		assertFalse(UserFriendRequestMapper.insertFriendRequest(person2, fr));
 	}
 	
 	/**
@@ -111,7 +115,7 @@ public class UserFriendRequestMapperTest
 	@Test
 	public void testRemoveOutgoingFriendRequest()
 	{
-		UserFriendRequestGateway.insertFriendRequest(requester, requestee);
+		UserFriendRequestGateway.insertFriendRequest(requester, "display", requestee, "display");
 		assertEquals(requestee, UserFriendRequestMapper.getAllOutgoingFriendRequests(person).get(0));
 		UserFriendRequestMapper.removeOutgoingFriendRequest(person, requestee);
 		assertEquals(0, UserFriendRequestMapper.getAllOutgoingFriendRequests(person).size());
@@ -125,7 +129,7 @@ public class UserFriendRequestMapperTest
 	public void testGetAllOutgoingFriendRequests()
 	{
 		assertEquals(0, UserFriendRequestMapper.getAllOutgoingFriendRequests(person).size());
-		UserFriendRequestMapper.insertFriendRequest(person, requestee);
+		UserFriendRequestMapper.insertFriendRequest(person, fr);
 		assertEquals(1, UserFriendRequestMapper.getAllOutgoingFriendRequests(person).size());
 		UserFriendRequestMapper.removeOutgoingFriendRequest(person, requestee);
 		assertEquals(0, UserFriendRequestMapper.getAllOutgoingFriendRequests(person).size());

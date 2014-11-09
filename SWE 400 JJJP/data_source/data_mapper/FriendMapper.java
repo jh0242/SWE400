@@ -120,6 +120,6 @@ public class FriendMapper
 			list.add(friend);
 			friendsList.put(person.getUsername(), list);
 		}			
-		return FriendGateway.insertFriend(person.getUsername(),friend.getUserName());
+		return FriendGateway.insertFriend(person.getUsername(),friend.getUserName(), person.getFullname(), friend.getDisplayName());
 	}
 }

@@ -16,7 +16,7 @@ import data_gateway.PersonGateway;
  */
 public class FriendGatewayTest
 {
-	private String userA, userB;
+	private String userA, userB, display = "display";
 	
 	/**
 	 * Creates a userA and userB for each test method in
@@ -55,9 +55,9 @@ public class FriendGatewayTest
 	@Test
 	public void testInsertFriend()
 	{
-		assertTrue(FriendGateway.insertFriend(userA, userB));
-		assertFalse(FriendGateway.insertFriend(userA, userB));
-		assertFalse(FriendGateway.insertFriend(userB, userA));
+		assertTrue(FriendGateway.insertFriend(userA, userB, display, display));
+		assertFalse(FriendGateway.insertFriend(userA, userB, display, display));
+		assertFalse(FriendGateway.insertFriend(userB, userA, display, display));
 	}
 	
 	/**
@@ -69,7 +69,7 @@ public class FriendGatewayTest
 	public void testAreFriends()
 	{
 		assertFalse(FriendGateway.areFriends(userA, userB));
-		FriendGateway.insertFriend(userA, userB);
+		FriendGateway.insertFriend(userA, userB, display, display);
 		assertTrue(FriendGateway.areFriends(userA, userB));
 	}
 	
@@ -83,7 +83,7 @@ public class FriendGatewayTest
 	{
 		assertFalse(FriendGateway.areFriends(userA, userB));
 		assertFalse(FriendGateway.removeFriendship(userA, userB));
-		FriendGateway.insertFriend(userA, userB);
+		FriendGateway.insertFriend(userA, userB, display, display);
 		assertTrue(FriendGateway.areFriends(userA, userB));
 		assertTrue(FriendGateway.removeFriendship(userA, userB));
 		assertFalse(FriendGateway.areFriends(userA, userB));
@@ -100,8 +100,8 @@ public class FriendGatewayTest
 	{
 		String userC = ((int) (Math.random() * 100000)) + "";
 		PersonGateway.insert(userC, "password", "display");
-		FriendGateway.insertFriend(userA, userB);
-		FriendGateway.insertFriend(userA, userC);
+		FriendGateway.insertFriend(userA, userB, display, display);
+		FriendGateway.insertFriend(userA, userC, display, display);
 		assertTrue(FriendGateway.removeAllFriendships(userA));
 		assertFalse(FriendGateway.areFriends(userA, userB));
 		assertFalse(FriendGateway.areFriends(userA, userC));
@@ -118,8 +118,8 @@ public class FriendGatewayTest
 	{
 		String userC = ((int) (Math.random() * 100000)) + "";
 		PersonGateway.insert(userC, "password", "display");
-		FriendGateway.insertFriend(userA, userB);
-		FriendGateway.insertFriend(userC, userA);
+		FriendGateway.insertFriend(userA, userB, display, display);
+		FriendGateway.insertFriend(userC, userA, display, display);
 		ResultSet rs = FriendGateway.getFriends(userA);
 		try
 		{

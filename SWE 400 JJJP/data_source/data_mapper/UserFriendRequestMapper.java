@@ -4,7 +4,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -44,13 +43,16 @@ public class UserFriendRequestMapper
 	}
 
 	/**
-	 * The Hash Map that stores the friend friend request list
+	 * The Hash Map that stores the outgoing friend request list.  The keys are the usernames
+	 * and they map to the list of friend requests they have sent.
 	 */
 	public static Map<String, List<FriendRequest>> OutgoingFriendRequestsList = new HashMap<String, List<FriendRequest>>();
 	
+	/**
+	 * The Hash Map that stores the outgoing friend request list.  The keys are the usernames
+	 * and they map to the list of friend requests they have been sent.
+	 */
 	public static Map<String, List<FriendRequest>> IncomingFriendRequestsList = new HashMap<String, List<FriendRequest>>();
-
-//	public static Map<String, List<FriendRequest>> FriendRequestsList = new HashMap<String, List<FriendRequest>>();
 
 	/**
 	 * Returns the list outgoing friend requests for the user in the domain
@@ -75,16 +77,9 @@ public class UserFriendRequestMapper
 	 */
 	public static ArrayList<FriendRequest> getAllIncomingFriendRequests(Person user)
 	{
-		ArrayList<FriendRequest> incomingFriendRequests = new ArrayList<FriendRequest>();
-		String name = user.getUsername();
-		Iterator<String> list = OutgoingFriendRequestsList.keySet().iterator();
-		while (list.hasNext())
-		{
-			String key = list.next();
-			if (!key.equals(name)/* && FriendRequestsList.get(key).contains(name)*/)
-				incomingFriendRequests.add(key);
-		}
-		return incomingFriendRequests;
+		if (!IncomingFriendRequestsList.containsKey(user.getUsername()))
+			loadFriendRequestsList(user);
+		return (ArrayList<FriendRequest>) IncomingFriendRequestsList.get(user.getUsername());
 	}
 	
 	/**
@@ -129,27 +124,23 @@ public class UserFriendRequestMapper
 	/**
 	 * Inserts the friend request into the domain layer and the database
 	 * @param user the user sending the friend request
-	 * @param friendRequestUsername the user name of the user receiving the request
+	 * @param fr the friend request we are attempting to add
 	 * @return true if the request was successfully created or false if not
 	 */
 	public static boolean insertFriendRequest(Person user, FriendRequest fr)
 	{
-		if (!OutgoingFriendRequestsList.containsKey(user.getUsername()))
+		if (!OutgoingFriendRequestsList.containsKey(user.getUsername()) || !IncomingFriendRequestsList.containsKey(user.getUsername()))
 			loadFriendRequestsList(user);
-		need to fix this
-		if (!OutgoingFriendRequestsList.get(user.getUsername()).contains(fr.getReceiver())
-				&& (!OutgoingFriendRequestsList.containsKey(fr.getReceiver()) || !OutgoingFriendRequestsList.get(fr.getReceiver()).contains(user.getUsername())))
+		
+		if (!OutgoingFriendRequestsList.get(user.getUsername()).contains(fr.getReceiver()) &&
+				!IncomingFriendRequestsList.get(user.getUsername())
+				.contains(fr.getReceiver()))
 		{
 			UserFriendRequestGateway.insertFriendRequest(user.getUsername(), fr.getReceiver(), user.getFullname(), fr.getReceiverDisplayName());
-			OutgoingFriendRequestsList.get(user.getUsername()).add(new FriendRequest(user.getUsername(), user.getFullname(), fr.getReceiver(), fr.getReceiverDisplayName()));
+			OutgoingFriendRequestsList.get(user.getUsername()).add(fr);
+			IncomingFriendRequestsList.get(user.getUsername()).add(fr);
 			return true;
 		}
-		return false;
-	}
-	
-	public boolean outGoingFriendRequestExists(String requester, String requestee)
-	{
-		
 		return false;
 	}
 }

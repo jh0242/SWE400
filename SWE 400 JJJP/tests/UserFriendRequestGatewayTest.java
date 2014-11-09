@@ -13,7 +13,7 @@ import data_gateway.UserFriendRequestGateway;
 
 public class UserFriendRequestGatewayTest 
 {
-	private String requester, requestee;
+	private String requester, requestee, displayName = "display";
 	
 	/**
 	 * Creates two unique users for the tests in this class and inserts them
@@ -24,8 +24,8 @@ public class UserFriendRequestGatewayTest
 	{
 		requester = ((int) (Math.random() * 100000)) + "";
 		requestee = ((int) (Math.random() * 100000)) + "";
-		PersonGateway.insert(requester, "password", "display");
-		PersonGateway.insert(requestee, "password", "display");
+		PersonGateway.insert(requester, "password", displayName);
+		PersonGateway.insert(requestee, "password", displayName);
 	}
 	
 	/**
@@ -47,8 +47,8 @@ public class UserFriendRequestGatewayTest
 	@Test
 	public void testInsertFriendRequest()
 	{
-		assertTrue(UserFriendRequestGateway.insertFriendRequest(requester, requestee));
-		assertFalse(UserFriendRequestGateway.insertFriendRequest(requester, requestee));
+		assertTrue(UserFriendRequestGateway.insertFriendRequest(requester, requestee, displayName, displayName));
+		assertFalse(UserFriendRequestGateway.insertFriendRequest(requester, requestee, displayName, displayName));
 	}
 	
 	/**
@@ -58,9 +58,9 @@ public class UserFriendRequestGatewayTest
 	@Test
 	public void testInvalidInsertFriendRequest()
 	{
-		assertFalse(UserFriendRequestGateway.insertFriendRequest(requester, "false"));
-		assertFalse(UserFriendRequestGateway.insertFriendRequest("false", requestee));
-		assertFalse(UserFriendRequestGateway.insertFriendRequest("false", "false"));
+		assertFalse(UserFriendRequestGateway.insertFriendRequest(requester, "false", displayName, displayName));
+		assertFalse(UserFriendRequestGateway.insertFriendRequest("false", requestee, displayName, displayName));
+		assertFalse(UserFriendRequestGateway.insertFriendRequest("false", "false", displayName, displayName));
 	}
 	
 	/**
@@ -72,7 +72,7 @@ public class UserFriendRequestGatewayTest
 	@Test
 	public void testRemoveFriendRequest()
 	{
-		UserFriendRequestGateway.insertFriendRequest(requester, requestee);
+		UserFriendRequestGateway.insertFriendRequest(requester, requestee, displayName, displayName);
 		assertTrue(UserFriendRequestGateway.removeFriendRequest(requester, requestee));
 		assertFalse(UserFriendRequestGateway.removeFriendRequest(requester, requestee));
 	}
@@ -84,7 +84,7 @@ public class UserFriendRequestGatewayTest
 	public void testFindOutGoingFriendRequests()
 	{
 		assertFalse(checkResultSet(UserFriendRequestGateway.findOutgoingFriendRequests(requester)));
-		UserFriendRequestGateway.insertFriendRequest(requester, requestee);
+		UserFriendRequestGateway.insertFriendRequest(requester, requestee, displayName, displayName);
 		assertTrue(checkResultSet(UserFriendRequestGateway.findOutgoingFriendRequests(requester)));
 	}
 	
@@ -92,7 +92,7 @@ public class UserFriendRequestGatewayTest
 	public void testFindIncomingFriendRequests()
 	{
 		assertFalse(checkResultSet(UserFriendRequestGateway.findIncomingFriendRequests(requestee)));
-		UserFriendRequestGateway.insertFriendRequest(requester, requestee);
+		UserFriendRequestGateway.insertFriendRequest(requester, requestee, displayName, displayName);
 		assertTrue(checkResultSet(UserFriendRequestGateway.findIncomingFriendRequests(requestee)));
 		
 	}
