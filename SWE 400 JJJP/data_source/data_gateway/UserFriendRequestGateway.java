@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 /**
  * This class is a gateway that isolates all of the SQL commands to access the
- * FriendRequest Table in the database
+ * PendingFriendRequest Table in the database
  * 
  * John Terry SWE 400, LSA Group JJJP October 3, 2014
  */

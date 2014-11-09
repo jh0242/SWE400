@@ -14,7 +14,8 @@ import domain_model.FriendRequest;
 import domain_model.Person;
 
 /**
- * Mapper for the FriendRequestGateway
+ * Mapper class that connects the SQl commands in the FriendRequestGateway
+ * to the FriendRequest and Person class in the domain layer
  * 
  * @author John Terry
  * @author Joshua McMillen
@@ -30,8 +31,7 @@ public class UserFriendRequestMapper
 	}
 
 	/**
-	 * Checks to make sure that there is an instance of a UserFriendRequest
-	 * Mapper
+	 * Checks to make sure that there is an instance of a UserFriendRequestMapper
 	 * 
 	 * @return UserFriendRequestMapper the singleton instance of this class
 	 */
@@ -51,13 +51,13 @@ public class UserFriendRequestMapper
 	public static Map<String, List<FriendRequest>> OutgoingFriendRequestsList = new HashMap<String, List<FriendRequest>>();
 	
 	/**
-	 * The Hash Map that stores the outgoing friend request list.  The keys are the usernames
-	 * and they map to the list of friend requests they have been sent.
+	 * The Hash Map that stores the incoming friend request list.  The keys are the usernames
+	 * and they map to the list of friend requests that they are receiving.
 	 */
 	public static Map<String, List<FriendRequest>> IncomingFriendRequestsList = new HashMap<String, List<FriendRequest>>();
 
 	/**
-	 * Returns the list outgoing friend requests for the user in the domain
+	 * Returns the list of outgoing friend requests for the user in the domain
 	 * layer and in the database
 	 * 
 	 * @param user the user that needs outgoing friend requests loaded
@@ -87,6 +87,7 @@ public class UserFriendRequestMapper
 	/**
 	 * Loads this Data Mapper with the list of friend requests associated with the
 	 * given user in the parameter
+	 * 
 	 * @param user the user that needs their friend requests loaded
 	 */
 	public static void loadFriendRequestsList(Person user)
@@ -137,6 +138,7 @@ public class UserFriendRequestMapper
 
 	/**
 	 * Inserts the friend request into the domain layer and the database
+	 * 
 	 * @param user the user sending the friend request
 	 * @param fr the friend request we are attempting to add
 	 * @return true if the request was successfully created or false if not
@@ -165,6 +167,13 @@ public class UserFriendRequestMapper
 		return false;
 	}
 	
+	/**
+	 * Checks if the friend request is present in the either the OutgoingFriendRequestList 
+	 * or the IncomingFriendRequestList, if friend request is present exists returns true
+	 * 
+	 * @param fr
+	 * @return exists
+	 */
 	public static boolean friendRequestExists(FriendRequest fr)
 	{
 		boolean exists = false;
@@ -178,6 +187,7 @@ public class UserFriendRequestMapper
 				if ((f.getSender() == fr.getSender() && f.getReceiver() == fr.getReceiver()) || 
 						(f.getReceiver() == fr.getSender() && f.getSender() == fr.getReceiver()))
 					exists = true;
+			
 		return exists;
 	}
 }
