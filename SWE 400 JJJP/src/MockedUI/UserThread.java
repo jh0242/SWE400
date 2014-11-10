@@ -221,6 +221,7 @@ public class UserThread implements Runnable
 		boolean allIsWell = true;
 		while (allIsWell && input != null)
 		{
+			System.out.println(input);
 			if (!executeInstruction(input))
 			{
 				allIsWell = false;
