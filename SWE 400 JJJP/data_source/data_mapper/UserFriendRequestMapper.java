@@ -48,13 +48,13 @@ public class UserFriendRequestMapper
 	 * The Hash Map that stores the outgoing friend request list.  The keys are the usernames
 	 * and they map to the list of friend requests they have sent.
 	 */
-	public static Map<String, List<FriendRequest>> OutgoingFriendRequestsList = new HashMap<String, List<FriendRequest>>();
+	private static Map<String, List<FriendRequest>> OutgoingFriendRequestsList = new HashMap<String, List<FriendRequest>>();
 	
 	/**
 	 * The Hash Map that stores the incoming friend request list.  The keys are the usernames
 	 * and they map to the list of friend requests that they are receiving.
 	 */
-	public static Map<String, List<FriendRequest>> IncomingFriendRequestsList = new HashMap<String, List<FriendRequest>>();
+	private static Map<String, List<FriendRequest>> IncomingFriendRequestsList = new HashMap<String, List<FriendRequest>>();
 
 	/**
 	 * Returns the list of outgoing friend requests for the user in the domain
@@ -67,7 +67,9 @@ public class UserFriendRequestMapper
 	{
 		if (!OutgoingFriendRequestsList.containsKey(user.getUsername()))
 			loadFriendRequestsList(user);
-		return (ArrayList<FriendRequest>) OutgoingFriendRequestsList.get(user.getUsername());
+		ArrayList<FriendRequest> list = new ArrayList<FriendRequest>();
+		list.addAll(OutgoingFriendRequestsList.get(user.getUsername()));
+		return list;
 	}
 
 	/**
@@ -81,7 +83,9 @@ public class UserFriendRequestMapper
 	{
 		if (!IncomingFriendRequestsList.containsKey(user.getUsername()))
 			loadFriendRequestsList(user);
-		return (ArrayList<FriendRequest>) IncomingFriendRequestsList.get(user.getUsername());
+		ArrayList<FriendRequest> list = new ArrayList<FriendRequest>();
+		list.addAll(IncomingFriendRequestsList.get(user.getUsername()));
+		return list;
 	}
 	
 	/**
@@ -179,9 +183,7 @@ public class UserFriendRequestMapper
 				OutgoingFriendRequestsList.put(user.getUsername(), new ArrayList<FriendRequest>());
 			OutgoingFriendRequestsList.get(user.getUsername()).add(fr);
 			IncomingFriendRequestsList.put(fr.getReceiver(), new ArrayList<FriendRequest>());
-			IncomingFriendRequestsList.get(fr
-					.getReceiver())
-					.add(fr);
+			IncomingFriendRequestsList.get(fr.getReceiver()).add(fr);
 			return true;
 		}
 		return false;
