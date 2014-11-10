@@ -140,11 +140,11 @@ public class UnitOfWork
 			else if (x.getClass().equals(FriendRequest.class)) {
 				FriendRequest fr = (FriendRequest) x;
 				// Outgoing
-				if (fr.getSender() == sessionPerson.getUsername()) {
+				if (fr.getSender().equals(sessionPerson.getUsername())) {
 					UserFriendRequestMapper.removeFriendRequest(sessionPerson.getUsername(), fr.getReceiver());
 				}
 				// Incoming
-				if (fr.getReceiver() == sessionPerson.getUsername()) {
+				if (fr.getReceiver().equals(sessionPerson.getUsername())) {
 					UserFriendRequestMapper.removeFriendRequest(fr.getSender(), sessionPerson.getUsername());
 				}
 				//  
