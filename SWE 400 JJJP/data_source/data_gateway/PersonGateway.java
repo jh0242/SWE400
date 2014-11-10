@@ -21,7 +21,6 @@ public class PersonGateway
 	 * @param password the requested password for the new user.
 	 * @param displayName the requested display name for the new user.
 	 * @return boolean true if the insert succeeded or false if the insert did not succeed.
-	 * @throws SQLException
 	 */
 	public static boolean insert(String userName, String password, String displayName)
 	{
@@ -50,7 +49,6 @@ public class PersonGateway
 	 * @param userName of the user being requested.
 	 * @param password of the user being requested.
 	 * @return the user's unique id number if the userName and password is valid, else -1.
-	 * @throws SQLException
 	 */
 	public static int getID(String userName, String password)
 	{
@@ -81,7 +79,6 @@ public class PersonGateway
 	 * @param password the password of the user trying to log in.
 	 * @return rs the row of the corresponding user or null if the userName does not exist
 	 * or the password is incorrect.
-	 * @throws SQLException
 	 */
 	public static ResultSet selectUser(String userName, String password)
 	{
@@ -108,7 +105,6 @@ public class PersonGateway
 	 * of an unsuccessful remove due to an invalid userName.
 	 * @param userName the unique userName of the User to be removed.
 	 * @return boolean whether or not the remove was successful.
-	 * @throws SQLException
 	 */
 	public static boolean removeByUserName(String userName)
 	{
@@ -135,7 +131,6 @@ public class PersonGateway
 	 * @param userID the id of the user making the request
 	 * @param newDisplayName the new display name requested by the user
 	 * @return boolean true if the update is successful, false if the update is unsuccessful
-	 * @throws SQLException
 	 */
 	public static boolean updateDisplayName(int userID, String newDisplayName)
 	{
@@ -190,7 +185,6 @@ public class PersonGateway
 	 * is not in the table, return false.
 	 * @param userName the userName of the User we are looking for.
 	 * @return true if the User is in the table, false if the User is not in the table.
-	 * @throws SQLException
 	 */
 	public static boolean userNameIsInTable(String userName)
 	{
@@ -227,8 +221,9 @@ public class PersonGateway
 			stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(checkUniqueUserName);
 			rs = stmt.executeQuery(checkUniqueUserName);
 			if (!rs.next())
-				return "nonexistent person";
-			displayName = rs.getString("DisplayName");
+				displayName = "nonexistent person";
+			else
+				displayName = rs.getString("DisplayName");
 		} catch (SQLException e) 
 		{
 			System.out.println("Error with MySQL syntax in userNameIsInTable!");

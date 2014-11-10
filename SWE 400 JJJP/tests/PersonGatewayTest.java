@@ -143,4 +143,16 @@ public class PersonGatewayTest
 		int id = PersonGateway.getID("userA", "123");
 		assertFalse(id == -1);
 	}
+	
+	/**
+	 * Tests that getDisplayName gets the correct display name for 
+	 * the user name it is associated with.
+	 */
+	@Test
+	public void testGetDisplayName()
+	{
+		PersonGateway.insert(userName, "password", "correctDisplay");
+		assertEquals("correctDisplay", PersonGateway.getDisplayName(userName));
+		assertEquals("nonexistent person", PersonGateway.getDisplayName("doesntExist"));
+	}
 }
