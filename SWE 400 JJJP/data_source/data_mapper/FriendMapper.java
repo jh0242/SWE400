@@ -79,16 +79,6 @@ public class FriendMapper
 	 */
 	public boolean removeFriend(Person user, String friendUserName)
 	{
-		
-		if(!user.getFriends().isEmpty()){
-			for(int i=0;i<user.getFriends().size();i++)
-			{
-				if(user.getFriends().get(i).getUserName().equals(friendUserName))
-				{
-					user.getFriends().remove(i);
-				}
-			}
-		}
 		if(friendsList.containsKey(user.getUsername()))
 		{
 			ArrayList<Friend> list = (ArrayList<Friend>) friendsList.get(user.getUsername());
@@ -112,7 +102,6 @@ public class FriendMapper
 	 */
 	public static boolean saveFriend(Person person, Friend friend)
 	{
-		person.addFriend(friend);
 		ArrayList<Friend> list = person.getFriends();
 		if(!list.contains(friend))
 		{
