@@ -18,6 +18,11 @@ public class Person extends DomainObject
 	String userName;    // Unique username e.g.: xXxJavaLordxXx
 	String password;    // Passwords aren't protected. We're Sony now.
 	boolean updated;
+	
+	/**
+	 * If true, this person should avoid any datamapper calls.
+	 */
+	public boolean nonDatabase = false;
 	/**
 	 * Lazy-loaded field. Be sure to use getFriends()
 	 */
@@ -139,7 +144,7 @@ public class Person extends DomainObject
 		// This is where loading should occur.
 		if (friends == null) {
 			friends = new ArrayList<>();
-			this.friends = FriendMapper.getInstance().getAllFriends(this);
+			if (!nonDatabase) this.friends = FriendMapper.getInstance().getAllFriends(this);
 		}
 		return friends;
 	}
@@ -204,8 +209,8 @@ public class Person extends DomainObject
 	 */
 	public ArrayList<FriendRequest> getFriendRequests() {
 		if (friendRequests == null) {
-			friendRequests = UserFriendRequestMapper.getAllIncomingFriendRequests(this);
-			//friendRequests = new ArrayList<>();
+			friendRequests = new ArrayList<>();
+			if (!nonDatabase) friendRequests = UserFriendRequestMapper.getAllIncomingFriendRequests(this);
 		}
 		return friendRequests;
 	}
@@ -340,7 +345,11 @@ public class Person extends DomainObject
 				break;
 			}
 		}
-		FriendRequest f = new FriendRequest(this.userName, displayName, target, PersonMapper.findDisplayName(target));
+		FriendRequest f;
+		if (!nonDatabase) f = new FriendRequest(this.userName, displayName, target, PersonMapper.findDisplayName(target));
+		else {
+			f = new FriendRequest(this.userName, displayName, target, "nonexistent person");
+		}
 		friendRequestsOutgoing.add(f);
 		Session.getInstance().getUnitOfWork().registerNew(f);
 		

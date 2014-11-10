@@ -73,6 +73,7 @@ public class PersonTest
 	@Test
 	public void testDeleteFriendByUsername() {
 		Person p1 = new Person(0);
+		p1.nonDatabase = true;
 		Friend f = new Friend("Dave");
 		p1.addFriend(f);
 		assertEquals(1, p1.getFriends().size());
@@ -140,6 +141,7 @@ public class PersonTest
 	@Test
 	public void testOutgoingFriendRequest() {
 		Person p1 = new Person(0);
+		p1.nonDatabase = true;
 		assertTrue(p1.newOutgoingFriendRequest("test"));
 		assertFalse(p1.newOutgoingFriendRequest("test")); // Fail if duplicate
 	}

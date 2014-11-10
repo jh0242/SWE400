@@ -22,6 +22,7 @@ public class CommandToGetPendingOutgoingFriendListTest
 	public void test()
 	{
 		Person p = new Person(0);
+		p.nonDatabase = true;
 		Session.getInstance().setPerson(p);
 		p.newOutgoingFriendRequest("test");
 		CommandToGetPendingOutgoingFriendList c = new CommandToGetPendingOutgoingFriendList(0);
