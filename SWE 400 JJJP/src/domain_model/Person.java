@@ -272,6 +272,7 @@ public class Person extends DomainObject
 	 * @return True if confirmation successful
 	 */
 	public boolean confirmFriendRequest(String uname) {
+		this.getFriendRequests(); // Lazy load.
 		Iterator<FriendRequest> it = friendRequests.iterator();
 		boolean success = false;
 		FriendRequest fr = null;
