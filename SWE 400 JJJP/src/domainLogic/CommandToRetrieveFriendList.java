@@ -1,6 +1,4 @@
 package domainLogic;
-import java.util.ArrayList;
-
 import data_mapper.FriendMapper;
 import domain_model.Friend;
 import domain_model.Session;

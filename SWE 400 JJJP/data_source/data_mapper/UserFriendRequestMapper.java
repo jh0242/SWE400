@@ -125,9 +125,8 @@ public class UserFriendRequestMapper
 	/**
 	 * Removes the outgoing friend request from the domain layer and the
 	 * database
-	 * 
-	 * @param user the user that sent the friend request
-	 * @param fr the name of the user that was sent a friend request
+	 * @param sender the person that sent the friend request
+	 * @param receiver the person that is the intended receiver of the request
 	 */
 	public static void removeFriendRequest(String sender, String receiver)
 	{

@@ -63,7 +63,7 @@ public class PersonGatewayTest
 	
 	/**
 	 * Removes the user from the table after we are done testing.
-	 * @throws SQLException
+	 * @throws SQLException if an error happens within the SQL commands
 	 */
 	@After
 	public void removeUser() throws SQLException
@@ -76,7 +76,7 @@ public class PersonGatewayTest
 	 * method in PersonGateway works as intended and that trying to insert
 	 * a user into the USER table with the same userName as another user
 	 * will not be inserted.
-	 * @throws SQLException
+	 * @throws SQLException if an error happens within the SQL commands
 	 */
 	@Test
 	public void testInsertUser() throws SQLException 
@@ -88,7 +88,7 @@ public class PersonGatewayTest
 	/**
 	 * Tests that removing a user from the USER table using the remove
 	 * method in PersonGateway works as intended.
-	 * @throws SQLException
+	 * @throws SQLException if an error happens within the SQL commands
 	 */
 	@Test
 	public void testRemoveUser() throws SQLException
@@ -100,7 +100,7 @@ public class PersonGatewayTest
 	/**
 	 * Tests that selectUser returns the correct ResultSet to be used by
 	 * PersonDataMapper.
-	 * @throws SQLException
+	 * @throws SQLException if an error happens within the SQL commands
 	 */
 	@Test
 	public void testSelectUser() throws SQLException
@@ -119,7 +119,7 @@ public class PersonGatewayTest
 	 * Then we test that the test user has the correct, updated display name.
 	 * Also tests that if the UserID is not in the table, the updateDisplayName
 	 * method will return false.
-	 * @throws SQLException
+	 * @throws SQLException if an error happens within the SQL commands
 	 */
 	@Test
 	public void testUpdateUser() throws SQLException
@@ -131,6 +131,10 @@ public class PersonGatewayTest
 		assertFalse(PersonGateway.updateDisplayName(999999999, "newDisplayName"));
 	}
 	
+	/**
+	 * Tests that trying to get the id of a user that doesn't exist will return
+	 * -1.
+	 */
 	@Test
 	public void testGetID()
 	{
