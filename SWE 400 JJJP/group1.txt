@@ -25,7 +25,7 @@ CommandToPersistChanges;
 CommandToSelectUser spongebob pw1;
 CommandToGetPendingIncomingFriendList <userID>; star,eugene
 CommandToMakeFriendRequest <userID> plankton;
-CommandToGetPendingOutgoingFriendList <userID>; evil,cheeks
+CommandToGetPendingOutgoingFriendList <userID>; cheeks,evil
 CommandToAcceptFriendRequest <userID> krabs;
 CommandToRetrieveFriendList <userID>; tentacles,eugene
 CommandToGetPendingIncomingFriendList <userID>; star
