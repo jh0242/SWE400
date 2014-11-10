@@ -2,6 +2,7 @@ package domainLogic;
 
 import domain_model.Person;
 import domain_model.Session;
+import data_mapper.FriendMapper;
 import data_mapper.PersonMapper;
 
 /**
@@ -37,7 +38,10 @@ public class CommandToSelectUser implements Command
 		Person p = null;
 		p = PersonMapper.getPerson(this.userName, this.password); 
 		if (Session.getInstance().getPerson() != null)
+		{
 			PersonMapper.removeUserFromHashMap(Session.getInstance().getPerson().getUsername());
+			FriendMapper.removeUserFromHashMap(Session.getInstance().getPerson().getUsername());
+		}
 		if (p != null) {
 			Session.getInstance().setPerson(p);
 		}

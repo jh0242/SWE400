@@ -43,8 +43,7 @@ public class FriendMapper
 	 * @return ArrayList of Friends
 	 */
 	public ArrayList<Friend> getAllFriends(Person user)
-	{	
-		Map<String, List<Friend>> friendz = friendsList;
+	{
 		if(!friendsList.containsKey(user.getUsername()))
 		{
 			try{
@@ -123,5 +122,15 @@ public class FriendMapper
 			friendsList.get(friend.getUserName()).add(friend);
 		}			
 		return FriendGateway.insertFriend(person.getUsername(),friend.getUserName(), person.getFullname(), friend.getDisplayName());
+	}
+
+	public static boolean removeUserFromHashMap(String userName) 
+	{
+		if (friendsList.containsKey(userName))
+		{
+			friendsList.remove(userName);
+			return true;
+		}
+		return false;
 	}
 }
