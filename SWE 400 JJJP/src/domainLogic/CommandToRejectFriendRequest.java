@@ -14,7 +14,6 @@ public class CommandToRejectFriendRequest implements Command
 	private int userIDOfRequestee;
 	private String userNameOfRequester;
 
-
 	/**
 	 * 
 	 * @param userIDOfRequestee the User ID of the user accepting the request

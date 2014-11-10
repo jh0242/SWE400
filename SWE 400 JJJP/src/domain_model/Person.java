@@ -329,6 +329,7 @@ public class Person extends DomainObject
 				Session.getInstance().getUnitOfWork().registerRemoved(f);
 				it.remove();
 				success = true;
+				this.friendRequests = null;
 			}	
 		}
 		return success;
