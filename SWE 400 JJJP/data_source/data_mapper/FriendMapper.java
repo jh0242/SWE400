@@ -114,9 +114,12 @@ public class FriendMapper
 		return FriendGateway.insertFriend(person.getUsername(),friend.getUserName(), person.getFullname(), friend.getDisplayName());
 	}
 
+	/**
+	 * @param userName the username of the user to be removed from the hashmap
+	 * @return true if the removal was successful
+	 */
 	public static boolean removeUserFromHashMap(String userName) 
 	{
-		Map<String, List<Friend>> map = friendsList;
 		if (friendsList.containsKey(userName))
 		{
 			friendsList.remove(userName);
@@ -125,6 +128,11 @@ public class FriendMapper
 		return false;
 	}
 
+	/**
+	 * Updates the display name of the given user in the FRIENDS table.
+	 * @param username the user name of the user to be modified
+	 * @param fullname the new display name for the user.
+	 */
 	public void updateDisplayName(String username, String fullname) 
 	{
 		FriendGateway.updateDisplayName(username, fullname);

@@ -15,11 +15,12 @@ public class PersonMapper
 {
 	private static PersonMapper personMapper;
 	
-	//private static Map<String,Person> users = new HashMap<String,Person>();
-	
 	private PersonMapper(){}
 	static Map<String,Person> users = new HashMap<String,Person>();
-	
+	/**
+	 * Returns the singleton instance of PersonMapper
+	 * @return PersonMapper the singleton instance of PersonMapper.
+	 */
 	public static PersonMapper getInstance(){
 		if(personMapper == null){
 			personMapper = new PersonMapper();
@@ -28,11 +29,12 @@ public class PersonMapper
 	}
 	
 	/**
-	 * @param userName
-	 * @param password
+	 * Gets the person object out of the HashMap if it exists.  If it doesn't
+	 * exist, it loads the Person.
+	 * @param userName the username of the person to be retrieved
+	 * @param password the password for the associated username
 	 * @return return Loaded Domain Object :: Person, or create New Domain Object
 	 * 		-- returns null if user Does not Exist
-	 * @throws SQLException
 	 */
 	public Person getPerson(String userName,String password)
 	{
@@ -44,8 +46,10 @@ public class PersonMapper
 	}
 	
 	/**
-	 * @param userName
-	 * @param password
+	 * Loads the Person with the given username and password and returns
+	 * that Person.
+	 * @param userName the username of the user to be loaded
+	 * @param password the associated password
 	 * @return New Domain Object :: Person
 	 * @throws SQLException
 	 */
@@ -69,7 +73,8 @@ public class PersonMapper
 	}
 	
 	/**
-	 * @param userName
+	 * Checks if the user is loaded in the hash map
+	 * @param userName the username of the user
 	 * @return true if User is Loaded into HashMap
 	 */
 	private static boolean checkUserLoaded(String userName){
@@ -81,11 +86,11 @@ public class PersonMapper
 	}
 	
 	/**
-	 * @param userName
-	 * @param password
+	 * @param userName the username of the user to be removed
+	 * @param password the associated password
 	 * Removes User from Domain and Database
 	 * returns True if operation Succeeds, False if not
-	 * @throws SQLException 
+	 * @return true if the removal was successful, false if otherwise
 	 */
 	public boolean removeUser(String userName,String password)
 	{
@@ -102,6 +107,11 @@ public class PersonMapper
 		return false;
 	}
 	
+	/**
+	 * Removes the key from the hash map
+	 * @param userName the key to be removed from the hash map
+	 * @return true if the removal was successful, false otherwise
+	 */
 	public boolean removeUserFromHashMap(String userName)
 	{
 		if (users.containsKey(userName))
@@ -113,11 +123,11 @@ public class PersonMapper
 	}
 	
 	/**
-	 * @param userName
-	 * @param password
-	 * @param display
+	 * Attempts to update the display name of a given user.
+	 * @param userName the username of the user to be updated.
+	 * @param password the associated password
+	 * @param display the new display name
 	 * @return true on success and false if user does not exist
-	 * @throws SQLException
 	 */
 	public boolean updateDisplayName(String userName,String password, String display)
 	{
@@ -147,7 +157,6 @@ public class PersonMapper
 	/**
 	 * Persists updates to database
 	 * @return true upon completion
-	 * @throws SQLException
 	 */
 	public boolean persistUpdates()
 	{
@@ -169,7 +178,6 @@ public class PersonMapper
 	 * @param password the password of the new user.
 	 * @param displayName the displayNmae of the new user.
 	 * @return person if the insert is successful, else return false.
-	 * @throws SQLException
 	 */
 	public static Person insert(String userName, String password, String displayName)
 	{

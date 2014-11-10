@@ -192,8 +192,8 @@ public class UserFriendRequestMapper
 	 * Checks if the friend request is present in the either the OutgoingFriendRequestList 
 	 * or the IncomingFriendRequestList, if friend request is present exists returns true
 	 * 
-	 * @param fr
-	 * @return exists
+	 * @param fr the FriendRequest we are checking if existing in the hash map
+	 * @return exists true if it exists, false otherwise
 	 */
 	public static boolean friendRequestExists(FriendRequest fr)
 	{
@@ -212,12 +212,21 @@ public class UserFriendRequestMapper
 		return exists;
 	}
 
+	/**
+	 * Clears the Outgoing and Incoming hash maps.
+	 */
 	public static void clear() 
 	{
 		OutgoingFriendRequestsList.clear();
 		IncomingFriendRequestsList.clear();
 	}
 
+	/**
+	 * Updates the display name of the given user in the PENDINGFRIENDREQUESTS table
+	 * and in the hash maps.
+	 * @param username the user that is being updated
+	 * @param fullname the new display name
+	 */
 	public void updateDisplayname(String username, String fullname) 
 	{
 		UserFriendRequestGateway.updateDisplayName(username, fullname);
