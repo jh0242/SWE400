@@ -34,12 +34,12 @@ public class CommandToSelectUser implements Command
 	@Override
 	public void execute()
 	{
-		
+		PersonMapper pm = PersonMapper.getInstance();
 		Person p = null;
-		p = PersonMapper.getPerson(this.userName, this.password); 
+		p = pm.getPerson(this.userName, this.password); 
 		if (Session.getInstance().getPerson() != null)
 		{
-			PersonMapper.removeUserFromHashMap(Session.getInstance().getPerson().getUsername());
+			pm.removeUserFromHashMap(Session.getInstance().getPerson().getUsername());
 			FriendMapper.removeUserFromHashMap(Session.getInstance().getPerson().getUsername());
 		}
 		if (p != null) {

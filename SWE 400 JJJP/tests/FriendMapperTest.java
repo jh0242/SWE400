@@ -14,12 +14,13 @@ public class FriendMapperTest
 	@Test
 	public void testFrienships()
 	{
+		PersonMapper pm = PersonMapper.getInstance();
 		PersonGateway.insert("asdfqwer", "asdfqwer", "rewqfdsa");
-		Person p1 = PersonMapper.getPerson("asdfqwer", "asdfqwer");
+		Person p1 = pm.getPerson("asdfqwer", "asdfqwer");
 		PersonGateway.insert("asdfqwer2", "asdfqwer2", "rewqfdsa2");
-		Person p2 = PersonMapper.getPerson("asdfqwer2", "asdfqwer2");
+		Person p2 = pm.getPerson("asdfqwer2", "asdfqwer2");
 		PersonGateway.insert("asdfqwer3", "asdfqwer3", "rewqfdsa3");
-		Person p3 = PersonMapper.getPerson("asdfqwer3","asdfqwer3");
+		Person p3 = pm.getPerson("asdfqwer3","asdfqwer3");
 		Friend f1 = new Friend(p2.getUsername(), p2.getFullname());
 		Friend f2 = new Friend(p3.getUsername(), p3.getFullname());
 		FriendMapper fm = FriendMapper.getInstance();

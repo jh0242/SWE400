@@ -34,7 +34,7 @@ public class PersonMapper
 	 * 		-- returns null if user Does not Exist
 	 * @throws SQLException
 	 */
-	public static Person getPerson(String userName,String password)
+	public Person getPerson(String userName,String password)
 	{
 		if(checkUserLoaded(userName)){
 			return users.get(userName);
@@ -87,7 +87,7 @@ public class PersonMapper
 	 * returns True if operation Succeeds, False if not
 	 * @throws SQLException 
 	 */
-	public static boolean removeUser(String userName,String password)
+	public boolean removeUser(String userName,String password)
 	{
 		if(users.containsKey(userName)){
 			if(users.get(userName).getPassword() == password){
@@ -102,7 +102,7 @@ public class PersonMapper
 		return false;
 	}
 	
-	public static boolean removeUserFromHashMap(String userName)
+	public boolean removeUserFromHashMap(String userName)
 	{
 		if (users.containsKey(userName))
 		{
@@ -119,7 +119,7 @@ public class PersonMapper
 	 * @return true on success and false if user does not exist
 	 * @throws SQLException
 	 */
-	public static boolean updateDisplayName(String userName,String password, String display)
+	public boolean updateDisplayName(String userName,String password, String display)
 	{
 		boolean success = false;
 		if(checkUserLoaded(userName))
@@ -149,7 +149,7 @@ public class PersonMapper
 	 * @return true upon completion
 	 * @throws SQLException
 	 */
-	public static boolean persistUpdates()
+	public boolean persistUpdates()
 	{
 		for(Entry<String, Person> entry : users.entrySet())
 		{
@@ -196,7 +196,7 @@ public class PersonMapper
 	 * @param target the userName of the person we want a display name for
 	 * @return the displayName of the target
 	 */
-	public static String findDisplayName(String target) 
+	public String findDisplayName(String target) 
 	{
 		return PersonGateway.getDisplayName(target);
 	}

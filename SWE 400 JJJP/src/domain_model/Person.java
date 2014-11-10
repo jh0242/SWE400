@@ -86,8 +86,9 @@ public class Person extends DomainObject
 	 */
 	public String getFullname()
 	{
+		PersonMapper pm = PersonMapper.getInstance();
 		if (this.displayName == null) {
-			this.displayName = PersonMapper.findDisplayName(this.userName);
+			this.displayName = pm.findDisplayName(this.userName);
 		}
 		return displayName;
 	}
@@ -375,8 +376,9 @@ public class Person extends DomainObject
 			}
 		}
 		if (success) {
+			PersonMapper pm = PersonMapper.getInstance();
 			FriendRequest f;
-			if (!nonDatabase) f = new FriendRequest(this.userName, displayName, target, PersonMapper.findDisplayName(target));
+			if (!nonDatabase) f = new FriendRequest(this.userName, displayName, target, pm.findDisplayName(target));
 			else {
 				f = new FriendRequest(this.userName, displayName, target, "nonexistent person");
 			}
