@@ -116,7 +116,7 @@ public class Person extends DomainObject
 		boolean wasNull = false;
 		if (this.displayName == null) wasNull = true;
 		this.displayName = name;
-		if (wasNull) Session.getInstance().getUnitOfWork().registerDirty(this);
+		if (!wasNull) Session.getInstance().getUnitOfWork().registerDirty(this);
 	}
 
 	/**
