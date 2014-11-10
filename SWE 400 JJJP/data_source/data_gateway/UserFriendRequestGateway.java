@@ -17,9 +17,8 @@ public class UserFriendRequestGateway
 	 * Pulls all outgoing friend requests for a particular user based on their
 	 * userID
 	 * 
-	 * @param user
-	 * @return
-	 * @throws SQLException
+	 * @param user the user name of the user we want to find requests for
+	 * @return ResultSet the record of outgoing friend requests from the user
 	 */
 	public static ResultSet findOutgoingFriendRequests(String user)
 	{
@@ -42,9 +41,8 @@ public class UserFriendRequestGateway
 	 * Pulls all incoming friend requests for a particular user based on their
 	 * userID
 	 * 
-	 * @param user
-	 * @return
-	 * @throws SQLException
+	 * @param user the user name of the user we want to find requests for
+	 * @return ResultSet the record of Incoming friend requests to the user
 	 */
 	public static ResultSet findIncomingFriendRequests(String user)
 	{
@@ -67,10 +65,11 @@ public class UserFriendRequestGateway
 	 * Inserts a friend request to the table when the user either sends or
 	 * receives a friend request
 	 * 
-	 * @param requester
-	 * @param requestee
-	 * @return
-	 * @throws SQLException
+	 * @param requester the user sending the request
+	 * @param requestee the user receiving the request
+	 * @param requesterDisplayName the display name of the user sending the request
+	 * @param requesteeDisplayName the display name of the user receiving the request
+	 * @return true if the insert was successful, false otherwise
 	 */
 	public static boolean insertFriendRequest(String requester, String requestee, String requesterDisplayName, String requesteeDisplayName)
 	{
@@ -98,10 +97,9 @@ public class UserFriendRequestGateway
 	/**
 	 * Removes friend request from the table when either the friendship is
 	 * accepted or rejected
-	 * 
-	 * @param user
-	 * @return
-	 * @throws SQLException
+	 * @param requester the user that sent the request
+	 * @param requestee the user that received the request
+	 * @return true if the removal was successful, false otherwise
 	 */
 	public static boolean removeFriendRequest(String requester, String requestee)
 	{
@@ -152,6 +150,11 @@ public class UserFriendRequestGateway
 		return true;
 	}
 
+	/**
+	 * Updates the display name for the given username in the PENDINGFRIENDREQUESTS table
+	 * @param username the username of the user to be modified.
+	 * @param fullname the new display name.
+	 */
 	public static void updateDisplayName(String username, String fullname) 
 	{
 		String updateDisplay = new String("update PENDINGFRIENDREQUESTS set RequesterDisplayName=? where Requester=?");

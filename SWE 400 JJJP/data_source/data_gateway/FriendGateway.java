@@ -12,12 +12,11 @@ public class FriendGateway
 {
 	/**
 	 * Executes the insertion of a row in FRIENDS with the corresponding userIDs
-	 * @param userNameA
-	 * @param userNameB
-	 * @param userDisplayNameA 
-	 * @param userDisplayNameB 
-	 * @return
-	 * @throws SQLException
+	 * @param userNameA the username of the first user.
+	 * @param userNameB the username of the other user.
+	 * @param userDisplayNameA the display name of the first user.
+	 * @param userDisplayNameB the display name of the other user.
+	 * @return true if the insert was successful, false if otherwise
 	 */
 	public static boolean insertFriend(String userNameA, String userNameB, String userDisplayNameA, String userDisplayNameB)
 	{
@@ -47,8 +46,7 @@ public class FriendGateway
 	 * Executes the removal of a FRIENDS row where both COLUMNS contain either of the corresponding userIDs
 	 * @param userNameA userId of requesting User
 	 * @param userNameB userID of friend User
-	 * @return
-	 * @throws SQLException
+	 * @return true if the removal was successful, false otherwise
 	 */
 	public static boolean removeFriendship(String userNameA, String userNameB)
 	{
@@ -73,9 +71,8 @@ public class FriendGateway
 	
 	/**
 	 * Executes the removal of All Friendships for a user
-	 * @param userName
+	 * @param userName the user we are removing from the FRIENDS table.
 	 * @return True upon completion of removal of Friendships
-	 * @throws SQLException
 	 */
 	public static boolean removeAllFriendships(String userName)
 	{
@@ -96,9 +93,9 @@ public class FriendGateway
 
 	/**
 	 * Returns Object of Friends related to userID
-	 * @param userName
-	 * @return
-	 * @throws SQLException
+	 * @param userName the User whom we are getting friends for.
+	 * @return ResultSet the record of friend relationships between
+	 * the given userName and other users.
 	 */
 	public static ResultSet getFriends(String userName)
 	{
@@ -120,10 +117,9 @@ public class FriendGateway
 		
 	/**
 	 * Checks if there is a friendship between two users in database
-	 * @param userNameA
-	 * @param userNameB
-	 * @return
-	 * @throws SQLException
+	 * @param userNameA the user name of a specific user
+	 * @param userNameB the user name of the other user
+	 * @return true if there is a friendship, false otherwise
 	 */
 	public static boolean areFriends(String userNameA, String userNameB)
 	{
@@ -145,6 +141,12 @@ public class FriendGateway
 		return true;
 	}
 
+	/**
+	 * Updates the display name of the associated username for any row in
+	 * the FRIENDS table.
+	 * @param username the username of the Person.
+	 * @param fullname the new display name of the Person.
+	 */
 	public static void updateDisplayName(String username, String fullname) 
 	{
 		String updateDisplay = new String("update FRIENDS set UserDisplayNameA=? where UserNameA=?");

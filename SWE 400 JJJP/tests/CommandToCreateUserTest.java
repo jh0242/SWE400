@@ -42,7 +42,7 @@ public class CommandToCreateUserTest
 	public void testCreateUser()
 	{
 		CommandToCreateUser command = new CommandToCreateUser(userName, "pass", "display");
-		assertNull(command.getResult());
+		assertEquals("null", command.getResult());
 		command.execute();
 		assertTrue(PersonGateway.userNameIsInTable(userName));
 		assertEquals(userName + ":pass:display", command.getResult());

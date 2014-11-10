@@ -62,7 +62,7 @@ public class DataBaseConnection
 	 * If there is no connection to the database it will create one. If there is
 	 * a connection already established it will return that connection.
 	 * @return Connection
-	 * @throws SQLException 
+	 * @throws SQLException if there is an error with SQL syntax
 	 */
 	public Connection getConnection() throws SQLException
 	{
@@ -76,7 +76,7 @@ public class DataBaseConnection
 	/**
 	 * Closes the connection to the database.
 	 * 
-	 * @throws SQLException
+	 * @throws SQLException if there is an error with SQL syntax
 	 */
 	public void closeConnection() throws SQLException
 	{
