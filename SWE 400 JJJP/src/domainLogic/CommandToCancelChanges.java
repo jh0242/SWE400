@@ -19,6 +19,7 @@ public class CommandToCancelChanges implements Command
 	public void execute()
 	{
 		Session.getInstance().getUnitOfWork().discard();
+		Session.getInstance().getPerson().clear();
 	}
 
 	/**

@@ -382,4 +382,13 @@ public class Person extends DomainObject
 		return userName + ":" + password + ":" + displayName;
 	}
 	
+	/**
+	 * Clear all friends data.
+	 */
+	public void clear() {
+		this.friends = null;
+		this.friendRequests = null;
+		this.friendRequestsOutgoing = null;
+	}
+	
 }
