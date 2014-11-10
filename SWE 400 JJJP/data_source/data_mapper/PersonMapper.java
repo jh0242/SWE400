@@ -65,7 +65,6 @@ public class PersonMapper
 			e.printStackTrace();
 		}
 		users.put(userName, loadedUser);
-		System.out.println("correct");
 		return loadedUser;
 	}
 	
@@ -98,6 +97,16 @@ public class PersonMapper
 		if(PersonGateway.selectUser(userName, password)!=null)
 		{
 			PersonGateway.removeByUserName(userName);
+			return true;
+		}
+		return false;
+	}
+	
+	public static boolean removeUserFromHashMap(String userName)
+	{
+		if (users.containsKey(userName))
+		{
+			users.remove(userName);
 			return true;
 		}
 		return false;

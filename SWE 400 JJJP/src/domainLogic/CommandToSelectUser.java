@@ -36,6 +36,8 @@ public class CommandToSelectUser implements Command
 		
 		Person p = null;
 		p = PersonMapper.getPerson(this.userName, this.password); 
+		if (Session.getInstance().getPerson() != null)
+			PersonMapper.removeUserFromHashMap(Session.getInstance().getPerson().getUsername());
 		if (p != null) {
 			Session.getInstance().setPerson(p);
 		}

@@ -136,6 +136,7 @@ public class UserFriendRequestMapper
 	{
 		UserFriendRequestGateway.removeFriendRequest(sender, receiver);
 		Iterator<FriendRequest> it = OutgoingFriendRequestsList.get(sender).iterator();
+		Map<String, List<FriendRequest>> list = OutgoingFriendRequestsList;
 		FriendRequest fr = null;
 		boolean removed = false;
 		while (!removed && it.hasNext())
