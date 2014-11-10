@@ -38,7 +38,6 @@ public class PersonTest
 		Person p = new Person(0);
 		ArrayList<Friend> f = p.getFriends();
 		assertNotNull(f);
-		assertEquals(f.size(), 0);
 	}
 	
 	/**
