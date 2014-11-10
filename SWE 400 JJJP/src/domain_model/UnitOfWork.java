@@ -132,7 +132,7 @@ public class UnitOfWork
 				Person p = (Person) x;
 				PersonMapper.updateDisplayName(p.getUsername(), p.getPassword(), p.getFullname());
 				FriendMapper.getInstance().updateDisplayName(p.getUsername(), p.getFullname());
-//				UserFriendRequestMapper.getInstance().updateDisplayName(p.getUsername(), p.getFullname());
+				UserFriendRequestMapper.getInstance().clear();
 				System.out.println(msg + "New display name: " + p);
 			}
 		}

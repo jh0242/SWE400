@@ -198,11 +198,6 @@ public class PersonMapper
 	 */
 	public static String findDisplayName(String target) 
 	{
-		String displayName;
-		if (users.containsKey(target))
-			displayName = users.get(target).getFullname();
-		else
-			displayName = PersonGateway.getDisplayName(target);
-		return displayName;
+		return PersonGateway.getDisplayName(target);
 	}
 }

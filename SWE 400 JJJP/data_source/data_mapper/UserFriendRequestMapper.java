@@ -117,7 +117,8 @@ public class UserFriendRequestMapper
 				String requesterDisplay = results2.getString(results2.findColumn("RequesterDisplayName"));
 				FriendRequest fr = new FriendRequest(requester, requesterDisplay, user.getUsername(), user.getFullname());
 				IncomingFriendRequestsList.get(user.getUsername()).add(fr);
-				OutgoingFriendRequestsList.put(requester, new ArrayList<FriendRequest>()).add(fr);
+				OutgoingFriendRequestsList.put(requester, new ArrayList<FriendRequest>());
+				OutgoingFriendRequestsList.get(requester).add(fr);
 			}
 		} catch (SQLException e)
 		{
@@ -212,5 +213,11 @@ public class UserFriendRequestMapper
 					exists = true;
 			
 		return exists;
+	}
+
+	public void clear() 
+	{
+		OutgoingFriendRequestsList.clear();;
+		IncomingFriendRequestsList.clear();;
 	}
 }
