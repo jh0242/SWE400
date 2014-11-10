@@ -129,11 +129,32 @@ public class UserFriendRequestMapper
 	 * @param user the user that sent the friend request
 	 * @param fr the name of the user that was sent a friend request
 	 */
-	public static void removeFriendRequest(Person user, FriendRequest fr)
+	public static void removeFriendRequest(String sender, String receiver)
 	{
-		UserFriendRequestGateway.removeFriendRequest(user.getUsername(), fr.getReceiver());
-		OutgoingFriendRequestsList.get(user.getUsername()).remove(fr);
-		IncomingFriendRequestsList.get(fr.getReceiver()).remove(fr);
+		UserFriendRequestGateway.removeFriendRequest(sender, receiver);
+		Iterator<FriendRequest> it = OutgoingFriendRequestsList.get(sender).iterator();
+		FriendRequest fr = null;
+		boolean removed = false;
+		while (!removed && it.hasNext())
+		{
+			fr = it.next();
+			if (fr.getReceiver().equals(receiver))
+			{
+				OutgoingFriendRequestsList.get(sender).remove(fr);
+				removed = true;
+			}
+		}
+		it = IncomingFriendRequestsList.get(receiver).iterator();
+		removed = false;
+		while (!removed && it.hasNext())
+		{
+			fr = it.next();
+			if (fr.getSender().equals(sender))
+			{
+				IncomingFriendRequestsList.get(receiver).remove(fr);
+				removed = true;
+			}
+		}
 	}
 
 	/**

@@ -141,7 +141,7 @@ public class UnitOfWork
 				FriendRequest fr = (FriendRequest) x;
 				// Outgoing
 				if (fr.getSender() == sessionPerson.getUsername()) {
-					UserFriendRequestMapper.removeFriendRequest(sessionPerson, fr);
+					UserFriendRequestMapper.removeFriendRequest(sessionPerson.getUsername(), fr.getReceiver());
 				}
 				// Incoming
 				//  
