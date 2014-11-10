@@ -8,10 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import data_gateway.FriendGateway;
 import data_gateway.UserFriendRequestGateway;
-import domain_model.DomainObject;
-import domain_model.Friend;
 import domain_model.FriendRequest;
 import domain_model.Person;
 
