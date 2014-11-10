@@ -44,6 +44,7 @@ public class FriendMapper
 	 */
 	public ArrayList<Friend> getAllFriends(Person user)
 	{	
+		Map<String, List<Friend>> friendz = friendsList;
 		if(!friendsList.containsKey(user.getUsername()))
 		{
 			try{
@@ -52,7 +53,7 @@ public class FriendMapper
 				while(results.next())
 				{
 					Friend friend;
-					if(!results.getString(results.findColumn("UserNameA")).equals(user.getUsername()))
+					if(results.getString(results.findColumn("UserNameA")).equals(user.getUsername()))
 					{	
 						friend = new Friend(results.getString(results.findColumn("UserNameB")), results.getString(results.findColumn("UserDisplayNameB")));
 						
@@ -117,6 +118,9 @@ public class FriendMapper
 		{
 			list.add(friend);
 			friendsList.put(person.getUsername(), list);
+			if (!friendsList.containsKey(friend.getUserName()))
+				friendsList.put(friend.getUserName(), new ArrayList<Friend>());
+			friendsList.get(friend.getUserName()).add(friend);
 		}			
 		return FriendGateway.insertFriend(person.getUsername(),friend.getUserName(), person.getFullname(), friend.getDisplayName());
 	}
