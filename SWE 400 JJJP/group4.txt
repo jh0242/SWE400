@@ -226,7 +226,8 @@ CommandToPersistChanges;
 CommandToSelectUser jellyjiggler pw1;
 CommandToRetrieveFriendList <userID>; randysavage
 CommandToUnFriend <userID> RandySavage;
-CommandToPersistChanges;*****Cancel Changes*******1
+CommandToPersistChanges;
+*****Cancel Changes*******1
 CommandToSelectUser ferdinand pw1;
 CommandToMakeFriendRequest <userID> augustus;
 CommandToPersistChanges;

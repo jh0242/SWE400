@@ -151,4 +151,26 @@ public class UserFriendRequestGateway
 		}
 		return true;
 	}
+
+	public static void updateDisplayName(String username, String fullname) 
+	{
+		String updateDisplay = new String("update PENDINGFRIENDREQUESTS set RequesterDisplayName=? where Requester=?");
+		String updateDisplay2 = new String("update PENDINGFRIENDREQUESTS set RequesteeDisplayName=? where Requestee=?");
+		PreparedStatement stmt;
+		try
+		{
+			stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(updateDisplay);
+			stmt.setString(1, fullname);
+			stmt.setString(2, username);
+			stmt.executeUpdate();
+			stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(updateDisplay2);
+			stmt.setString(1, fullname);
+			stmt.setString(2, username);
+			stmt.executeUpdate();
+		} catch (SQLException e)
+		{
+			System.out.println("Error with MySQL syntax in areFriends!");
+			e.printStackTrace();
+		}
+	}
 }

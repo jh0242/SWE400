@@ -8,8 +8,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import data_gateway.FriendGateway;
 import data_gateway.UserFriendRequestGateway;
 import domain_model.DomainObject;
+import domain_model.Friend;
 import domain_model.FriendRequest;
 import domain_model.Person;
 
@@ -171,10 +173,6 @@ public class UserFriendRequestMapper
 	 */
 	public static boolean insertFriendRequest(Person user, FriendRequest fr)
 	{
-		Map<String, List<FriendRequest>> out = OutgoingFriendRequestsList;
-		Map<String, List<FriendRequest>> in = IncomingFriendRequestsList;
-		
-		
 		if (!OutgoingFriendRequestsList.containsKey(user.getUsername()) && !IncomingFriendRequestsList.containsKey(user.getUsername()))
 			loadFriendRequestsList(user);
 		
@@ -217,7 +215,26 @@ public class UserFriendRequestMapper
 
 	public void clear() 
 	{
-		OutgoingFriendRequestsList.clear();;
-		IncomingFriendRequestsList.clear();;
+		OutgoingFriendRequestsList.clear();
+		IncomingFriendRequestsList.clear();
+	}
+
+	public void updateDisplayname(String username, String fullname) 
+	{
+		UserFriendRequestGateway.updateDisplayName(username, fullname);
+		Iterator<String> it = OutgoingFriendRequestsList.keySet().iterator();
+		while (it.hasNext())
+		{
+			for (FriendRequest fr: OutgoingFriendRequestsList.get(it.next()))
+				if (fr.getReceiver().equals(username))
+					fr.setReceiverDisplayName(fullname);
+		}
+		it = IncomingFriendRequestsList.keySet().iterator();
+		while (it.hasNext())
+		{
+			for (FriendRequest fr: IncomingFriendRequestsList.get(it.next()))
+				if (fr.getSender().equals(username))
+					fr.setSenderDisplayName(fullname);
+		}
 	}
 }

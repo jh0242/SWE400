@@ -120,6 +120,7 @@ public class UnitOfWork
 				FriendRequest fr = (FriendRequest) x;
 				System.out.print(msg + "New outgoing FR: " + fr);
 				if (fr.getSender() == sessionPerson.getUsername()) {
+					UserFriendRequestMapper.getInstance().clear();
 					boolean status = UserFriendRequestMapper.insertFriendRequest(sessionPerson, fr);
 					System.out.println(" ... " + status);
 				}
@@ -132,7 +133,7 @@ public class UnitOfWork
 				Person p = (Person) x;
 				PersonMapper.updateDisplayName(p.getUsername(), p.getPassword(), p.getFullname());
 				FriendMapper.getInstance().updateDisplayName(p.getUsername(), p.getFullname());
-				UserFriendRequestMapper.getInstance().clear();
+				UserFriendRequestMapper.getInstance().updateDisplayname(p.getUsername(), p.getFullname());
 				System.out.println(msg + "New display name: " + p);
 			}
 		}
