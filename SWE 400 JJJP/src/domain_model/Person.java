@@ -330,6 +330,8 @@ public class Person extends DomainObject
 	 * @return True if success, false otherwise.
 	 */
 	public boolean removeFriendRequest(String uname) {
+		this.getFriendRequests();
+		this.getFriendRequestsOutgoing();
 		Iterator<FriendRequest> it = friendRequests.iterator();
 		boolean success = false;
 		while (it.hasNext() && !success) {

@@ -74,7 +74,7 @@ public class CommandToCreateUser implements Command
 	public String getResult()
 	{
 		if (person == null)
-			return null;
+			return "null";
 		return userName + ":" + password + ":" + displayName;
 	}
 
