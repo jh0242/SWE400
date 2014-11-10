@@ -1,0 +1,124 @@
+CommandToSelectUser bobbyboy pw2;
+CommandToMakeFriendRequest <userID> matthewcroft;
+CommandToPersistChanges;
+CommandToSelectUser matthewcroft pw1;
+CommandToGetPendingIncomingFriendList <userID>; Bobby12
+CommandToAcceptFriendRequest <userID> bobbyboy;
+CommandToPersistChanges;
+CommandToSelectUser matthewcroft pw1;
+CommandToRetrieveFriendList <userID>; Bobby12
+CommandToPersistChanges;
+********************************************
+CommandToSelectUser mark pw2;
+CommandToMakeFriendRequest <userID> phil;
+CommandToCancelChanges;
+CommandToPersistChanges;
+CommandToGetPendingOutgoingFriendList <userID>;
+*******************************************
+CommandToSelectUser dad pw2;
+CommandToMakeFriendRequest <userID> lenny;
+CommandToPersistChanges;
+CommandToSelectUser lenny pw1;
+CommandToGetPendingIncomingFriendList <userID>; Dad12
+CommandToRejectFriendRequest <userID> dad;
+CommandToRetrieveFriendList <userID>;
+CommandToPersistChanges;
+*******************************************
+CommandToSelectUser mattkujo pw;
+CommandToMakeFriendRequest <userID> IronMan;
+CommandToSelectUser IronMan pw2;
+CommandToGetPendingIncomingFriendList <userID>; matt40
+CommandToCancelChanges;
+CommandToPersistChanges;
+CommandToSelectUser IronMan pw2;
+CommandToGetPendingIncomingFriendList <userID>;
+*******************************************
+CommandToSelectUser Earls pw;
+CommandToMakeFriendRequest <userID> SteelMan;
+CommandToSelectUser SteelMan pw2;
+CommandToGetPendingIncomingFriendList <userID>; matt43
+CommandToPersistChanges;
+CommandToSelectUser SteelMan pw2;
+CommandToAcceptFriendRequest <userID> Earls;
+CommandToPersistChanges;
+CommandToSelectUser SteelMan pw2;
+CommandToRetrieveFriendList <userID>; matt43
+CommandToSelectUser BronzeMan pw3;
+CommandToMakeFriendRequest <userID> SteelMan;
+CommandToSelectUser SteelMan pw2;
+CommandToGetPendingIncomingFriendList <userID>; ManOfBronze
+CommandToCancelChanges;
+CommandToSelectUser SteelMan pw2;
+CommandToGetPendingIncomingFriendList <userID>;
+*******************************************
+CommandToSelectUser Billybob pw;
+CommandToMakeFriendRequest <userID> MetalMan;
+CommandToPersistChanges;
+CommandToSelectUser MetalMan pw2;
+CommandToGetPendingIncomingFriendList <userID>; FoShow28
+CommandToPersistChanges;
+CommandToSelectUser MetalMan pw2;
+CommandToAcceptFriendRequest <userID> BillyBob;
+CommandToPersistChanges;
+CommandToSelectUser BillyBob pw;
+CommandToRetrieveFriendList <userID>; ManOfMetal
+CommandToUnFriend <userID> MetalMan;
+CommandToPersistChanges;
+CommandToSelectUser BillyBob pw;
+CommandToRetrieveFriendList <userID>;
+CommandToMakeFriendRequest <userID> MetalMan;
+CommandToPersistChanges;
+CommandToSelectUser MetalMan pw2;
+CommandToGetPendingIncomingFriendList <userID>; FoShow28
+CommandToAcceptFriendRequest <userID> BillyBob;
+CommandToPersistChanges;
+CommandToSelectUser BillyBob pw;
+CommandToRetrieveFriendList <userID>; ManOfMetal
+*******************************************
+CommandToSelectUser joshypants pw;
+CommandToMakeFriendRequest <userID> frank;
+CommandToGetPendingOutgoingFriendList <userID>; noShoes12
+CommandToPersistChanges;
+CommandToSelectUser frank pw1;
+CommandToGetPendingIncomingFriendList <userID>; josh78
+CommandToRejectFriendRequest <userID> joshypants;
+CommandToGetPendingIncomingFriendList <userID>;
+CommandToRetrieveFriendList <userID>;
+CommandToPersistChanges;
+CommandToSelectUser joshypants pw;
+CommandToRetrieveFriendList <userID>;
+*******************************************
+CommandToSelectUser JoshyJosh pw;
+CommandToMakeFriendRequest <userID> franklin;
+CommandToGetPendingOutgoingFriendList <userID>; noShoes
+CommandToPersistChanges;
+CommandToSelectUser franklin pw1;
+CommandToGetPendingIncomingFriendList <userID>; josh2
+CommandToAcceptFriendRequest <userID> JoshyJosh;
+CommandToGetPendingIncomingFriendList <userID>;
+CommandToRetrieveFriendList <userID>; josh2
+CommandToPersistChanges;
+CommandToSelectUser JoshyJosh pw;
+CommandToRetrieveFriendList <userID>; noShoes
+CommandToUnFriend <userID> franklin;
+CommandToPersistChanges
+CommandToRetrieveFriendList <userID>;
+*******************************************
+CommandToSelectUser Joshie pw;
+CommandToMakeFriendRequest <userID> frankfort;
+CommandToMakeFriendRequest <userID> frankfort;
+CommandToMakeFriendRequest <userID> frankfort;
+CommandToMakeFriendRequest <userID> frankfort;
+CommandToGetPendingOutgoingFriendList <userID>; noShoes09,noShoes09,noShoes09,noShoes09
+CommandToPersistChanges;
+CommandToSelectUser frankfort pw1;
+CommandToGetPendingIncomingFriendList <userID>; josh44,josh44,josh44,josh44
+*******************************************
+CommandToSelectUser Morphius pw;
+CommandToModifyUser <userID> MattyMatt;
+CommandToPersistChanges;
+CommandToSelectUser Georgie pw;
+CommandToMakeFriendRequest <userID> Bourney;
+CommandToMakeFriendRequest <userID> Bourney;
+CommandToGetPendingOutgoingFriendList <userID>; noShoesNoPants,noShoesNoPants
+CommandToPersistChanges;

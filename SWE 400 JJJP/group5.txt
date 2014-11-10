@@ -1,0 +1,78 @@
+** TestGettingPendingRequests
+CommandToSelectUser bradpitt pittspass;
+CommandToMakeFriendRequest <userID> snapple;
+CommandToPersistChanges;
+CommandToGetPendingOutgoingFriendList <userID>; snapsmcgee
+CommandToRejectFriendRequest <userID> snapple;
+CommandToPersistChanges;
+CommandToGetPendingOutgoingFriendList <userID>;
+CommandToSelectUser snapple snappass;
+CommandToRetrieveFriendList <userID>;
+** TestUnfriending
+CommandToSelectUser bradpitt pittspass;
+CommandToMakeFriendRequest <userID> snapple;
+CommandToPersistChanges;
+CommandToSelectUser snapple snappass;
+CommandToAcceptFriendRequest <userID> bradpitt;
+CommandToPersistChanges;
+CommandToSelectUser bradpitt pittspass;
+CommandToUnFriend <userID> snapple;
+CommandToPersistChanges;
+CommandToSelectUser snapple snappass;
+CommandToRetrieveFriendList <userID>;
+** TestCancelChanges
+CommandToSelectUser bradpitt pittspass;
+CommandToModifyUser <userID> angelina;
+CommandToCancelChanges;
+** TestCancelingChanges
+CommandToSelectUser bradpitt pittspass;
+CommandToMakeFriendRequest <userID> snapple;
+CommandToPersistChanges;
+CommandToGetPendingOutgoingFriendList <userID>; snapsmcgee
+CommandToMakeFriendRequest <userID> buttercup;
+CommandToGetPendingOutgoingFriendList <userID>; snapsmcgee,optimus
+CommandToCancelChanges;
+CommandToGetPendingOutgoingFriendList <userID>; snapsmcgee
+CommandToSelectUser snapple snappass;
+CommandToRejectFriendRequest <userID> bradpitt;
+CommandToPersistChanges;
+** TestGetIncomingFriendsList
+CommandToSelectUser bradpitt pittspass;
+CommandToMakeFriendRequest <userID> snapple;
+CommandToPersistChanges;
+CommandToSelectUser snapple snappass;
+CommandToGetPendingIncomingFriendList <userID>; pittyboi
+CommandToRejectFriendRequest <userID> bradpitt;
+CommandToPersistChanges;
+** TestGettingPendingOutingFriendsList
+CommandToSelectUser bradpitt pittspass;
+CommandToMakeFriendRequest <userID> snapple;
+CommandToPersistChanges;
+CommandToGetPendingOutgoingFriendList <userID>; snapsmcgee
+CommandToRejectFriendRequest <userID> snapple;
+CommandToPersistChanges;
+CommandToGetPendingOutgoingFriendList <userID>;
+** TestModifyUser
+CommandToSelectUser bradpitt pittspass;
+CommandToModifyUser <userID> timothy;
+CommandToPersistChanges;
+** TestCreateMultipleUsers
+CommandToCreateUser bradpitt pittspass pittyboi; null
+CommandToPersistChanges;
+** TestMultipleFriendRequests
+CommandToSelectUser bradpitt pittspass;
+CommandToMakeFriendRequest <userID> snapple;
+CommandToPersistChanges;
+CommandToGetPendingOutgoingFriendList <userID>; snapsmcgee
+CommandToMakeFriendRequest <userID> snapple;
+CommandToPersistChanges;
+CommandToGetPendingOutgoingFriendList <userID>; snapsmcgee
+CommandToSelectUser snapple snappass;
+CommandToAcceptFriendRequest <userID> bradpitt;
+CommandToPersistChanges;
+CommandToRetrieveFriendList <userID>; bradpitt
+CommandToUnFriend <userID> bradpitt;
+CommandToPersistChanges;
+** TestSelectingUserMultipleTimes
+CommandToSelectUser bradpitt pittspass;
+CommandToSelectUser bradpitt pittspass;

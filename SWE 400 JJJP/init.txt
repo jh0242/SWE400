@@ -1,0 +1,132 @@
+**Group 2
+CommandToCreateUser matthewcroft pw1 Matt78; matthewcroft:pw1:Matt78
+CommandToCreateUser bobbyboy pw2 Bobby12; bobbyboy:pw2:Bobby12
+CommandToCreateUser phil pw1 Phil78; phil:pw1:Phil78
+CommandToCreateUser mark pw2 Mark12; mark:pw2:Mark12
+CommandToCreateUser lenny pw1 Len78; lenny:pw1:Len78
+CommandToCreateUser dad pw2 Dad12; dad:pw2:Dad12
+CommandToCreateUser mattkujo pw matt40; mattkujo:pw:matt40
+CommandToCreateUser IronMan pw2 IronManOrNothing; IronMan:pw2:IronManOrNothing
+CommandToCreateUser Earls pw matt43; Earls:pw:matt43
+CommandToCreateUser SteelMan pw2 ManOfSteel; SteelMan:pw2:ManOfSteel
+CommandToCreateUser BronzeMan pw3 ManOfBronze; BronzeMan:pw3:ManOfBronze
+CommandToCreateUser BillyBob pw FoShow28; BillyBob:pw:FoShow28
+CommandToCreateUser MetalMan pw2 ManOfMetal; MetalMan:pw2:ManOfMetal
+CommandToCreateUser joshypants pw josh78; joshypants:pw:josh78
+CommandToCreateUser frank pw1 noShoes12; frank:pw1:noShoes12
+CommandToCreateUser JoshyJosh pw josh2; JoshyJosh:pw:josh2
+CommandToCreateUser franklin pw1 noShoes; franklin:pw1:noShoes
+CommandToCreateUser Joshie pw josh44; Joshie:pw:josh44
+CommandToCreateUser frankfort pw1 noShoes09; frankfort:pw1:noShoes09
+CommandToCreateUser Morphius pw matt0; Morphius:pw:matt0
+CommandToCreateUser Georgie pw josh338; Georgie:pw:josh338
+CommandToCreateUser Bourney pw1 noShoesNoPants; Bourney:pw1:noShoesNoPants
+** Group 4
+CommandToCreateUser ferdinand pw1 ferdy123; ferdinand:pw1:ferdy123 
+CommandToCreateUser augustus pw2 auggie5678; augustus:pw2:auggie5678
+CommandToCreateUser fidelia pw1 fifidel1234; fidelia:pw1:fifidel1234
+CommandToCreateUser kent pw1 kentith; kent:pw1:kentith 
+CommandToCreateUser olivia pw2 okp1992; olivia:pw2:okp1992
+CommandToCreateUser russia password destroyerofworlds; russia:password:destroyerofworlds
+CommandToCreateUser murica pw2 lolyolo; murica:pw2:lolyolo
+CommandToCreateUser puertorico password3 ayiyi; puertorico:password3:ayiyi
+CommandToCreateUser dracula pw1 batmaan; dracula:pw1:batmaan
+CommandToCreateUser frisbee pw2 circleflyer; frisbee:pw2:circleflyer
+CommandToCreateUser artemis pw1 arty24; artemis:pw1:arty24
+CommandToCreateUser holly pw2 fairygurl123; holly:pw2:fairygurl123
+CommandToCreateUser foaly pw5 ponyboy; foaly:pw5:ponyboy
+CommandToCreateUser root pw4 commander; root:pw4:commander
+CommandToCreateUser mulch pw3 klepto; mulch:pw3:klepto
+CommandToCreateUser frodo pw1 ringbearer; frodo:pw1:ringbearer
+CommandToCreateUser sam pw2 potatoes; sam:pw2:potatoes
+CommandToCreateUser gandalf pw3 magicdude; gandalf:pw3:magicdude
+CommandToCreateUser SanicTheHodgehege pw1 SanicTheHodgehege1234;
+CommandToCreateUser Vorpidile pw2 Vorpidile5678; Vorpidile:pw2:Vorpidile5678
+CommandToCreateUser Thrall pw1 Thrall1234; Thrall:pw1:Thrall1234
+CommandToCreateUser GhengisKhan pw2 GhengisKhan5678; GhengisKhan:pw2:GhengisKhan5678
+CommandToCreateUser Morbo password finerminer; Morbo:password:finerminer
+CommandToCreateUser fartblaster pw2 rweav; fartblaster:pw2:rweav
+CommandToCreateUser jellyjiggler pw1 jellyjigglerW; jellyjiggler:pw1:jellyjigglerW
+CommandToCreateUser RandySavage pw2 randysavage; RandySavage:pw2:randysavage;
+**
+** Group 3
+CommandToCreateUser johnTedMovie pw1 redSoxFan12; johnTedMovie:pw1:redSoxFan12
+CommandToCreateUser tedTedMovie pw2 bruinsFan12; tedTedMovie:pw2:bruinsFan12
+CommandToCreateUser loriTedMovie pw3 patriotsFan12; loriTedMovie:pw3:patriotsFan12
+CommandToCreateUser daveUsrNme pw1 eaglesFan14; daveUsrNme:pw1:eaglesFan14
+CommandToCreateUser brianUsrNme pw2 steelersFan06; brianUsrNme:pw2:steelersFan06
+CommandToCreateUser simonPegg pw1 shaun; simonPegg:pw1:shaun
+CommandToCreateUser nickFrost pw2 ed; nickFrost:pw2:ed
+CommandToCreateUser kateAshfield pw3 liz; kateAshfield:pw3:liz
+CommandToCreateUser lucyDavis pw4 dianne; lucyDavis:pw4:dianne
+CommandToCreateUser dylanMoran pw5 david; dylanMoran:pw5:david
+CommandToCreateUser ezUser ezPass ezDisp; ezUser:ezPass:ezDisp
+CommandToCreateUser jeUser jePass jeDisp; jeUser:jePass:jeDisp
+CommandToCreateUser edUser edPass edDisp; edUser:edPass:edDisp
+CommandToCreateUser caUser caPass caDisp; caUser:caPass:caDisp
+** 
+** Group 1
+**
+***********************************************************************
+**CancelChangesTest
+CommandToCreateUser Newton pw1 newton1234; Newton:pw1:newton1234 
+CommandToCreateUser Euclid pw2 euclid5678; Euclid:pw2:euclid5678
+***********************************************************************
+**CreateUserTest
+CommandToCreateUser galim pw1 garam; galim:pw1:garam
+***********************************************************************
+**ExistingFriendsTest
+CommandToCreateUser spongebob pw1 squarepants; spongebob:pw1:squarepants
+CommandToCreateUser patrick pw2 star; patrick:pw2:star
+CommandToCreateUser sandy pw3 cheeks; sandy:pw3:cheeks
+CommandToCreateUser squidward pw4 tentacles; squidward:pw4:tentacles
+CommandToCreateUser krabs pw5 eugene; krabs:pw5:eugene
+CommandToCreateUser plankton pw6 evil; plankton:pw6:evil
+CommandToSelectUser spongebob pw1;
+CommandToMakeFriendRequest <userID> squidward;
+CommandToMakeFriendRequest <userID> sandy;
+CommandToPersistChanges;
+CommandToSelectUser squidward pw4;
+CommandToAcceptFriendRequest <userID> spongebob;
+CommandToPersistChanges;
+CommandToSelectUser patrick pw2;
+CommandToMakeFriendRequest <userID> spongebob;
+CommandToPersistChanges;
+***********************************************************************
+**ModifyUserTest
+CommandToCreateUser pepperoni pw1 ryanW; pepperoni:pw1:ryanW
+***********************************************************************
+**MultipleFriendsTest
+CommandToCreateUser pikachu password mouse; pikachu:password:mouse
+CommandToCreateUser ash pw2 trainer; ash:pw2:trainer
+CommandToCreateUser arcanine password3 firetiger; arcanine:password3:firetiger
+***********************************************************************
+**NatesTest
+CommandToCreateUser Washington pw1 Washington; Washington:pw1:Washington
+CommandToCreateUser Mussolini pw2 Mussolini; Mussolini:pw2:Mussolini
+CommandToCreateUser KungUn pw1 KungUn; KungUn:pw1:KungUn
+CommandToCreateUser Buchanan pw2 Buchanan; Buchanan:pw2:Buchanan
+CommandToCreateUser QueenElizabeth pw3 QueenElizabeth; QueenElizabeth:pw3:QueenElizabeth
+***********************************************************************
+**PersistChangesTest
+CommandToCreateUser mozzerella pw1 ryanW; mozzerella:pw1:ryanW
+CommandToCreateUser thegrimdisaster pw2 circleflyer; thegrimdisaster:pw2:circleflyer
+***********************************************************************
+**RejectFriendRequestTest
+CommandToCreateUser squirtle password turtle; squirtle:password:turtle
+CommandToCreateUser charmander pw2 salamander; charmander:pw2:salamander
+***********************************************************************
+**SelectUserTest
+CommandToCreateUser ga pw1 ga1234; ga:pw1:ga1234
+CommandToCreateUser pika pw2 pika5678; pika:pw2:pika5678
+***********************************************************************
+**UnfriendTest
+CommandToCreateUser Euler pw1 euler1234; Euler:pw1:euler1234
+CommandToCreateUser Archimedes pw2 archimedes5678; Archimedes:pw2:archimedes5678
+***********************************************************************
+** Group 5
+CommandToCreateUser bradpitt pittspass pittyboi; bradpitt:pittspass:pittyboi
+CommandToCreateUser seniormaximus maxpass shorts; seniormaximus:maxpass:shorts
+CommandToCreateUser snapple snappass snapsmcgee; snapple:snappass:snapsmcgee
+CommandToCreateUser buttercup butterpass optimus; buttercup:butterpass:optimus
+CommandToPersistChanges;
