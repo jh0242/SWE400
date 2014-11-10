@@ -52,15 +52,13 @@ public class FriendMapper
 				while(results.next())
 				{
 					Friend friend;
-					if(!results.getString(1).equals(user.getUsername()))
+					if(!results.getString(results.findColumn("UserNameA")).equals(user.getUsername()))
 					{	
-						friend = new Friend(results.getString(1));
-						friend.setID(results.getInt(1));
+						friend = new Friend(results.getString(results.findColumn("UserNameB")), results.getString(results.findColumn("UserDisplayNameB")));
 						
 					}else
 					{
-						friend = new Friend(results.getString(2));
-						friend.setID(results.getInt(2));
+						friend = new Friend(results.getString(results.findColumn("UserNameA")), results.getString(results.findColumn("UserDisplayNameA")));
 					}
 					list.add(friend);
 				}

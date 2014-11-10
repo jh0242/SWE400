@@ -269,17 +269,19 @@ public class Person extends DomainObject
 	public boolean confirmFriendRequest(String uname) {
 		Iterator<FriendRequest> it = friendRequests.iterator();
 		boolean success = false;
+		FriendRequest fr = null;
 		while (it.hasNext() && !success) {
-			FriendRequest f = it.next();
-			if (f.getSender().equals(uname)) {
+			fr = it.next();
+			if (fr.getSender().equals(uname)) {
 				// Match!
-				Session.getInstance().getUnitOfWork().registerRemoved(f); // Remove this now that it has been accepted.
+				Session.getInstance().getUnitOfWork().registerRemoved(fr); // Remove this now that it has been accepted.
+				
 				it.remove();
 				success = true;
 			}	
 		}
 		if (success) {
-			Friend f = new Friend(uname);
+			Friend f = new Friend(fr.getSender(), fr.getSenderDisplayName());
 			getFriends().add(f);
 			Session.getInstance().getUnitOfWork().registerNew(f);
 		}
