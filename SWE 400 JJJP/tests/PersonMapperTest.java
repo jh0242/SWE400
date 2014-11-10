@@ -1,19 +1,23 @@
 
 
-import static org.junit.Assert.*;
-
-import java.sql.SQLException;
-
+import static org.junit.Assert.assertEquals;
 import org.junit.Test;
-
 import data_gateway.PersonGateway;
 import data_mapper.PersonMapper;
 import domain_model.Person;
 
+/**
+ * Tests the functionality of PersonMapper
+ * @author group3
+ */
 public class PersonMapperTest 
 {
+	/**
+	 * Tests that retrieving a user works correctly.
+	 */
 	@Test
-	public void testGetUser() throws SQLException {
+	public void testGetUser()
+	{
 		PersonGateway.insert("pm01U", "pm01P", "pm01D");
 		PersonMapper pm = PersonMapper.getInstance();
 		Person userA = pm.getPerson("pm01U", "pm01P");

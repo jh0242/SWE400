@@ -11,6 +11,10 @@ import data_gateway.PersonGateway;
 import data_gateway.UserFriendRequestGateway;
 
 
+/**
+ * Tests the functionality of the UserFriendRequestGateway.
+ * @author jh0242
+ */
 public class UserFriendRequestGatewayTest 
 {
 	private String requester, requestee, displayName = "display";
@@ -88,6 +92,10 @@ public class UserFriendRequestGatewayTest
 		assertTrue(checkResultSet(UserFriendRequestGateway.findOutgoingFriendRequests(requester)));
 	}
 	
+	/**
+	 * Tests that findIncomingFriendRequests correctly retrieves the
+	 * friend requests that are sent to a user.
+	 */
 	@Test
 	public void testFindIncomingFriendRequests()
 	{

@@ -8,9 +8,12 @@ import domain_model.Person;
 import domain_model.Session;
 
 
-public class CommandToPersistChangesTest {
-
-
+/**
+ * Tests the functionality of CommandToPersistChanges.
+ * @author group3
+ */
+public class CommandToPersistChangesTest 
+{
 	/**
 	 * Test the functionality CommandToPersistChanges
 	 */
@@ -27,5 +30,4 @@ public class CommandToPersistChangesTest {
 		persist.execute();
 		assertEquals(Session.getInstance().getPerson().getFullname(), "nottest");
 	}
-
 }
