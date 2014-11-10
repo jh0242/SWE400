@@ -372,14 +372,15 @@ public class Person extends DomainObject
 				break;
 			}
 		}
-		FriendRequest f;
-		if (!nonDatabase) f = new FriendRequest(this.userName, displayName, target, PersonMapper.findDisplayName(target));
-		else {
-			f = new FriendRequest(this.userName, displayName, target, "nonexistent person");
+		if (success) {
+			FriendRequest f;
+			if (!nonDatabase) f = new FriendRequest(this.userName, displayName, target, PersonMapper.findDisplayName(target));
+			else {
+				f = new FriendRequest(this.userName, displayName, target, "nonexistent person");
+			}
+			friendRequestsOutgoing.add(f);
+			Session.getInstance().getUnitOfWork().registerNew(f);
 		}
-		friendRequestsOutgoing.add(f);
-		Session.getInstance().getUnitOfWork().registerNew(f);
-		
 		return success;
 	}
 	
