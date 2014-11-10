@@ -139,7 +139,7 @@ public class Person extends DomainObject
 		// This is where loading should occur.
 		if (friends == null) {
 			friends = new ArrayList<>();
-			FriendMapper.getInstance().getAllFriends(this);
+			this.friends = FriendMapper.getInstance().getAllFriends(this);
 		}
 		return friends;
 	}
