@@ -44,6 +44,7 @@ public class Session
 	 * @param p A person. THE person. For this session.
 	 */
 	public void setPerson(Person p) {
+		getUnitOfWork().discard();
 		this.person.set(p);
 	}
 	
