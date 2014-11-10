@@ -270,20 +270,25 @@ public class Person extends DomainObject
 		Iterator<FriendRequest> it = friendRequests.iterator();
 		boolean success = false;
 		FriendRequest fr = null;
+		FriendRequest targetFR = null; // The one we're looking to accept, once we find it.
 		while (it.hasNext() && !success) {
 			fr = it.next();
 			if (fr.getSender().equals(uname)) {
 				// Match!
 				Session.getInstance().getUnitOfWork().registerRemoved(fr); // Remove this now that it has been accepted.
+				targetFR = fr;
 				
 				it.remove();
 				success = true;
 			}	
 		}
-		if (success) {
-			Friend f = new Friend(fr.getSender(), fr.getSenderDisplayName());
+		if (success && targetFR != null) {
+			Friend f = new Friend(targetFR.getSender(), targetFR.getSenderDisplayName());
 			getFriends().add(f);
 			Session.getInstance().getUnitOfWork().registerNew(f);
+		}
+		else if (targetFR == null) {
+			System.err.println("confirmFriendRequest: targetFR is null.");
 		}
 		return success;
 	}

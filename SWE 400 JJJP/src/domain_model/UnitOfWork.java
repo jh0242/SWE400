@@ -144,6 +144,9 @@ public class UnitOfWork
 					UserFriendRequestMapper.removeFriendRequest(sessionPerson.getUsername(), fr.getReceiver());
 				}
 				// Incoming
+				if (fr.getReceiver() == sessionPerson.getUsername()) {
+					UserFriendRequestMapper.removeFriendRequest(fr.getSender(), sessionPerson.getUsername());
+				}
 				//  
 			}
 		}
