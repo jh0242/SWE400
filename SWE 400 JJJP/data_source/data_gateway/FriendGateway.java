@@ -144,4 +144,26 @@ public class FriendGateway
 		}
 		return true;
 	}
+
+	public static void updateDisplayName(String username, String fullname) 
+	{
+		String updateDisplay = new String("update FRIENDS set UserDisplayNameA=? where UserNameA=?");
+		String updateDisplay2 = new String("update FRIENDS set UserDisplayNameB=? where UserNameB=?");
+		PreparedStatement stmt;
+		try
+		{
+			stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(updateDisplay);
+			stmt.setString(1, fullname);
+			stmt.setString(2, username);
+			stmt.executeUpdate();
+			stmt = DataBaseConnection.getInstance().getConnection().prepareStatement(updateDisplay2);
+			stmt.setString(1, fullname);
+			stmt.setString(2, username);
+			stmt.executeUpdate();
+		} catch (SQLException e)
+		{
+			System.out.println("Error with MySQL syntax in areFriends!");
+			e.printStackTrace();
+		}
+	}
 }

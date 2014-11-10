@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -126,11 +127,24 @@ public class FriendMapper
 
 	public static boolean removeUserFromHashMap(String userName) 
 	{
+		Map<String, List<Friend>> map = friendsList;
 		if (friendsList.containsKey(userName))
 		{
 			friendsList.remove(userName);
 			return true;
 		}
 		return false;
+	}
+
+	public void updateDisplayName(String username, String fullname) 
+	{
+		FriendGateway.updateDisplayName(username, fullname);
+		Iterator<String> it = friendsList.keySet().iterator();
+		while (it.hasNext())
+		{
+			for (Friend fr: friendsList.get(it.next()))
+				if (fr.getUserName().equals(username))
+					fr.setDisplayName(fullname);
+		}
 	}
 }

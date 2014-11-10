@@ -131,6 +131,8 @@ public class UnitOfWork
 			if (x.getClass().equals(Person.class)) {
 				Person p = (Person) x;
 				PersonMapper.updateDisplayName(p.getUsername(), p.getPassword(), p.getFullname());
+				FriendMapper.getInstance().updateDisplayName(p.getUsername(), p.getFullname());
+//				UserFriendRequestMapper.getInstance().updateDisplayName(p.getUsername(), p.getFullname());
 				System.out.println(msg + "New display name: " + p);
 			}
 		}

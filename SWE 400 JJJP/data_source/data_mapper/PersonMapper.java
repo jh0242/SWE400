@@ -121,13 +121,14 @@ public class PersonMapper
 	 */
 	public static boolean updateDisplayName(String userName,String password, String display)
 	{
+		boolean success = false;
 		if(checkUserLoaded(userName))
 		{
 			if(users.get(userName).getPassword() == password)
 			{
 				users.get(userName).setDisplayName(display);
 				users.get(userName).setUpdated(true);
-			} return true;
+			} success = true;
 		}else
 		{
 			if(PersonGateway.selectUser(userName, password)!= null)
@@ -136,9 +137,11 @@ public class PersonMapper
 				loadedUser.setDisplayName(display);
 				users.put(userName, loadedUser);
 				users.get(userName).setUpdated(true);
-				return true;
-			} return false;
+				success = true;
+			} success = false;
 		}
+		PersonGateway.updateDisplayName(PersonGateway.getID(userName, password), display);
+		return success;
 	}
 	
 	/**
