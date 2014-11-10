@@ -86,6 +86,9 @@ public class Person extends DomainObject
 	 */
 	public String getFullname()
 	{
+		if (this.displayName == null) {
+			this.displayName = PersonMapper.findDisplayName(this.userName);
+		}
 		return displayName;
 	}
 	
@@ -110,8 +113,10 @@ public class Person extends DomainObject
 	 */
 	public void setDisplayName(String name)
 	{
+		boolean wasNull = false;
+		if (this.displayName == null) wasNull = true;
 		this.displayName = name;
-		Session.getInstance().getUnitOfWork().registerDirty(this);
+		if (wasNull) Session.getInstance().getUnitOfWork().registerDirty(this);
 	}
 
 	/**
@@ -302,6 +307,11 @@ public class Person extends DomainObject
 		return success;
 	}
 	
+	/**
+	 * Check friends list for existing friend by friendName
+	 * @param friendName String of friendName
+	 * @return true or false
+	 */
 	public boolean checkArraylist(String friendName)
 	{
 		for(int i=0;i<getFriends().size();i++)
@@ -383,12 +393,13 @@ public class Person extends DomainObject
 	}
 	
 	/**
-	 * Clear all friends data.
+	 * Clear mutable data.
 	 */
 	public void clear() {
 		this.friends = null;
 		this.friendRequests = null;
 		this.friendRequestsOutgoing = null;
+		this.displayName = null;
 	}
 	
 }

@@ -45,6 +45,9 @@ public class Session
 	 */
 	public void setPerson(Person p) {
 		getUnitOfWork().discard();
+		if (this.getPerson() != null) {
+			this.getPerson().clear();
+		}
 		this.person.set(p);
 	}
 	
