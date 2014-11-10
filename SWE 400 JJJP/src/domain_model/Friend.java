@@ -54,4 +54,14 @@ public class Friend extends DomainObject
 	{
 		this.displayName = displayName;
 	}
+	
+	/**
+	 * Returns userName:displayName
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return this.userName + ":" + this.displayName;
+		
+	}
 }

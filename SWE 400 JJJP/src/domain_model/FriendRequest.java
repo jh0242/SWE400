@@ -66,4 +66,13 @@ public class FriendRequest extends DomainObject
 	public String getReceiverDisplayName() {
 		return receiverDisplayName;
 	}
+	
+	/**
+	 * senderUsername:senderDisplayName:receiverUsername:receiverDisplayName
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return senderUsername + ":" + senderDisplayName + ":" + receiverUsername + ":" + receiverDisplayName;
+	}
 }
