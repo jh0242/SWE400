@@ -61,6 +61,7 @@ public class CommandToGetPendingIncomingFriendList implements Command
 			ret = ret + x.getSenderDisplayName();
 			addSpace = true;
 		}
+		System.out.println(" PendingIncomingFL: " + ret);
 		return ret;
 	}
 

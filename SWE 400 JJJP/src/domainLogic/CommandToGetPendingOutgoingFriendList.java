@@ -60,6 +60,7 @@ public class CommandToGetPendingOutgoingFriendList implements Command
 				ret = ret + x.getReceiverDisplayName();
 			}
 		}
+		System.out.println("PendingOutgoingFL: " + ret);
 		return ret;
 	}
 

@@ -120,7 +120,7 @@ public class UnitOfWork
 				FriendRequest fr = (FriendRequest) x;
 				System.out.print(msg + "New outgoing FR: " + fr);
 				if (fr.getSender() == sessionPerson.getUsername()) {
-					UserFriendRequestMapper.getInstance().clear();
+					UserFriendRequestMapper.clear();
 					boolean status = UserFriendRequestMapper.insertFriendRequest(sessionPerson, fr);
 					System.out.println(" ... " + status);
 				}

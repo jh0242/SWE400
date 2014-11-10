@@ -76,11 +76,17 @@ public class FriendRequest extends DomainObject
 		return senderUsername + ":" + senderDisplayName + ":" + receiverUsername + ":" + receiverDisplayName;
 	}
 
+	/**
+	 * @param fullname Set the receiver display name to this string.
+	 */
 	public void setReceiverDisplayName(String fullname) 
 	{
 		this.receiverDisplayName = fullname;
 	}
 
+	/**
+	 * @param fullname Set the sender display name to this string.
+	 */
 	public void setSenderDisplayName(String fullname) 
 	{
 		this.senderDisplayName = fullname;
