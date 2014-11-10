@@ -7,10 +7,16 @@ import data_mapper.FriendMapper;
 import data_mapper.PersonMapper;
 import domain_model.Friend;
 import domain_model.Person;
-
+/**
+ * @author Josh McMillen
+ */
 public class FriendMapperTest
 {
 
+	/**
+	 * Tests the Basic Functionality of the Friend Mapper
+	 * Both Single and Multiple Friendships are covered
+	 */
 	@Test
 	public void testFrienships()
 	{
