@@ -245,7 +245,7 @@ CommandToRetrieveFriendList <userID>; auggie5678
 CommandToUnFriend <userID> augustus;
 CommandToPersistChanges;
 *******Create User Test*******2
-CommandToSelectUser fidelia pw1; 
+CommandToSelectUser fidelia pw1;
 CommandToGetPendingOutgoingFriendList <userID>;
 CommandToGetPendingIncomingFriendList <userID>;
 CommandToRetrieveFriendList <userID>;

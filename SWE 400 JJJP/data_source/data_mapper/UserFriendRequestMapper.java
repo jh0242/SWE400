@@ -67,8 +67,8 @@ public class UserFriendRequestMapper
 	 */
 	public static ArrayList<FriendRequest> getAllOutgoingFriendRequests(Person user)
 	{
-		if (!OutgoingFriendRequestsList.containsKey(user.getUsername()))
-			loadFriendRequestsList(user);
+		clear();
+		loadFriendRequestsList(user);
 		ArrayList<FriendRequest> list = new ArrayList<FriendRequest>();
 		list.addAll(OutgoingFriendRequestsList.get(user.getUsername()));
 		return list;
@@ -83,8 +83,8 @@ public class UserFriendRequestMapper
 	 */
 	public static ArrayList<FriendRequest> getAllIncomingFriendRequests(Person user)
 	{
-		if (!IncomingFriendRequestsList.containsKey(user.getUsername()))
-			loadFriendRequestsList(user);
+		clear();
+		loadFriendRequestsList(user);
 		ArrayList<FriendRequest> list = new ArrayList<FriendRequest>();
 		list.addAll(IncomingFriendRequestsList.get(user.getUsername()));
 		return list;
@@ -139,7 +139,6 @@ public class UserFriendRequestMapper
 	{
 		UserFriendRequestGateway.removeFriendRequest(sender, receiver);
 		Iterator<FriendRequest> it = OutgoingFriendRequestsList.get(sender).iterator();
-		Map<String, List<FriendRequest>> list = OutgoingFriendRequestsList;
 		FriendRequest fr = null;
 		boolean removed = false;
 		while (!removed && it.hasNext())
@@ -213,7 +212,7 @@ public class UserFriendRequestMapper
 		return exists;
 	}
 
-	public void clear() 
+	public static void clear() 
 	{
 		OutgoingFriendRequestsList.clear();
 		IncomingFriendRequestsList.clear();
