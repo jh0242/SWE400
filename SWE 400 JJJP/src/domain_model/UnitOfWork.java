@@ -104,6 +104,7 @@ public class UnitOfWork
 	 */
 	public void commit()
 	{
+		String msg = "UOW: ";
 		Person sessionPerson = Session.getInstance().getPerson();
 		for (DomainObject x : newRegister) {
 			
@@ -111,13 +112,16 @@ public class UnitOfWork
 			if (x.getClass().equals(Friend.class)) {
 				Friend f = (Friend) x;
 				FriendMapper.saveFriend(sessionPerson, f);
+				System.out.println(msg + "New friend: " + f.getUserName() + " " + f.getDisplayName());
 			}
 			
 			// FriendRequests, outgoing only at the moment.
 			else if (x.getClass().equals(FriendRequest.class)) {
 				FriendRequest fr = (FriendRequest) x;
+				System.out.print(msg + "New outgoing FR: " + fr.getSender() + " -> " + fr.getReceiver());
 				if (fr.getSender() == sessionPerson.getUsername()) {
-					UserFriendRequestMapper.insertFriendRequest(sessionPerson, fr);
+					boolean status = UserFriendRequestMapper.insertFriendRequest(sessionPerson, fr);
+					System.out.println(" ... " + status);
 				}
 			}
 		}
@@ -127,6 +131,7 @@ public class UnitOfWork
 			if (x.getClass().equals(Person.class)) {
 				Person p = (Person) x;
 				PersonMapper.updateDisplayName(p.getUsername(), p.getPassword(), p.getFullname());
+				System.out.println(msg + "New display name: " + p.displayName);
 			}
 		}
 		
@@ -134,6 +139,7 @@ public class UnitOfWork
 			// Friend
 			if (x.getClass().equals(Friend.class)) {
 				Friend f = (Friend) x;
+				System.out.println(msg + "Remove friend: " + f.getUserName());
 				FriendMapper.getInstance().removeFriend(sessionPerson, f.getUserName());
 			}
 			// Friend Request
@@ -142,10 +148,12 @@ public class UnitOfWork
 				// Outgoing
 				if (fr.getSender().equals(sessionPerson.getUsername())) {
 					UserFriendRequestMapper.removeFriendRequest(sessionPerson.getUsername(), fr.getReceiver());
+					System.out.println(msg + "Remove OUT FR: " + fr.getSender() + " -> " + fr.getReceiver());
 				}
 				// Incoming
 				if (fr.getReceiver().equals(sessionPerson.getUsername())) {
 					UserFriendRequestMapper.removeFriendRequest(fr.getSender(), sessionPerson.getUsername());
+					System.out.println(msg + "Remove INC FR: " + fr.getSender() + " -> " + fr.getReceiver());
 				}
 				//  
 			}
