@@ -222,8 +222,8 @@ public class Person extends DomainObject
 	 */
 	public ArrayList<FriendRequest> getFriendRequestsOutgoing() {
 		if (friendRequestsOutgoing == null) {
-			//friendRequestsOutgoing = UserFriendRequestMapper.getAllOutgoingFriendRequestObjects(this);
 			friendRequestsOutgoing = new ArrayList<>();
+			if (!nonDatabase) friendRequestsOutgoing = UserFriendRequestMapper.getAllOutgoingFriendRequests(this);
 		}
 		return friendRequestsOutgoing;
 	}
