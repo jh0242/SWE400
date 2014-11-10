@@ -290,13 +290,28 @@ public class Person extends DomainObject
 		}
 		if (success && targetFR != null) {
 			Friend f = new Friend(targetFR.getSender(), targetFR.getSenderDisplayName());
-			getFriends().add(f);
-			Session.getInstance().getUnitOfWork().registerNew(f);
+			if(checkArraylist(f.getUserName()))
+			{
+				getFriends().add(f);
+				Session.getInstance().getUnitOfWork().registerNew(f);
+			}			
 		}
 		else if (targetFR == null) {
 			System.err.println("confirmFriendRequest: targetFR is null.");
 		}
 		return success;
+	}
+	
+	public boolean checkArraylist(String friendName)
+	{
+		for(int i=0;i<getFriends().size();i++)
+		{
+			if(getFriends().get(i).getUserName().equals(friendName))
+			{
+				return false;
+			}
+		}
+		return true;
 	}
 	
 	/**
