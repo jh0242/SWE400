@@ -9,6 +9,10 @@ import domainLogic.CommandToCreateUser;
 import domainLogic.CommandToSelectUser;
 
 
+/**
+ * Tests the functionality of CommandToSelectUser
+ * @author Group3
+ */
 public class CommandToSelectUserTest {
 
 private String firstUserName;
@@ -54,6 +58,9 @@ private String secondUserName;
 		assertEquals(secondUserName + ":pass2:SecondUserDisplay", command2.getResult());
 	}
 	
+	/**
+	 * 
+	 */
 	@Test
 	public void testSelectUsers()
 	{

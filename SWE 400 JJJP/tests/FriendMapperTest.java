@@ -2,6 +2,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import data_gateway.FriendGateway;
 import data_gateway.PersonGateway;
 import data_mapper.FriendMapper;
 import data_mapper.PersonMapper;
@@ -40,6 +41,8 @@ public class FriendMapperTest
 		assertEquals(f2,fm.getAllFriends(p1).get(1));
 		fm.updateDisplayName(f1.getUserName(),"TEST");
 		assertEquals("TEST",fm.getAllFriends(p1).get(0).getDisplayName());
+		FriendGateway.removeAllFriendships(f1.getUserName());
+		FriendGateway.removeAllFriendships(f2.getUserName());
 		PersonGateway.removeByUserName("asdfqwer");
 		PersonGateway.removeByUserName("asdfqwer2");
 		PersonGateway.removeByUserName("asdfqwer3");

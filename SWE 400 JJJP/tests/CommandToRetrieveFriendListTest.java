@@ -8,6 +8,10 @@ import domain_model.Person;
 import domain_model.Session;
 
 
+/**
+ * Tests the functionality of CommandToRetrieveFriendListTest
+ * @author Group3
+ */
 public class CommandToRetrieveFriendListTest {
 
 	/**
