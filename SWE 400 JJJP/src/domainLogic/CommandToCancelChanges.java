@@ -1,6 +1,5 @@
 package domainLogic;
 
-import data_mapper.FriendMapper;
 import domain_model.Session;
 
 /**
@@ -21,8 +20,6 @@ public class CommandToCancelChanges implements Command
 	{
 		Session.getInstance().getUnitOfWork().discard();
 		Session.getInstance().getPerson().clear();
-		FriendMapper.getInstance();
-		FriendMapper.removeUserFromHashMap(Session.getInstance().getPerson().getUsername());
 	}
 
 	/**

@@ -405,6 +405,7 @@ public class Person extends DomainObject
 		this.friendRequests = null;
 		this.friendRequestsOutgoing = null;
 		this.displayName = null;
+		FriendMapper.removeUserFromHashMap(userName);
 	}
 	
 }

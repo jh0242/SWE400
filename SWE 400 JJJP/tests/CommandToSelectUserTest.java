@@ -59,11 +59,13 @@ private String secondUserName;
 	}
 	
 	/**
-	 * 
+	 * Tests that CommandToSelectUser initializes with the given username and displayname.
 	 */
 	@Test
 	public void testSelectUsers()
 	{
 		CommandToSelectUser command = new CommandToSelectUser(firstUserName, "pass1");
+		assertEquals(firstUserName, command.getUserName());
+		assertEquals("pass1", command.getPassword());
 	}
 }

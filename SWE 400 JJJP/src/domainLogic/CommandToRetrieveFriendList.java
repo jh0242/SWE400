@@ -1,5 +1,4 @@
 package domainLogic;
-import data_mapper.FriendMapper;
 import domain_model.Friend;
 import domain_model.Session;
 
@@ -33,7 +32,7 @@ public class CommandToRetrieveFriendList implements Command
 	{
 		if(Session.getInstance().getPerson().getID() == userID)
 		{
-			FriendMapper.getInstance().getAllFriends(Session.getInstance().getPerson());
+			//Session.getInstance().getPerson().getFriends();
 		}
 	}
 
